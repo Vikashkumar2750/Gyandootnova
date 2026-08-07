@@ -1,0 +1,1 @@
+ALTER TABLE public.ai_settings ADD CONSTRAINT ai_settings_provider_name_unique UNIQUE (provider_name);

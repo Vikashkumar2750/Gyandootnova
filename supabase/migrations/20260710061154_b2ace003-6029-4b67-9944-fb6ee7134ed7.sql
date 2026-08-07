@@ -1,0 +1,4 @@
+ALTER TABLE public.visitor_logs 
+  ADD COLUMN IF NOT EXISTS user_email TEXT,
+  ADD COLUMN IF NOT EXISTS user_name TEXT,
+  ADD COLUMN IF NOT EXISTS user_phone TEXT;

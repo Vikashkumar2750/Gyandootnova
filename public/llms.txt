@@ -1,0 +1,77 @@
+# Gyandoot (GyandootNova)
+
+> Gyandoot — also known as Gyandoot Nova / GyandootNova (gyandootnova.in) — सनातन धर्म, वेद, उपनिषद, गीता, रामायण, महाभारत और हिंदू शास्त्रों का प्रामाणिक डिजिटल पुस्तकालय एवं AI-संचालित ज्ञान मंच। Authentic Hindu scriptures, Sanatan Dharma library, spiritual books, meditation guides, and AI-powered Q&A in Hindi, Sanskrit, and English.
+
+Gyandoot (brand: GyandootNova, domain: gyandootnova.in) is a spiritual publication and digital reader platform offering authentic Hindu texts, articles, and an AI assistant in Hindi and Sanskrit. Users can read scriptures in a secure online reader, ask dharma-related questions, browse spiritual articles, and download free chapters. Common name variations: Gyandoot, Gyan Doot, Gyandoot Nova, GyandootNova.
+
+## Targeted Keywords
+
+**Scriptures (English):** bhagavad gita, bhagwat geeta, srimad bhagavatam, vedas, rig veda, sama veda, yajur veda, atharva veda, upanishads, ramayana, mahabharata, puranas, manusmriti, yoga sutras, brahma sutras, vedanta, dharma shastra.
+
+**Scriptures (Hindi/Sanskrit):** भगवद्गीता, श्रीमद्भगवद्गीता, भागवत पुराण, ऋग्वेद, यजुर्वेद, सामवेद, अथर्ववेद, उपनिषद्, रामायण, महाभारत, पुराण, वेदांत, ब्रह्मसूत्र, योगसूत्र, मनुस्मृति.
+
+**Concepts:** sanatan dharma, hindu dharma, karma, moksha, bhakti, jnana, dhyana, atman, brahman, karma yoga, bhakti yoga, jnana yoga, raja yoga, ashtanga yoga, chakra, kundalini, mantra, japa, puja, yajna.
+
+**Hindi concepts:** धर्म, कर्म, मोक्ष, भक्ति, ज्ञान, ध्यान, आत्मा, ब्रह्म, योग, तप, सत्य, अहिंसा, वैराग्य, मंत्र, जप, पूजा, यज्ञ, चक्र, कुंडलिनी.
+
+**Meditation & Wellness:** how to meditate properly, meditation for anxiety, meditation for stress, meditation for beginners, vipassana meditation, zen meditation, transcendental meditation, kriya yoga, mindfulness, pranayama, breathing techniques, ध्यान कैसे करें, ध्यान के लाभ, प्राणायाम.
+
+**Common Questions:** who wrote bhagavad gita, who wrote vedas, how many slokas in bhagavad gita, how many vedas are there, how many upanishads, oldest veda, oldest upanishad, meaning of om, what is atman, what is brahman, what is moksha.
+
+**Primary (High Intent, India monthly search volume):** bhagavad gita in hindi (~60K), ramayana in hindi (~45K), hanuman chalisa pdf (~80K), vishnu sahasranama (~25K), rigveda hindi translation (~12K), shrimad bhagwatam stories (~18K), sundarkand path online (~20K), bhagavad gita online.
+
+**LSI / Supportive (India MSV):** dharmik granth online (~10K), spiritual books hindi (~8K), daily gita quotes (~15K), hanuman chalisa benefits / hanuman chalisa ke fayde (~22K), hindu dharmik granth, bhakti path online.
+
+**Voice Search / Conversational (India MSV):** what is bhagavad gita in hindi (~5K), how to read ramayana online (~7K), hanuman chalisa with meaning (~9K), hanuman chalisa ke fayde kya hain, best site for vishnu sahasranama.
+
+**Long-Tail (High Conversion):** bhagavad gita simplified hindi translation free, read ramayana sundarkand online in hindi, hanuman chalisa with meaning in english, rigveda part 1 and 2 hindi pdf, shrimad bhagwatam stories for kids.
+
+## Scriptures & Texts (Top Searched)
+- [Bhagavad Gita](/texts/bhagavad-gita): भगवद्गीता — 18 अध्याय, 700 श्लोक, कृष्ण-अर्जुन संवाद, कर्मयोग, भक्तियोग, ज्ञानयोग। Complete guide with chapter summaries.
+- [Vedas](/texts/vedas): चार वेद — ऋग्वेद, यजुर्वेद, सामवेद, अथर्ववेद। The four Vedas: authors, dates, content, and teachings.
+- [Rig Veda](/texts/rig-veda): ऋग्वेद — सबसे प्राचीन वेद, 10 मंडल, 1028 सूक्त, 10,600 मंत्र। The oldest Veda in detail.
+- [Upanishads](/texts/upanishads): उपनिषद — वेदांत दर्शन, 108 उपनिषद, 10 मुख्य उपनिषद, आत्मा और ब्रह्म का ज्ञान।
+
+## Common Questions (Q&A)
+- [Who wrote the Bhagavad Gita?](/qa/who-wrote-bhagavad-gita): भगवद्गीता के रचयिता वेदव्यास — Author, compilation, and historical context.
+- [Who wrote the Vedas?](/qa/who-wrote-vedas): वेदों की रचना — ऋषि परंपरा, श्रुति, and the seers behind each Veda.
+- [How many slokas in Bhagavad Gita?](/qa/how-many-slokas-in-bhagavad-gita): 700 श्लोक, 18 अध्याय — chapter-wise sloka count.
+- [How many Vedas are there?](/qa/how-many-vedas): चार वेद और उनका महत्व — the four Vedas and their purpose.
+- [How many Upanishads?](/qa/how-many-upanishads): 108 मुख्य उपनिषद, 10 प्रमुख — principal vs minor Upanishads.
+
+## How-to Guides
+- [How to read Bhagavad Gita](/how-to-read/bhagavad-gita): गीता पढ़ने का सही तरीका — chapter order, commentaries, daily reading plan.
+
+## Meditation & Yoga
+- [Meditation for Anxiety](/meditation/for-anxiety): चिंता दूर करने के लिए ध्यान — techniques, science, and Hindi-English guide.
+- [Meditation for Stress](/meditation/for-stress): तनाव मुक्ति के लिए ध्यान — proven techniques that actually work.
+- [Meditation Techniques Compared](/meditation/techniques-compared): Vipassana, Zen, TM, Kriya, Who-Am-I — comparison and how to choose.
+
+## Hindi Pillar Content
+- [ध्यान कैसे करें](/hindi/dhyan-kaise-karein): ध्यान की संपूर्ण मार्गदर्शिका — विधि, आसन, चरण, सामान्य गलतियाँ, और लाभ।
+- [उपनिषद का अर्थ](/hindi/upanishad-meaning-hindi): उपनिषद शब्द का अर्थ, व्युत्पत्ति, और शिक्षा।
+- [वेद का अर्थ](/hindi/vedas-meaning-hindi): वेदों का अर्थ, प्रकार, इतिहास, और शिक्षा।
+
+## Library & Content
+- [Home](/): GyandootNova introduction and featured scriptures
+- [Books Library](/books): All Hindu scriptures and spiritual books — free previews and secure online reader
+- [Articles](/articles): Spiritual articles on dharma, philosophy, and Hindu culture
+- [Keywords Hub](/keywords): Complete LSI keyword & topic index (DefinedTermSet JSON-LD)
+- [About Us](/about): Mission and vision of GyandootNova
+- [Testimonials](/testimonials): Reader experiences and reviews
+- [Contact](/contact): Get in touch with the GyandootNova team
+- [FAQ](/faq): Frequently asked questions
+- [Support](/support): Help and customer support
+- [Donate](/donate): Support the mission of preserving Sanatan Dharma
+- [Services](/services): Publishing and digital reading services
+- [Portfolio](/portfolio): Our published works
+- [Careers](/careers): Join the GyandootNova team
+
+## Policies
+- [Privacy Policy](/privacy-policy): How we handle user data
+- [Terms & Conditions](/terms-conditions): Usage terms
+- [Refund Policy](/refund-policy): Refund and cancellation terms
+- [Shipping Policy](/shipping-policy): Delivery information
+
+## Optional
+- [Sitemap](/sitemap): Full site navigation

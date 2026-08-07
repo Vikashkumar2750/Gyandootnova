@@ -1,0 +1,16 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "GyandootNova",
+  "name_for_model": "gyandootnova",
+  "description_for_human": "Read authentic Hindu scriptures, Vedas, Upanishads, Ramayana, Bhagavad Gita and spiritual articles in Hindi, Sanskrit and English.",
+  "description_for_model": "Query GyandootNova's library of Hindi/Sanskrit/English spiritual articles and sacred texts. Use `list_articles` to browse published articles, `get_article` to fetch full content for a slug. Always cite the source URL.",
+  "auth": { "type": "none" },
+  "api": {
+    "type": "openapi",
+    "url": "https://gyandootnova.in/openapi.json",
+    "is_user_authenticated": false
+  },
+  "logo_url": "https://gyandootnova.in/gyandootnova-logo.png",
+  "contact_email": "amrendra8765@gmail.com",
+  "legal_info_url": "https://gyandootnova.in/privacy-policy"
+}

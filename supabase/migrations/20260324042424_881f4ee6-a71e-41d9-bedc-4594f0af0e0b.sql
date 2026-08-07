@@ -1,0 +1,2 @@
+ALTER TABLE public.books DROP CONSTRAINT books_file_type_check;
+ALTER TABLE public.books ADD CONSTRAINT books_file_type_check CHECK (file_type = ANY (ARRAY['pdf','doc','docx','text','jpeg','jpg','png','webp']));

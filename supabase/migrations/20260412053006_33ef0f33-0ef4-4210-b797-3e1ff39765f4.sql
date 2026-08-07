@@ -1,0 +1,1 @@
+ALTER TABLE public.purchases ADD COLUMN referrer_id uuid;

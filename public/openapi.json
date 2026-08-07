@@ -1,0 +1,89 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "GyandootNova Agent API",
+    "description": "Public, unauthenticated read-only API exposing GyandootNova's published spiritual articles and sacred texts for AI agents and assistants.",
+    "version": "1.0.0",
+    "contact": { "name": "GyandootNova", "url": "https://gyandootnova.in", "email": "amrendra8765@gmail.com" }
+  },
+  "servers": [
+    { "url": "https://vrzngahawxtbpwrgxtmb.supabase.co/functions/v1", "description": "Production" }
+  ],
+  "paths": {
+    "/agent-articles": {
+      "get": {
+        "operationId": "list_articles",
+        "summary": "List published articles",
+        "description": "Paginated list of published spiritual articles. Newest first.",
+        "parameters": [
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20, "maximum": 100 } },
+          { "name": "offset", "in": "query", "schema": { "type": "integer", "default": 0 } },
+          { "name": "q", "in": "query", "description": "Full-text search across title and excerpt.", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": { "type": "integer" },
+                    "articles": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "slug": { "type": "string" },
+                          "title": { "type": "string" },
+                          "excerpt": { "type": "string" },
+                          "url": { "type": "string" },
+                          "published_at": { "type": "string", "format": "date-time" },
+                          "language": { "type": "string" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agent-article": {
+      "get": {
+        "operationId": "get_article",
+        "summary": "Fetch a single article by slug",
+        "parameters": [
+          { "name": "slug", "in": "query", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "slug": { "type": "string" },
+                    "title": { "type": "string" },
+                    "excerpt": { "type": "string" },
+                    "content_html": { "type": "string" },
+                    "url": { "type": "string" },
+                    "published_at": { "type": "string", "format": "date-time" },
+                    "updated_at": { "type": "string", "format": "date-time" },
+                    "author": { "type": "string" },
+                    "originality_score": { "type": "integer" },
+                    "citation": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Not found" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1 @@
+UPDATE public.books SET is_free = true, price = 0 WHERE slug = 'bhagavad-gita-simplified';

@@ -1,0 +1,53 @@
+project_id = "vrzngahawxtbpwrgxtmb"
+
+[functions.create-order]
+verify_jwt = false
+
+[functions.verify-payment]
+verify_jwt = false
+<<<<<<< HEAD
+
+[functions.sitemap]
+verify_jwt = false
+
+[functions.seo-blog-agent]
+verify_jwt = false
+
+[functions.seo-agent-health-report]
+verify_jwt = false
+
+[functions.seo-auto-run]
+verify_jwt = false
+
+[functions.seo-post-publish-hook]
+verify_jwt = false
+
+[functions.seo-gsc-sync]
+verify_jwt = false
+
+[functions.seo-social-captions]
+verify_jwt = false
+
+[functions.ai-providers-manage]
+verify_jwt = false
+
+[functions.otp-providers-manage]
+verify_jwt = false
+
+[functions.seo-book-kb-refresh]
+verify_jwt = false
+
+[functions.seo-daily-publisher]
+verify_jwt = false
+
+[functions.seo-queue-topup]
+verify_jwt = false
+
+
+
+
+
+
+
+=======
+>>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
