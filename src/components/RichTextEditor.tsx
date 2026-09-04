@@ -1,21 +1,14 @@
 import { useEditor, EditorContent } from "@tiptap/react";
-<<<<<<< HEAD
 import { Extension } from "@tiptap/core";
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import { TextStyle } from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
-<<<<<<< HEAD
 import { FontFamily } from "@tiptap/extension-font-family";
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
-<<<<<<< HEAD
 import { Table } from "@tiptap/extension-table";
 import { TableRow } from "@tiptap/extension-table-row";
 import { TableHeader } from "@tiptap/extension-table-header";
@@ -101,9 +94,6 @@ function cleanWordHtml(html: string): string {
   return out;
 }
 
-=======
-import { useCallback, useRef, useState } from "react";
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -112,12 +102,8 @@ import {
   AlignLeft, AlignCenter, AlignRight, AlignJustify,
   List, ListOrdered, Link as LinkIcon, Image as ImageIcon,
   Highlighter, Palette, Undo, Redo, Quote, Minus, Code,
-<<<<<<< HEAD
   Upload, Table as TableIcon, Plus, Trash2,
   Columns3, Rows3,
-=======
-  Upload,
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -146,7 +132,17 @@ const ToolBtn = ({ onClick, active, title, children, disabled }: {
 
 const Divider = () => <div className="w-px h-5 bg-border mx-0.5 shrink-0" />;
 
+/* ─── Font families the admin can pick before typing ──────────────────── */
+const FONT_FAMILIES = [
+  { label: "Default", value: "" },
+  { label: "Noto Serif Devanagari", value: "'Noto Serif Devanagari', serif" },
+  { label: "Georgia", value: "Georgia, serif" },
+  { label: "Noto Serif", value: "'Noto Serif', serif" },
+  { label: "Inter", value: "Inter, system-ui, sans-serif" },
+];
+
 /* ─── Text color swatches ─────────────────────────────────────────────── */
+
 const COLORS = [
   "#000000", "#374151", "#6b7280", "#ffffff",
   "#dc2626", "#ea580c", "#d97706", "#65a30d",
@@ -190,7 +186,6 @@ const RichTextEditor = ({ value, onChange, placeholder = "Start writing…", min
       Underline,
       TextStyle,
       Color,
-<<<<<<< HEAD
       FontFamily,
       PreserveStyles,
       Highlight.configure({ multicolor: true }),
@@ -201,18 +196,11 @@ const RichTextEditor = ({ value, onChange, placeholder = "Start writing…", min
       TableRow,
       TableHeader,
       TableCell,
-=======
-      Highlight.configure({ multicolor: true }),
-      Link.configure({ openOnClick: false, HTMLAttributes: { class: "text-primary underline cursor-pointer" } }),
-      Image.configure({ inline: false, HTMLAttributes: { class: "rounded-lg my-3 mx-auto block" } }),
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     ],
     content: value,
     onUpdate: ({ editor }) => onChange(editor.getHTML()),
     editorProps: {
       attributes: {
-<<<<<<< HEAD
         class: "outline-none prose prose-sm max-w-none px-4 py-3 rte-content",
         style: `min-height:${minHeight}px`,
       },
@@ -270,14 +258,6 @@ const RichTextEditor = ({ value, onChange, placeholder = "Start writing…", min
   }, [value, editor]);
 
 
-=======
-        class: "outline-none prose prose-sm max-w-none px-4 py-3",
-        style: `min-height:${minHeight}px`,
-      },
-    },
-  });
-
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   /* ─── Image upload to Supabase storage ─────────────────────────────── */
   const handleImageUpload = useCallback(async (file: File) => {
     if (!file) return;
@@ -319,6 +299,28 @@ const RichTextEditor = ({ value, onChange, placeholder = "Start writing…", min
           <Redo className="h-3.5 w-3.5" />
         </ToolBtn>
         <Divider />
+
+        {/* Font family */}
+        <select
+          title="Font"
+          className="h-7 rounded border border-border bg-background px-1.5 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+          value={editor.getAttributes("textStyle").fontFamily || ""}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (!value) editor.chain().focus().unsetFontFamily().run();
+            else editor.chain().focus().setFontFamily(value).run();
+          }}
+          style={{ fontFamily: editor.getAttributes("textStyle").fontFamily || undefined }}
+        >
+          {FONT_FAMILIES.map((f) => (
+            <option key={f.label} value={f.value} style={{ fontFamily: f.value || undefined }}>
+              {f.label}
+            </option>
+          ))}
+        </select>
+        <Divider />
+
+
 
         {/* Headings */}
         <ToolBtn title="Heading 1" active={editor.isActive("heading", { level: 1 })} onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}>
@@ -463,7 +465,6 @@ const RichTextEditor = ({ value, onChange, placeholder = "Start writing…", min
           className="hidden"
           onChange={(e) => { const f = e.target.files?.[0]; if (f) handleImageUpload(f); e.target.value = ""; }}
         />
-<<<<<<< HEAD
 
         <Divider />
         {/* Table controls */}
@@ -486,8 +487,6 @@ const RichTextEditor = ({ value, onChange, placeholder = "Start writing…", min
             </ToolBtn>
           </>
         )}
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       </div>
 
       {/* ─── IMAGE SIZE HELPER (shows when image is selected) ─────── */}

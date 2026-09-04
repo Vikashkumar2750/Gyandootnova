@@ -4,7 +4,6 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 
-<<<<<<< HEAD
 // Unicode ranges covering emoji + pictographic symbols. Public-facing UI
 // must use Lucide icons instead of emoji for consistent theming/a11y.
 const EMOJI_REGEX =
@@ -14,11 +13,7 @@ const emojiMessage =
   "Emojis are not allowed in public-facing UI. Use a Lucide icon (e.g. <Star />) instead.";
 
 export default tseslint.config(
-  { ignores: ["dist", "supabase/functions/**"] },
-=======
-export default tseslint.config(
-  { ignores: ["dist"] },
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
+  { ignores: ["dist", "supabase/functions/**", "frontend/**", "backend/**", "database/**"] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],
@@ -36,7 +31,6 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": "off",
     },
   },
-<<<<<<< HEAD
   // No-emoji rule for public pages + shared components.
   // Excludes admin/, dashboard toasts, and test files where emoji are acceptable internally.
   {
@@ -65,6 +59,4 @@ export default tseslint.config(
       ],
     },
   },
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 );

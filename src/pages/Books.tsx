@@ -1,10 +1,10 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { useLocale } from "@/hooks/useLocale";
 import { supabase } from "@/integrations/supabase/client";
 import useSEO from "@/hooks/useSEO";
 import Layout from "@/components/layout/Layout";
-<<<<<<< HEAD
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -41,6 +41,10 @@ import {
   Feather,
   Check,
 } from "lucide-react";
+
+import BookCover from "@/components/BookCover";
+import CurrencySelector from "@/components/CurrencySelector";
+
 
 // ==============================
 // Design tokens (page-scoped)
@@ -243,6 +247,7 @@ const BookCard = ({
   wished: boolean;
   size?: "default" | "featured";
 }) => {
+  const { formatPrice } = useLocale();
   const rating = ratingFor(book.id);
   const reviews = reviewsFor(book.id, book.purchase_count ?? 0);
   const isNew =
@@ -253,42 +258,28 @@ const BookCard = ({
 
   return (
     <article
-      className="group relative flex h-full flex-col overflow-hidden rounded-2xl transition-all duration-500 ease-out hover:-translate-y-1.5"
-      style={{
-        background: T.card,
-        border: `1px solid ${T.border}`,
-        boxShadow: "0 1px 2px rgba(17,24,39,0.03)",
-      }}
-      onMouseEnter={(e) =>
-        ((e.currentTarget as HTMLElement).style.boxShadow =
-          "0 24px 44px -24px rgba(17,24,39,0.18), 0 6px 14px -8px rgba(17,24,39,0.06)")
-      }
-      onMouseLeave={(e) =>
-        ((e.currentTarget as HTMLElement).style.boxShadow =
-          "0 1px 2px rgba(17,24,39,0.03)")
-      }
+      className="group relative flex h-full flex-col transition-all duration-500 ease-out hover:-translate-y-1"
+      style={{ background: "transparent" }}
     >
       <Link
         to={`/books/${book.slug}`}
         onClick={() => onRecent(book)}
-        className="relative block overflow-hidden"
-        style={{ background: "#F6F5F1" }}
+        className="relative block overflow-hidden rounded-[14px]"
+        style={{
+          background: "#F6F5F1",
+          border: `1px solid ${T.border}`,
+          boxShadow: "0 10px 26px -18px rgba(17,24,39,0.35)",
+        }}
       >
         <div className="aspect-[3/4]">
-          {book.cover_url ? (
-            <img
-              src={book.cover_url}
-              alt={book.title}
-              loading="lazy"
-              decoding="async"
-              className="h-full w-full object-cover transition-transform duration-[700ms] ease-out group-hover:scale-[1.03]"
-            />
-          ) : (
-            <div className="grid h-full w-full place-items-center">
-              <BookOpen className="h-10 w-10" style={{ color: "#D1D5DB" }} />
-            </div>
-          )}
+          <BookCover
+            src={book.cover_url}
+            title={book.title}
+            author={book.author}
+            className="transition-transform duration-[700ms] ease-out group-hover:scale-[1.03]"
+          />
         </div>
+
 
         <div className="pointer-events-none absolute left-3 top-3 flex flex-col gap-1.5">
           {book.is_featured && (
@@ -367,16 +358,10 @@ const BookCard = ({
         </div>
       </Link>
 
-      <div className="flex flex-1 flex-col p-6 md:p-7">
-        <p
-          className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em]"
-          style={{ color: T.textMuted }}
-        >
-          {CATEGORIES.find((c) => c.value === book.category)?.label ?? "Spiritual"}
-        </p>
+      <div className="flex flex-1 flex-col px-1 pt-4">
         <h3
-          className="line-clamp-2 min-h-[3.15rem] text-[18px] font-semibold"
-          style={{ color: T.text, letterSpacing: "-0.01em", lineHeight: 1.4 }}
+          className="line-clamp-2 font-serif text-[19px] font-bold md:text-[20px]"
+          style={{ color: T.text, letterSpacing: "-0.01em", lineHeight: 1.35 }}
         >
           <Link
             to={`/books/${book.slug}`}
@@ -386,11 +371,23 @@ const BookCard = ({
             {book.title}
           </Link>
         </h3>
-        <p className="mt-3 truncate text-[14px]" style={{ color: "#6B7280", lineHeight: 1.5 }}>
-          by <span className="font-medium" style={{ color: "#374151" }}>{book.author}</span>
+        <p
+          className="mt-1.5 line-clamp-2 font-serif text-[15px] italic"
+          style={{ color: "#8A8577", lineHeight: 1.45 }}
+        >
+          {book.author}
         </p>
+        {book.description && (
+          <p
+            className="mt-1.5 line-clamp-2 text-[13.5px]"
+            style={{ color: "#4B5563", lineHeight: 1.55 }}
+          >
+            {book.description}
+          </p>
+        )}
 
-        <div className="mt-5 flex items-center gap-2 flex-wrap">
+
+        <div className="mt-3 flex items-center gap-2 flex-wrap">
           <Stars value={rating} />
           <span className="text-[13px] font-semibold" style={{ color: T.text }}>
             {rating.toFixed(1)}
@@ -410,7 +407,7 @@ const BookCard = ({
 
 
 
-        <div className="mt-6 flex items-end justify-between gap-2">
+        <div className="mt-4 flex items-end justify-between gap-2">
           <div className="flex items-baseline gap-2">
             {book.is_free ? (
               <span className="text-[20px] font-bold" style={{ color: T.success }}>
@@ -419,11 +416,11 @@ const BookCard = ({
             ) : (
               <>
                 <span className="text-[20px] font-bold" style={{ color: T.text }}>
-                  ₹{book.price}
+                  {formatPrice(book.price ?? 0)}
                 </span>
                 {original > (book.price ?? 0) && (
                   <span className="text-xs line-through" style={{ color: T.textMuted }}>
-                    ₹{original}
+                    {formatPrice(original)}
                   </span>
                 )}
               </>
@@ -434,7 +431,7 @@ const BookCard = ({
               className="rounded-md px-2 py-0.5 text-[11px] font-semibold"
               style={{ background: T.primarySoft, color: "#92400E" }}
             >
-              Save ₹{saved}
+              Save {formatPrice(saved)}
             </span>
           )}
         </div>
@@ -444,7 +441,7 @@ const BookCard = ({
           In stock — instant lifetime access
         </p>
 
-        <div className="mt-auto pt-6">
+        <div className="mt-auto pt-4">
           <Link
             to={`/books/${book.slug}`}
             onClick={() => {
@@ -470,19 +467,20 @@ const BookCard = ({
 // Skeleton
 // ==============================
 const CardSkeleton = () => (
-  <div
-    className="overflow-hidden rounded-2xl"
-    style={{ background: T.card, border: `1px solid ${T.border}` }}
-  >
-    <div className="aspect-[3/4] animate-pulse" style={{ background: T.borderSoft }} />
-    <div className="space-y-2.5 p-5">
-      <div className="h-3 w-1/3 animate-pulse rounded" style={{ background: T.borderSoft }} />
+  <div>
+    <div
+      className="aspect-[3/4] animate-pulse rounded-[14px]"
+      style={{ background: T.borderSoft, border: `1px solid ${T.border}` }}
+    />
+    <div className="space-y-2.5 px-1 pt-4">
       <div className="h-4 w-4/5 animate-pulse rounded" style={{ background: T.borderSoft }} />
       <div className="h-3 w-1/2 animate-pulse rounded" style={{ background: T.borderSoft }} />
+      <div className="h-3 w-2/3 animate-pulse rounded" style={{ background: T.borderSoft }} />
       <div className="h-9 w-full animate-pulse rounded-xl" style={{ background: T.borderSoft }} />
     </div>
   </div>
 );
+
 
 // ==============================
 // Horizontal book row
@@ -570,6 +568,7 @@ const QuickView = ({
     };
   }, [book, onClose]);
 
+  const { formatPrice } = useLocale();
   if (!book) return null;
   const rating = ratingFor(book.id);
   const reviews = reviewsFor(book.id, book.purchase_count ?? 0);
@@ -596,13 +595,7 @@ const QuickView = ({
         </button>
 
         <div className="hidden w-2/5 shrink-0 sm:block" style={{ background: "#F6F5F1" }}>
-          {book.cover_url ? (
-            <img src={book.cover_url} alt={book.title} className="h-full w-full object-cover" />
-          ) : (
-            <div className="grid h-full w-full place-items-center">
-              <BookOpen className="h-16 w-16" style={{ color: "#D1D5DB" }} />
-            </div>
-          )}
+          <BookCover src={book.cover_url} title={book.title} author={book.author} />
         </div>
 
         <div className="flex-1 overflow-y-auto p-6 sm:p-8">
@@ -630,9 +623,9 @@ const QuickView = ({
               <span className="text-3xl font-bold" style={{ color: T.success }}>Free</span>
             ) : (
               <>
-                <span className="text-3xl font-bold" style={{ color: T.text }}>₹{book.price}</span>
+                <span className="text-3xl font-bold" style={{ color: T.text }}>{formatPrice(book.price ?? 0)}</span>
                 {original > (book.price ?? 0) && (
-                  <span className="text-base line-through" style={{ color: T.textMuted }}>₹{original}</span>
+                  <span className="text-base line-through" style={{ color: T.textMuted }}>{formatPrice(original)}</span>
                 )}
               </>
             )}
@@ -792,67 +785,12 @@ const Books = () => {
     if (search.trim()) {
       const q = search.trim().toLowerCase();
       list = list.filter(
-=======
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { BookOpen, Loader2, Search } from "lucide-react";
-
-const CATEGORIES = [
-  { value: "all", label: "All" },
-  { value: "devi", label: "देवी" },
-  { value: "devta", label: "देवता" },
-  { value: "adhyatm", label: "अध्यात्म" },
-  { value: "puran", label: "पुराण" },
-  { value: "katha", label: "कथा" },
-  { value: "other", label: "अन्य" },
-];
-
-const PAGE_SIZE = 8;
-
-const Books = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const initialSearch = searchParams.get("search") ?? "";
-
-  const [filter, setFilter] = useState<"all" | "free" | "paid">("all");
-  const [category, setCategory] = useState("all");
-  const [search, setSearch] = useState(initialSearch);
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-
-  useSEO({
-    title: "Dharmik Granth & Spiritual Books Online — GyandootNova",
-    description: "Browse and buy spiritual books — Vishnu Sahasraname, Bhagwat Geeta, Ramayana, Hanuman Chalisa & more dharmik granth online.",
-    canonical: "/books",
-  });
-
-  const { data: books, isLoading } = useQuery({
-    queryKey: ["books"],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from("books")
-        .select("id, title, slug, author, cover_url, price, is_free, is_featured, description, preview_chapters, purchase_count, created_at, updated_at, file_type, category")
-        .order("created_at", { ascending: false });
-      return data ?? [];
-    },
-  });
-
-  const filtered = useMemo(() => {
-    if (!books) return [];
-    let result = books;
-    if (filter === "free") result = result.filter((b) => b.is_free);
-    if (filter === "paid") result = result.filter((b) => !b.is_free);
-    if (category !== "all") result = result.filter((b) => b.category === category);
-    if (search.trim()) {
-      const q = search.trim().toLowerCase();
-      result = result.filter(
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
         (b) =>
           b.title.toLowerCase().includes(q) ||
           b.author.toLowerCase().includes(q) ||
           (b.description ?? "").toLowerCase().includes(q)
       );
     }
-<<<<<<< HEAD
     if (category !== "all") list = list.filter((b) => b.category === category);
     if (author !== "all") list = list.filter((b) => b.author === author);
     if (priceRange !== "all") {
@@ -1216,7 +1154,9 @@ const Books = () => {
                 </div>
 
                 <div className="ml-auto flex items-center gap-2">
+                  <CurrencySelector compact />
                   <FilterSelect value={sort} onChange={setSort} options={SORTS} accent />
+
                   <Button
                     variant="outline"
                     className="h-11 rounded-xl lg:hidden"
@@ -1443,132 +1383,10 @@ const Books = () => {
       </div>
 
       <QuickView book={quick} onClose={() => setQuick(null)} />
-=======
-    return result;
-  }, [books, filter, category, search]);
-
-  const visible = filtered.slice(0, visibleCount);
-  const hasMore = visibleCount < filtered.length;
-
-  // Infinite scroll
-  const loaderRef = useRef<HTMLDivElement>(null);
-  const loadMore = useCallback(() => {
-    if (hasMore) setVisibleCount((prev) => prev + PAGE_SIZE);
-  }, [hasMore]);
-
-  useEffect(() => {
-    const el = loaderRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) loadMore(); },
-      { rootMargin: "200px" }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [loadMore]);
-
-  return (
-    <Layout>
-      <section className="py-12">
-        <div className="container">
-          <h1 className="font-serif text-4xl font-bold">Books Library</h1>
-          <p className="mt-2 text-muted-foreground">Explore our collection of spiritual literature</p>
-
-          {/* Search */}
-          <div className="mt-6 relative max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
-                setVisibleCount(PAGE_SIZE);
-              }}
-              placeholder="Search books by title, author..."
-              className="pl-10"
-            />
-          </div>
-
-          {/* Category filters */}
-          <div className="mt-4 flex flex-wrap gap-2">
-            {CATEGORIES.map((cat) => (
-              <Button
-                key={cat.value}
-                variant={category === cat.value ? "default" : "outline"}
-                size="sm"
-                onClick={() => { setCategory(cat.value); setVisibleCount(PAGE_SIZE); }}
-              >
-                {cat.label}
-              </Button>
-            ))}
-          </div>
-
-          {/* Free / Paid filters */}
-          <div className="mt-3 flex gap-2">
-            {(["all", "free", "paid"] as const).map((f) => (
-              <Button
-                key={f}
-                variant={filter === f ? "secondary" : "ghost"}
-                size="sm"
-                onClick={() => { setFilter(f); setVisibleCount(PAGE_SIZE); }}
-                className="capitalize"
-              >
-                {f === "all" ? "All" : f === "free" ? "Free" : "Paid"}
-              </Button>
-            ))}
-          </div>
-
-          {isLoading ? (
-            <div className="flex justify-center py-20"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>
-          ) : visible.length > 0 ? (
-            <>
-              <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {visible.map((book) => (
-                  <Link key={book.id} to={`/books/${book.slug}`}>
-                    <Card className="group overflow-hidden transition-shadow hover:shadow-lg h-full">
-                      <div className="aspect-[3/4] bg-muted flex items-center justify-center">
-                        {book.cover_url ? (
-                          <img src={book.cover_url} alt={book.title} className="h-full w-full object-cover" loading="lazy" />
-                        ) : (
-                          <BookOpen className="h-12 w-12 text-muted-foreground/40" />
-                        )}
-                      </div>
-                      <CardContent className="p-4">
-                        <h2 className="font-serif font-semibold group-hover:text-primary transition-colors line-clamp-2">{book.title}</h2>
-                        <p className="text-sm text-muted-foreground">{book.author}</p>
-                        <div className="mt-2 flex items-center gap-2">
-                          <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${book.is_free ? "bg-green-100 text-green-700" : "bg-secondary/20 text-secondary-foreground"}`}>
-                            {book.is_free ? "Free" : `₹${book.price}`}
-                          </span>
-                          {book.category && (
-                            <span className="inline-block rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground capitalize">
-                              {CATEGORIES.find((c) => c.value === book.category)?.label ?? book.category}
-                            </span>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))}
-              </div>
-
-              {hasMore && (
-                <div ref={loaderRef} className="mt-8 text-center">
-                  <Loader2 className="h-6 w-6 animate-spin text-primary mx-auto" />
-                  <p className="text-xs text-muted-foreground mt-2">Loading more books...</p>
-                </div>
-              )}
-            </>
-          ) : (
-            <div className="py-20 text-center text-muted-foreground">No books found.</div>
-          )}
-        </div>
-      </section>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     </Layout>
   );
 };
 
-<<<<<<< HEAD
 // ==============================
 // Helpers
 // ==============================
@@ -1702,6 +1520,4 @@ const Pagination = ({
   );
 };
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 export default Books;

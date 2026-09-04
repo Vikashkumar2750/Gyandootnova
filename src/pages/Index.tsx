@@ -1,9 +1,6 @@
-<<<<<<< HEAD
+import { useSiteStats } from "@/hooks/useSiteStats";
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-=======
-import { Link } from "react-router-dom";
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -17,7 +14,6 @@ import {
   Quote,
   ArrowRight,
   TrendingUp,
-<<<<<<< HEAD
   ShieldCheck,
   Infinity as InfinityIcon,
   RefreshCw,
@@ -44,14 +40,11 @@ import {
   MessageCircle,
   Bookmark,
   GraduationCap,
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import Layout from "@/components/layout/Layout";
 import useSEO from "@/hooks/useSEO";
-<<<<<<< HEAD
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 
 // Eager (above-the-fold) — BrandPurpose renders the very first section after the hero.
@@ -61,7 +54,6 @@ import { BrandPurpose } from "@/components/BrandSoul";
 // Each is code-split into its own chunk and mounted only when React reaches
 // that point in the tree (browser has already painted the hero by then).
 const LiveReaderStrip = lazy(() => import("@/components/LiveReaderStrip"));
-const RecentPurchasesToast = lazy(() => import("@/components/RecentPurchasesToast"));
 const ContinueReadingSection = lazy(() => import("@/components/ContinueReadingSection"));
 const CompareSection = lazy(() => import("@/components/CompareSection"));
 const GuaranteeSection = lazy(() => import("@/components/GuaranteeSection"));
@@ -95,25 +87,42 @@ const SectionSkeleton = ({ h = "10rem" }: { h?: string }) => (
   <div aria-hidden style={{ minHeight: h }} className="w-full" />
 );
 
+/* ─── Catalogue stats — every figure comes from the database ─── */
+const CatalogueStats = () => {
+  const { data } = useSiteStats();
+  const stats = [
+    { value: data?.books ?? 0, label: "Titles in the library" },
+    { value: data?.articles ?? 0, label: "Free articles published" },
+    { value: 4, label: "Sacred-text hubs (Vedas, Gita, Upanishads, Rig Veda)" },
+    { value: 2, label: "Languages: Hindi & English" },
+  ];
+  return (
+    <section className="bg-primary py-16">
+      <div className="container">
+        <div className="grid gap-8 text-center sm:grid-cols-2 lg:grid-cols-4">
+          {stats.map((s) => (
+            <div key={s.label}>
+              <AnimatedCounter target={s.value} />
+              <p className="mt-2 text-sm font-medium text-primary-foreground/90">{s.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 /* ─── Animated Counter ─── */
+
 const AnimatedCounter = ({ target, suffix = "" }: { target: number; suffix?: string }) => {
   // Start at the real target so the number is ALWAYS visible, even if the
   // IntersectionObserver never fires (short viewports, prerender, JS delay).
   // The count-up animation is a progressive enhancement.
   const [count, setCount] = useState(target);
-=======
-import { useEffect, useRef, useState } from "react";
-
-/* ─── Animated Counter ─── */
-const AnimatedCounter = ({ target, suffix = "" }: { target: number; suffix?: string }) => {
-  const [count, setCount] = useState(0);
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   const ref = useRef<HTMLDivElement>(null);
   const started = useRef(false);
 
   useEffect(() => {
-<<<<<<< HEAD
     const startAnimation = () => {
       if (started.current) return;
       started.current = true;
@@ -148,32 +157,6 @@ const AnimatedCounter = ({ target, suffix = "" }: { target: number; suffix?: str
 
   return (
     <div ref={ref} translate="no" className="font-serif text-4xl font-bold text-secondary md:text-5xl">
-=======
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !started.current) {
-          started.current = true;
-          let current = 0;
-          const step = Math.ceil(target / 40);
-          const timer = setInterval(() => {
-            current += step;
-            if (current >= target) {
-              current = target;
-              clearInterval(timer);
-            }
-            setCount(current);
-          }, 30);
-        }
-      },
-      { threshold: 0.5 },
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [target]);
-
-  return (
-    <div ref={ref} className="font-serif text-4xl font-bold text-secondary md:text-5xl">
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       {count.toLocaleString()}
       {suffix}
     </div>
@@ -182,11 +165,8 @@ const AnimatedCounter = ({ target, suffix = "" }: { target: number; suffix?: str
 
 /* ─── Main Page ─── */
 const Index = () => {
-<<<<<<< HEAD
   const { user, loading: authLoading } = useAuth();
   const shouldRedirect = !authLoading && !!user;
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   const { data: featuredBooks } = useQuery({
     queryKey: ["featured-books"],
     queryFn: async () => {
@@ -194,11 +174,7 @@ const Index = () => {
         .from("books")
         .select("id, title, slug, author, cover_url, price, is_free")
         .eq("is_featured", true)
-<<<<<<< HEAD
         .limit(5);
-=======
-        .limit(4);
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       return data ?? [];
     },
   });
@@ -209,18 +185,13 @@ const Index = () => {
       const { data } = await supabase
         .from("posts")
         .select("id, title, slug, excerpt, cover_url, post_type, created_at")
-<<<<<<< HEAD
         .eq("is_published", true).eq("approval_status", "approved")
-=======
-        .eq("is_published", true)
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
         .order("created_at", { ascending: false })
         .limit(3);
       return data ?? [];
     },
   });
 
-<<<<<<< HEAD
   // Read social profile URLs from the same settings table the footer uses so
   // the Organization `sameAs` array reflects the site's real, live profiles.
   const { data: siteSettings } = useQuery({
@@ -320,7 +291,6 @@ const Index = () => {
     <Layout>
       {/* Idle-only widgets — don't block the hero on mobile. */}
       <IdleMount><LiveReaderStrip /></IdleMount>
-      <IdleMount><RecentPurchasesToast /></IdleMount>
       <Suspense fallback={<SectionSkeleton h="4rem" />}>
         <ContinueReadingSection />
       </Suspense>
@@ -473,59 +443,10 @@ const Index = () => {
                 </Card>
               </Link>
             ))}
-=======
-  useSEO({
-    title: "Dharmik Granth Online — Geeta, Ramayana | GyandootNova",
-    description:
-      "Dharmik granth online padhein — Vishnu Sahasraname, Bhagwat Geeta, Ramayana, Hanuman Chalisa aur anek spiritual books Hindi mein. GyandootNova par padhein.",
-    canonical: "/",
-    ogImage: "https://gyandootnova.in/og-image.png",
-  });
-
-  return (
-    <Layout>
-      {/* ─── 1. HERO ─── */}
-      <section className="relative overflow-hidden bg-primary py-14 md:py-20">
-        <div
-          className="absolute inset-0 opacity-[0.07]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 20% 40%, hsl(45 97% 58%) 0%, transparent 50%), radial-gradient(circle at 80% 60%, hsl(0 82% 60%) 0%, transparent 50%)",
-          }}
-        />
-        <div className="container relative text-center">
-          <h1 className="font-serif text-4xl font-extrabold leading-tight text-primary-foreground md:text-6xl lg:text-7xl">
-            Authentic <span className="text-secondary">Dharmik Granth</span> — Vishnu Sahasraname, Geeta, Ramayana
-          </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-primary-foreground/90 md:text-xl">
-            Buy and read spiritual books online — Vishnu Sahasraname, Bhagwat Geeta, Ramayana, Hanuman Chalisa & more.
-            India's trusted platform for sacred literature.
-          </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <Button
-              size="lg"
-              className="bg-primary-foreground text-primary font-semibold hover:bg-primary-foreground/90 shadow-lg px-8"
-              asChild
-            >
-              <Link to="/books">
-                <BookOpen className="mr-2 h-5 w-5" /> Explore Books
-              </Link>
-            </Button>
-            <Button
-              size="lg"
-              className="bg-secondary text-secondary-foreground font-semibold hover:bg-secondary/90 shadow-lg px-8"
-              asChild
-            >
-              <Link to="/support-us">
-                <Heart className="mr-2 h-5 w-5" /> Support Us
-              </Link>
-            </Button>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           </div>
         </div>
       </section>
 
-<<<<<<< HEAD
 
       {/* Brand entity confirmation — plain, crawlable text stating that
           "GyandootNova", "Gyandoot Nova" and "Gyandoot" all refer to the
@@ -634,15 +555,12 @@ const Index = () => {
       </section>
 
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       {/* ─── 2. ABOUT ─── */}
       <section className="py-20">
         <div className="container">
           <div className="grid items-center gap-12 md:grid-cols-2">
             <div>
               <h2 className="font-serif text-3xl font-bold md:text-4xl">
-<<<<<<< HEAD
                 Where scriptures meet <span className="text-primary">curious minds</span>
               </h2>
               <div className="mt-3 h-1 w-16 rounded-full bg-primary" />
@@ -655,19 +573,6 @@ const Index = () => {
               <p className="mt-4 text-muted-foreground leading-relaxed">
                 Reading a scripture shouldn't feel like homework. Our reader is designed
                 so a five-minute break is enough for a shloka and its meaning to land.
-=======
-                A Platform for <span className="text-primary">Spiritual Seekers</span>
-              </h2>
-              <div className="mt-3 h-1 w-16 rounded-full bg-primary" />
-              <p className="mt-6 text-muted-foreground leading-relaxed">
-                We are dedicated to preserving and sharing timeless spiritual wisdom through carefully curated books,
-                insightful articles, and transformative discourse programs. Our mission is to make sacred knowledge
-                accessible to every seeker, everywhere.
-              </p>
-              <p className="mt-4 text-muted-foreground leading-relaxed">
-                From ancient scriptures to contemporary spiritual thought, explore a growing library designed to guide
-                you on your path to self-realization and inner peace.
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
               </p>
               <Button
                 variant="outline"
@@ -681,17 +586,10 @@ const Index = () => {
             </div>
             <div className="grid grid-cols-2 gap-4">
               {[
-<<<<<<< HEAD
                 { icon: BookMarked, label: "Ancient Scriptures", desc: "Original text, verified translations" },
                 { icon: FileText, label: "Life-Sutra Articles", desc: "Today's questions, timeless answers" },
                 { icon: Users, label: "Global Community", desc: "Readers from across the world" },
                 { icon: Globe, label: "Anywhere You Are", desc: "Wherever there's internet, your library follows" },
-=======
-                { icon: BookMarked, label: "Sacred Books", desc: "Curated spiritual literature" },
-                { icon: FileText, label: "Articles", desc: "Insights for daily life" },
-                { icon: Users, label: "Community", desc: "Global seekers network" },
-                { icon: Globe, label: "Accessible", desc: "Read anywhere, anytime" },
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
               ].map((item) => (
                 <div
                   key={item.label}
@@ -703,15 +601,11 @@ const Index = () => {
                 </div>
               ))}
             </div>
-<<<<<<< HEAD
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           </div>
         </div>
       </section>
 
-<<<<<<< HEAD
       {/* ─── 2.5 HAMARA UDDESHYA · Our Mission (3 pillars) ─── */}
       <section aria-labelledby="our-mission" className="bg-muted/30 py-20">
         <div className="container max-w-6xl">
@@ -875,44 +769,6 @@ const Index = () => {
                         </span>
 
                       </div>
-=======
-      {/* ─── 3. FEATURED BOOKS ─── */}
-      <section className="bg-muted/40 py-20">
-        <div className="container">
-          <div className="mb-10 text-center">
-            <h2 className="font-serif text-3xl font-bold md:text-4xl">Featured Books</h2>
-            <p className="mt-2 text-muted-foreground">Handpicked spiritual literature for seekers</p>
-          </div>
-          {featuredBooks && featuredBooks.length > 0 ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {featuredBooks.map((book) => (
-                <Link key={book.id} to={`/books/${book.slug}`}>
-                  <Card className="group overflow-hidden border-border transition-all hover:shadow-lg hover:-translate-y-1">
-                    <div className="aspect-[3/4] bg-muted flex items-center justify-center overflow-hidden">
-                      {book.cover_url ? (
-                        <img
-                          src={book.cover_url}
-                          alt={book.title}
-                          className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <BookOpen className="h-12 w-12 text-muted-foreground/30" />
-                      )}
-                    </div>
-                    <CardContent className="p-4">
-                      <h3 className="font-serif font-semibold text-card-foreground group-hover:text-primary transition-colors line-clamp-1">
-                        {book.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">{book.author}</p>
-                      <span
-                        className={`mt-2 inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-                          book.is_free ? "bg-green-100 text-green-700" : "bg-secondary/20 text-secondary-foreground"
-                        }`}
-                      >
-                        {book.is_free ? "Free" : `₹${book.price}`}
-                      </span>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                     </CardContent>
                   </Card>
                 </Link>
@@ -931,19 +787,14 @@ const Index = () => {
               asChild
             >
               <Link to="/books">
-<<<<<<< HEAD
                 Browse the Full Library <ArrowRight className="ml-2 h-4 w-4" />
 
-=======
-                View All Books <ArrowRight className="ml-2 h-4 w-4" />
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
               </Link>
             </Button>
           </div>
         </div>
       </section>
 
-<<<<<<< HEAD
       {/* ─── 3.5. COMPARE — printed vs PDF vs us ─── */}
       <Suspense fallback={<SectionSkeleton h="20rem" />}><CompareSection /></Suspense>
 
@@ -1013,23 +864,15 @@ const Index = () => {
 
       {/* ─── 4. PROGRAMS / DISCOURSES ─── */}
 
-=======
-      {/* ─── 4. PROGRAMS / DISCOURSES ─── */}
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       <section className="py-20">
         <div className="container">
           <div className="mb-10 text-center">
             <h2 className="font-serif text-3xl font-bold md:text-4xl">Programs & Discourses</h2>
-<<<<<<< HEAD
             <p className="mt-2 text-muted-foreground">Beyond reading — a chance to listen and experience</p>
-=======
-            <p className="mt-2 text-muted-foreground">Transformative sessions for spiritual growth</p>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           </div>
           <div className="grid gap-6 md:grid-cols-3">
             {[
               {
-<<<<<<< HEAD
                 title: "Silence Retreat",
                 desc: "Give a tired mind a few days of rest — breath, meditation and a simple practice for turning inward.",
                 icon: Sparkles,
@@ -1045,22 +888,6 @@ const Index = () => {
                 icon: TrendingUp,
               },
 
-=======
-                title: "Meditation Retreats",
-                desc: "Guided meditation programs to help you find inner stillness and clarity of mind.",
-                icon: Sparkles,
-              },
-              {
-                title: "Scripture Discourses",
-                desc: "Deep dives into ancient spiritual texts, decoded for modern seekers.",
-                icon: BookOpen,
-              },
-              {
-                title: "Spiritual Workshops",
-                desc: "Interactive sessions on mindfulness, self-awareness, and personal transformation.",
-                icon: TrendingUp,
-              },
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
             ].map((program) => (
               <Card
                 key={program.title}
@@ -1073,11 +900,7 @@ const Index = () => {
                   to="/articles"
                   className="mt-4 inline-flex items-center text-sm font-medium text-primary hover:underline"
                 >
-<<<<<<< HEAD
                   View details <ArrowRight className="ml-1 h-3 w-3" />
-=======
-                  Learn More <ArrowRight className="ml-1 h-3 w-3" />
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                 </Link>
               </Card>
             ))}
@@ -1089,14 +912,9 @@ const Index = () => {
       <section className="bg-muted/30 py-20">
         <div className="container">
           <div className="mb-10 text-center">
-<<<<<<< HEAD
             <h2 className="font-serif text-3xl font-bold md:text-4xl">Fresh Thinking, New Articles</h2>
             <p className="mt-2 text-muted-foreground">Simple, scripture-rooted takes on everyday questions</p>
 
-=======
-            <h2 className="font-serif text-3xl font-bold md:text-4xl">Latest Articles & Insights</h2>
-            <p className="mt-2 text-muted-foreground">Wisdom for daily life from spiritual traditions</p>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           </div>
           {latestPosts && latestPosts.length > 0 ? (
             <div className="grid gap-6 md:grid-cols-3">
@@ -1104,20 +922,7 @@ const Index = () => {
                 <Link key={post.id} to={`/articles/${post.slug}`}>
                   <article>
                     <Card className="group h-full border-border transition-all hover:shadow-lg hover:-translate-y-1">
-<<<<<<< HEAD
                       {/* cover image intentionally removed */}
-=======
-                      {post.cover_url && (
-                        <div className="aspect-video overflow-hidden">
-                          <img
-                            src={post.cover_url}
-                            alt={post.title}
-                            className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                            loading="lazy"
-                          />
-                        </div>
-                      )}
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                       <CardContent className="p-5">
                         <span className="text-xs font-semibold uppercase tracking-wider text-primary">
                           {post.post_type}
@@ -1129,12 +934,8 @@ const Index = () => {
                           <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{post.excerpt}</p>
                         )}
                         <span className="mt-3 inline-flex items-center text-sm font-medium text-primary">
-<<<<<<< HEAD
                           Read full article <ArrowRight className="ml-1 h-3 w-3" />
 
-=======
-                          Read More <ArrowRight className="ml-1 h-3 w-3" />
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                         </span>
                       </CardContent>
                     </Card>
@@ -1145,11 +946,7 @@ const Index = () => {
           ) : (
             <div className="text-center py-12">
               <FileText className="mx-auto h-10 w-10 text-muted-foreground/30" />
-<<<<<<< HEAD
               <p className="mt-3 text-muted-foreground">New articles are on the way.</p>
-=======
-              <p className="mt-3 text-muted-foreground">Articles coming soon.</p>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
             </div>
           )}
           <div className="mt-10 text-center">
@@ -1159,50 +956,22 @@ const Index = () => {
               asChild
             >
               <Link to="/articles">
-<<<<<<< HEAD
                 See all articles <ArrowRight className="ml-2 h-4 w-4" />
 
-=======
-                View All Articles <ArrowRight className="ml-2 h-4 w-4" />
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
               </Link>
             </Button>
           </div>
         </div>
       </section>
 
-      {/* ─── 6. IMPACT / STATS ─── */}
-      <section className="bg-primary py-16">
-        <div className="container">
-          <div className="grid gap-8 text-center sm:grid-cols-2 lg:grid-cols-4">
-            {[
-<<<<<<< HEAD
-              { target: 500, suffix: "+", label: "Published titles" },
-              { target: 10000, suffix: "+", label: "Readers joined" },
-              { target: 200, suffix: "+", label: "Articles & sutras" },
-              { target: 50, suffix: "+", label: "Discourse events" },
+      {/* ─── 6. IMPACT / STATS (real catalogue numbers only) ─── */}
+      <CatalogueStats />
 
-=======
-              { target: 500, suffix: "+", label: "Books Published" },
-              { target: 10000, suffix: "+", label: "Readers Worldwide" },
-              { target: 200, suffix: "+", label: "Articles Written" },
-              { target: 50, suffix: "+", label: "Programs Hosted" },
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
-            ].map((stat) => (
-              <div key={stat.label}>
-                <AnimatedCounter target={stat.target} suffix={stat.suffix} />
-                <p className="mt-2 text-sm font-medium text-primary-foreground/90">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ─── 7. TESTIMONIALS ─── */}
       <section className="py-20">
         <div className="container">
           <div className="mb-10 text-center">
-<<<<<<< HEAD
             <span className="inline-block rounded-full bg-secondary/20 px-3 py-1 text-xs font-semibold text-secondary-foreground uppercase tracking-wider">
               Reader Voices
             </span>
@@ -1210,15 +979,10 @@ const Index = () => {
               Voices of <span className="text-primary">faith and trust</span> from our readers
             </h2>
             <p className="mt-2 text-muted-foreground">What our readers say about GyandootNova</p>
-=======
-            <h2 className="font-serif text-3xl font-bold md:text-4xl">What Readers Say</h2>
-            <p className="mt-2 text-muted-foreground">Voices from our community of seekers</p>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           </div>
           <div className="grid gap-6 md:grid-cols-3">
             {[
               {
-<<<<<<< HEAD
                 quote: "One chapter of the Gita on my metro ride home — that's all I do, and the noise in my head is already half gone. Knowing the book is always with me is the best part.",
                 name: "Anil Tiwari",
                 role: "Software Engineer, Bengaluru",
@@ -1255,32 +1019,6 @@ const Index = () => {
                     <CheckCircle2 className="h-3.5 w-3.5" /> Verified Reader
                   </span>
 
-=======
-                quote:
-                  "These books have transformed my understanding of spirituality. Every page carries profound wisdom.",
-                name: "Aarav S.",
-                role: "Spiritual Seeker",
-              },
-              {
-                quote:
-                  "The articles are beautifully written and deeply insightful. A treasure trove for anyone on the spiritual path.",
-                name: "Priya M.",
-                role: "Daily Reader",
-              },
-              {
-                quote:
-                  "The meditation programs helped me find inner peace during the most challenging time of my life.",
-                name: "Rajan K.",
-                role: "Program Participant",
-              },
-            ].map((t) => (
-              <Card key={t.name} className="border-border p-6">
-                <Quote className="h-8 w-8 text-secondary" />
-                <p className="mt-4 text-sm text-muted-foreground leading-relaxed italic">"{t.quote}"</p>
-                <div className="mt-5 border-t border-border pt-4">
-                  <p className="font-serif font-semibold text-card-foreground">{t.name}</p>
-                  <p className="text-xs text-muted-foreground">{t.role}</p>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                 </div>
               </Card>
             ))}
@@ -1288,7 +1026,6 @@ const Index = () => {
         </div>
       </section>
 
-<<<<<<< HEAD
       {/* ─── 7.4 SAMPARK · Prominent Contact Block (trust signal) ─── */}
       <section aria-labelledby="sampark" className="bg-primary/5 py-16">
         <div className="container max-w-5xl">
@@ -1336,7 +1073,7 @@ const Index = () => {
                   </div>
                 </a>
                 <a
-                  href="mailto:amrendra8765@gmail.com"
+                  href="mailto:gyandootnova57@gmail.com"
                   className="flex items-start gap-4 rounded-xl border border-border p-4 hover:border-primary/40 transition-colors"
                 >
                   <div className="rounded-lg bg-primary/10 p-2.5 shrink-0">
@@ -1345,7 +1082,7 @@ const Index = () => {
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Email</p>
                     <p className="font-serif text-base font-semibold text-card-foreground mt-0.5 break-all">
-                      amrendra8765@gmail.com
+                      gyandootnova57@gmail.com
                     </p>
                   </div>
                 </a>
@@ -1379,8 +1116,6 @@ const Index = () => {
       {/* ─── 7.9. NEWSLETTER ─── */}
       <Suspense fallback={<SectionSkeleton h="12rem" />}><NewsletterCta /></Suspense>
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       {/* ─── 8. SEO CONTENT — KEYWORD-RICH ─── */}
       <section className="py-20">
         <div className="container max-w-4xl">
@@ -1494,19 +1229,11 @@ const Index = () => {
             <div className="relative">
               <Heart className="mx-auto h-12 w-12 text-secondary" />
               <h2 className="mt-5 font-serif text-3xl font-bold text-primary-foreground md:text-4xl">
-<<<<<<< HEAD
                 A small hand, a great service
               </h2>
               <p className="mx-auto mt-4 max-w-lg text-primary-foreground/90 leading-relaxed">
                 Every contribution helps revive a scripture that was slipping away and puts
                 it in the hands of a new reader. Join this effort — give whatever you can.
-=======
-                Support Our Mission
-              </h2>
-              <p className="mx-auto mt-4 max-w-lg text-primary-foreground/90 leading-relaxed">
-                Your generosity helps us publish and share spiritual knowledge with seekers worldwide. Every
-                contribution makes a difference in preserving dharmik granth for future generations.
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
               </p>
               <Button
                 size="lg"
@@ -1514,12 +1241,8 @@ const Index = () => {
                 asChild
               >
                 <Link to="/support-us">
-<<<<<<< HEAD
                   Contribute <Heart className="ml-2 h-4 w-4" />
 
-=======
-                  Support Us <Heart className="ml-2 h-4 w-4" />
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                 </Link>
               </Button>
             </div>

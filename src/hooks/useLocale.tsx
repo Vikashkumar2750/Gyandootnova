@@ -1,15 +1,30 @@
-import { createContext, useContext, useEffect, ReactNode, useCallback } from "react";
+import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useMemo } from "react";
+import {
+  CURRENCIES,
+  CurrencyCode,
+  DEFAULT_CURRENCY,
+  currencyForCountry,
+  formatAmount,
+  gatewayForCurrency,
+  isCurrencyCode,
+  PaymentGatewayId,
+} from "@/lib/currency";
 
 /**
- * GyandootNova is INR-only, Hindi-first.
- * Multi-currency and auto-translate were removed intentionally — they were
- * mis-detecting geolocation and letting Google Translate rewrite prices
- * (e.g. "₹100" → "100 kr" for Swedish visitors/crawlers). All prices are
- * authored in INR and displayed with the ₹ symbol on every page and for
- * every visitor, including search engine crawlers.
+ * GyandootNova locale/currency provider.
+ *
+ * Content stays Hindi-first (en-IN, no Google Translate). Currency is global,
+ * but there is NO exchange-rate conversion: the numeric price never changes,
+ * only the currency code/symbol and the payment gateway.
+ *
+ * Currency priority:
+ *   1. Manually selected currency (this session / stored)
+ *   2. Previously saved preference
+ *   3. Auto-detected country
+ *   4. INR
  */
 
-export type Currency = "INR";
+export type Currency = CurrencyCode;
 export type Language = "en-IN";
 
 interface LocaleContextValue {
@@ -17,12 +32,19 @@ interface LocaleContextValue {
   language: Language;
   setCurrency: (c: Currency) => void;
   setLanguage: (l: Language) => void;
-  formatPrice: (inrAmount: number) => string;
-  rates: Record<Currency, number>;
+  /** Formats WITHOUT conversion — same number, different symbol. */
+  formatPrice: (amount: number) => string;
+  /** Legacy shape: every rate is 1 because conversion is disabled by design. */
+  rates: Record<string, number>;
   country: string | null;
+  gateway: PaymentGatewayId;
+  symbol: string;
+  isManual: boolean;
 }
 
-const FIXED_RATES: Record<Currency, number> = { INR: 1 };
+const STORAGE_KEY = "gn_currency";
+const MANUAL_KEY = "gn_currency_manual";
+const COUNTRY_KEY = "gn_country";
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
 
@@ -30,7 +52,6 @@ const LocaleContext = createContext<LocaleContextValue | null>(null);
 const purgeLegacyLocaleState = () => {
   if (typeof document === "undefined") return;
   try {
-    // Clear googtrans cookies on every path/domain scope we may have written.
     const clear = (domain?: string) => {
       const base = "googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
       document.cookie = domain ? `${base}; domain=${domain}` : base;
@@ -41,55 +62,137 @@ const purgeLegacyLocaleState = () => {
     const parts = host.split(".");
     if (parts.length > 1) clear(`.${parts.slice(-2).join(".")}`);
 
-    // Remove Google Translate DOM leftovers if present.
     document.getElementById("google_translate_element")?.remove();
     document
       .querySelectorAll("iframe.goog-te-banner-frame, iframe.skiptranslate")
       .forEach((n) => n.remove());
     if (document.body.style.top) document.body.style.top = "";
-
-    // Wipe legacy overrides so the site never re-activates a stored non-INR/non-hi choice.
-    ["gn_currency", "gn_language", "gn_currency_manual", "gn_language_manual"].forEach((k) => {
-      try {
-        localStorage.removeItem(k);
-      } catch {
-        /* ignore */
-      }
-    });
   } catch {
     /* ignore */
   }
 };
 
+const readStored = (): { code: CurrencyCode | null; manual: boolean } => {
+  try {
+    const code = localStorage.getItem(STORAGE_KEY);
+    const manual = localStorage.getItem(MANUAL_KEY) === "1";
+    return { code: isCurrencyCode(code) ? code : null, manual };
+  } catch {
+    return { code: null, manual: false };
+  }
+};
+
+/** Offline country guess from the browser timezone / language. */
+const guessCountry = (): string | null => {
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+    const tzMap: Record<string, string> = {
+      "Asia/Kolkata": "IN", "Asia/Calcutta": "IN", "Asia/Dubai": "AE",
+      "Asia/Riyadh": "SA", "Asia/Singapore": "SG", "Asia/Tokyo": "JP",
+      "Europe/London": "GB",
+    };
+    if (tzMap[tz]) return tzMap[tz];
+    if (tz.startsWith("America/")) return "US";
+    if (tz.startsWith("Australia/")) return "AU";
+    if (tz.startsWith("Europe/")) return "DE"; // eurozone default
+    const lang = navigator.language || "";
+    const region = lang.split("-")[1];
+    return region ? region.toUpperCase() : null;
+  } catch {
+    return null;
+  }
+};
+
 export const LocaleProvider = ({ children }: { children: ReactNode }) => {
+  const stored = typeof window !== "undefined" ? readStored() : { code: null, manual: false };
+
+  const [currency, setCurrencyState] = useState<CurrencyCode>(stored.code ?? DEFAULT_CURRENCY);
+  const [isManual, setIsManual] = useState(stored.manual);
+  const [country, setCountry] = useState<string | null>(null);
+
   useEffect(() => {
     purgeLegacyLocaleState();
-    if (typeof document !== "undefined") {
-      document.documentElement.lang = "en-IN";
-      // Signal to translation tools / crawlers to leave the content alone.
-      document.documentElement.setAttribute("translate", "no");
-      document.documentElement.classList.add("notranslate");
+    document.documentElement.lang = "en-IN";
+    document.documentElement.setAttribute("translate", "no");
+    document.documentElement.classList.add("notranslate");
+  }, []);
+
+  // Country detection (only used when no manual preference exists).
+  useEffect(() => {
+    let cancelled = false;
+
+    const apply = (cc: string | null, cache = false) => {
+      if (cancelled || !cc) return;
+      const code = cc.toUpperCase();
+      setCountry(code);
+      if (cache) {
+        try { localStorage.setItem(COUNTRY_KEY, code); } catch { /* ignore */ }
+      }
+      if (readStored().manual) return; // manual selection always wins
+      setCurrencyState(currencyForCountry(code));
+    };
+
+    // 1. Cached IP-detected country (instant, accurate on repeat visits)
+    let cached: string | null = null;
+    try { cached = localStorage.getItem(COUNTRY_KEY); } catch { /* ignore */ }
+    apply(cached ?? guessCountry());
+
+    // 2. Live IP lookup (with fallback provider)
+    (async () => {
+      const providers: { url: string; pick: (j: any) => string | undefined }[] = [
+        { url: "https://ipapi.co/json/", pick: (j) => j?.country_code },
+        { url: "https://ipwho.is/", pick: (j) => j?.country_code },
+      ];
+      for (const p of providers) {
+        try {
+          const res = await fetch(p.url, { signal: AbortSignal.timeout(4000) });
+          if (!res.ok) continue;
+          const j = await res.json();
+          const cc = p.pick(j);
+          if (cc) { apply(String(cc), true); return; }
+        } catch {
+          /* try next provider */
+        }
+      }
+    })();
+
+    return () => { cancelled = true; };
+  }, []);
+
+
+  const setCurrency = useCallback((c: Currency) => {
+    if (!isCurrencyCode(c)) return;
+    setCurrencyState(c);
+    setIsManual(true);
+    try {
+      localStorage.setItem(STORAGE_KEY, c);
+      localStorage.setItem(MANUAL_KEY, "1");
+    } catch {
+      /* ignore */
     }
   }, []);
 
   const formatPrice = useCallback(
-    (baseAmount: number) => `₹${Math.round(baseAmount).toLocaleString("en-IN")}`,
-    []
+    (amount: number) => formatAmount(amount, currency),
+    [currency]
   );
 
-  const noop = useCallback(() => {
-    /* Multi-locale switching is disabled — GyandootNova is Hindi/INR only. */
+  const noopLanguage = useCallback(() => {
+    /* Hindi-first content only — language switching stays disabled. */
   }, []);
 
-  const value: LocaleContextValue = {
-    currency: "INR",
+  const value = useMemo<LocaleContextValue>(() => ({
+    currency,
     language: "en-IN",
-    setCurrency: noop,
-    setLanguage: noop,
+    setCurrency,
+    setLanguage: noopLanguage,
     formatPrice,
-    rates: FIXED_RATES,
-    country: "IN",
-  };
+    rates: Object.fromEntries(Object.keys(CURRENCIES).map((k) => [k, 1])),
+    country,
+    gateway: gatewayForCurrency(currency),
+    symbol: CURRENCIES[currency].symbol,
+    isManual,
+  }), [currency, setCurrency, noopLanguage, formatPrice, country, isManual]);
 
   return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;
 };

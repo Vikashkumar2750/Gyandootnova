@@ -5,7 +5,6 @@ verify_jwt = false
 
 [functions.verify-payment]
 verify_jwt = false
-<<<<<<< HEAD
 
 [functions.sitemap]
 verify_jwt = false
@@ -49,5 +48,9 @@ verify_jwt = false
 
 
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
+
+[functions.seo-daily-report]
+verify_jwt = false
+
+[functions.verse-analyze]
+verify_jwt = true

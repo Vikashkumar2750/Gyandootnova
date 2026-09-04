@@ -1,5 +1,4 @@
 import Layout from "@/components/layout/Layout";
-<<<<<<< HEAD
 import useSEO from "@/hooks/useSEO";
 
 const PrivacyPolicy = () => {
@@ -10,11 +9,6 @@ const PrivacyPolicy = () => {
   });
   return (
 
-=======
-
-const PrivacyPolicy = () => {
-  return (
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     <Layout>
       <main className="container py-16 max-w-3xl mx-auto prose prose-neutral dark:prose-invert">
         <h1 className="font-serif text-4xl font-bold text-primary">Privacy Policy</h1>
@@ -53,20 +47,12 @@ const PrivacyPolicy = () => {
 
         <h2>6. Your Rights</h2>
         <p>
-<<<<<<< HEAD
-          You have the right to access, update, or delete your personal information at any time. Contact us at amrendra8765@gmail.com for any privacy-related requests.
-=======
-          You have the right to access, update, or delete your personal information at any time. Contact us at contact@gyandootnova.com for any privacy-related requests.
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
+          You have the right to access, update, or delete your personal information at any time. Contact us at gyandootnova57@gmail.com for any privacy-related requests.
         </p>
 
         <h2>7. Contact Us</h2>
         <p>
-<<<<<<< HEAD
-          For questions about this Privacy Policy, please contact us at <a href="mailto:amrendra8765@gmail.com" className="text-primary">amrendra8765@gmail.com</a>.
-=======
-          For questions about this Privacy Policy, please contact us at <a href="mailto:contact@gyandootnova.com" className="text-primary">contact@gyandootnova.com</a>.
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
+          For questions about this Privacy Policy, please contact us at <a href="mailto:gyandootnova57@gmail.com" className="text-primary">gyandootnova57@gmail.com</a>.
         </p>
       </main>
     </Layout>

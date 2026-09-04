@@ -1,9 +1,8 @@
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-<<<<<<< HEAD
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
-import { BookOpen, FileText, Heart, ShoppingCart, LayoutDashboard, LogOut, ArrowLeft, Settings, Users, Tag, Share2, Sparkles, Code, KeyRound, Mail, Hash, FlaskConical, Globe2, UserCheck, Rocket, UsersRound, ShieldCheck, TrendingUp, Menu } from "lucide-react";
+import { BookOpen, FileText, Heart, ShoppingCart, LayoutDashboard, LogOut, ArrowLeft, Settings, Users, Tag, Share2, Sparkles, Code, KeyRound, Mail, Hash, FlaskConical, Globe2, UserCheck, Rocket, UsersRound, ShieldCheck, TrendingUp, Menu, Database, Copyright, ScrollText } from "lucide-react";
 import { useEffect, useState } from "react";
 import AdminOtpGate, { isAdminOtpValid } from "@/components/admin/AdminOtpGate";
 
@@ -23,6 +22,8 @@ const navItems: NavItem[] = [
   { to: "/admin/books", label: "Books", icon: BookOpen, area: "books" },
   { to: "/admin/posts", label: "Posts", icon: FileText, area: "seo" },
   { to: "/admin/content-audit", label: "Content Audit", icon: ShieldCheck, area: "hasAdminAccess" },
+  { to: "/admin/copyright", label: "Copyright", icon: Copyright, area: "hasAdminAccess" },
+  { to: "/admin/verse-studio", label: "Verse Studio", icon: ScrollText, area: "seo" },
   { to: "/admin/coupons", label: "Coupons", icon: Tag, area: "payments" },
   { to: "/admin/donations", label: "Donations", icon: Heart, area: "payments" },
   { to: "/admin/purchases", label: "Purchases", icon: ShoppingCart, area: "payments" },
@@ -40,6 +41,7 @@ const navItems: NavItem[] = [
   { to: "/admin/api-tester", label: "API Tester", icon: FlaskConical, area: "isSuperAdmin" },
   { to: "/admin/visitors", label: "Visitors", icon: Globe2, area: "isSuperAdmin" },
   { to: "/admin/identified-visitors", label: "Identified Visitors", icon: UserCheck, area: "isSuperAdmin" },
+  { to: "/admin/data-export", label: "Data Export", icon: Database, area: "isSuperAdmin" },
   { to: "/admin/settings", label: "Settings", icon: Settings, area: "isSuperAdmin" },
 ];
 
@@ -48,8 +50,14 @@ const AdminLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [otpVerified, setOtpVerified] = useState<boolean>(() => isAdminOtpValid());
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const canEnter = perms.hasAdminAccess || isAdmin;
+
+  // Auto-close the mobile drawer on route change
+  useEffect(() => {
+    setMobileNavOpen(false);
+  }, [location.pathname]);
 
   useEffect(() => {
     if (!loading && (!user || !canEnter)) {
@@ -75,39 +83,11 @@ const AdminLayout = () => {
       if (prevBodyT == null) body.removeAttribute("translate"); else body.setAttribute("translate", prevBodyT);
     };
   }, []);
-=======
-import { BookOpen, FileText, Heart, ShoppingCart, LayoutDashboard, LogOut, ArrowLeft, Settings, Users, Tag, Share2 } from "lucide-react";
-import { useEffect } from "react";
-
-const navItems = [
-  { to: "/admin", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/admin/users", label: "Users", icon: Users },
-  { to: "/admin/books", label: "Books", icon: BookOpen },
-  { to: "/admin/posts", label: "Posts", icon: FileText },
-  { to: "/admin/coupons", label: "Coupons", icon: Tag },
-  { to: "/admin/donations", label: "Donations", icon: Heart },
-  { to: "/admin/purchases", label: "Purchases", icon: ShoppingCart },
-  { to: "/admin/referrals", label: "Referrals", icon: Share2 },
-  { to: "/admin/settings", label: "Settings", icon: Settings },
-];
-
-const AdminLayout = () => {
-  const { user, isAdmin, loading, signOut } = useAuth();
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!loading && (!user || !isAdmin)) {
-      navigate("/auth");
-    }
-  }, [user, isAdmin, loading, navigate]);
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 
   if (loading) {
     return <div className="flex min-h-screen items-center justify-center">Loading...</div>;
   }
 
-<<<<<<< HEAD
   if (!user || !canEnter) return null;
 
   if (!otpVerified) {
@@ -119,12 +99,8 @@ const AdminLayout = () => {
     return perms[item.area];
   });
 
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
-  // Auto-close the mobile drawer on route change
-  useEffect(() => {
-    setMobileNavOpen(false);
-  }, [location.pathname]);
+
 
   const NavList = ({ onNavigate }: { onNavigate?: () => void }) => (
     <nav className="space-y-1">
@@ -147,14 +123,6 @@ const AdminLayout = () => {
     <div className="flex min-h-screen notranslate" translate="no">
       {/* Desktop sidebar */}
       <aside className="w-64 border-r bg-muted/30 p-4 hidden md:flex md:flex-col md:h-screen md:sticky md:top-0 md:overflow-y-auto">
-=======
-  if (!user || !isAdmin) return null;
-
-  return (
-    <div className="flex min-h-screen">
-      {/* Sidebar */}
-      <aside className="w-64 border-r bg-muted/30 p-4 hidden md:block">
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
         <div className="mb-6">
           <Link to="/" className="flex items-center gap-2">
             <BookOpen className="h-6 w-6 text-primary" />
@@ -162,23 +130,7 @@ const AdminLayout = () => {
           </Link>
           <p className="text-xs text-muted-foreground mt-1">Admin Panel</p>
         </div>
-<<<<<<< HEAD
         <NavList />
-=======
-        <nav className="space-y-1">
-          {navItems.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                location.pathname === item.to ? "bg-primary text-primary-foreground" : "hover:bg-muted"
-              }`}
-            >
-              <item.icon className="h-4 w-4" /> {item.label}
-            </Link>
-          ))}
-        </nav>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
         <div className="mt-8 space-y-2">
           <Button variant="ghost" size="sm" className="w-full justify-start" asChild>
             <Link to="/"><ArrowLeft className="mr-1 h-4 w-4" /> Back to Site</Link>
@@ -189,7 +141,6 @@ const AdminLayout = () => {
         </div>
       </aside>
 
-<<<<<<< HEAD
       {/* Main column */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Mobile top bar */}
@@ -232,11 +183,6 @@ const AdminLayout = () => {
         <main className="flex-1 p-4 sm:p-6 md:p-8 overflow-x-auto">
           <Outlet />
         </main>
-=======
-      {/* Main */}
-      <div className="flex-1 p-6 md:p-8">
-        <Outlet />
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       </div>
     </div>
   );

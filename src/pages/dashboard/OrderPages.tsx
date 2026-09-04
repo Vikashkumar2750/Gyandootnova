@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, Download, Receipt } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLocale } from "@/hooks/useLocale";
+import { formatAmount, type CurrencyCode } from "@/lib/currency";
 
 
 const useMyOrders = () => {
@@ -79,7 +80,7 @@ export const MyOrders = () => {
                   <div className="text-[11px] text-muted-foreground">Order #{p.id.slice(0,8)} • {new Date(p.created_at).toLocaleDateString()}</div>
                   <div className="mt-1 flex items-center gap-2">
                     <Badge variant={p.status === "completed" ? "default" : "secondary"} className="text-[10px]">{p.status}</Badge>
-                    <span className="text-xs text-muted-foreground">{p.currency && p.currency !== "INR" ? `${p.currency} ${p.amount}` : formatPrice(p.amount)}</span>
+                    <span className="text-xs text-muted-foreground">{`${formatAmount(Number(p.amount ?? 0), (p.currency ?? "INR") as CurrencyCode)} ${p.currency ?? "INR"}`}</span>
                   </div>
                 </div>
                 <div className="flex flex-col gap-1.5">

@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 import { useParams, Link, useNavigate, Navigate } from "react-router-dom";
 import AskScripture from "@/components/AskScripture";
-=======
-import { useParams, Link, useNavigate } from "react-router-dom";
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -11,22 +7,16 @@ import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import {
   ChevronLeft, ChevronRight, ArrowLeft, Sun, Moon, Minus, Plus,
-<<<<<<< HEAD
   BookOpen, Bookmark, BookmarkCheck, StickyNote, X, Save, Highlighter, Trash2, List, Check, Palette,
-=======
-  BookOpen, Bookmark, BookmarkCheck, StickyNote, X, Save, Highlighter, Trash2, List, Check,
-  Copy, Download, Search
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 } from "lucide-react";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-<<<<<<< HEAD
 import SecureRichReader from "@/components/SecureRichReader";
 import { useAntiCopy } from "@/hooks/useAntiCopy";
 import useSEO from "@/hooks/useSEO";
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
+import { applyHighlights, captureSelection, type StoredHighlight } from "@/lib/readerHighlights";
+
 
 /* ─── Types ─────────────────────────────────────────────────────────── */
 interface Highlight {
@@ -79,17 +69,13 @@ const getColorConfig = (color: string) =>
 
 /* ─── Main Component ─────────────────────────────────────────────────── */
 const BookReader = () => {
-<<<<<<< HEAD
   useAntiCopy();
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   const { slug, chapterSlug } = useParams<{ slug: string; chapterSlug: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-<<<<<<< HEAD
   // Reader settings (persisted)
   type ReaderTheme = "light" | "sepia" | "dark";
   const [fontSize, setFontSize] = useState<number>(() => {
@@ -110,13 +96,6 @@ const BookReader = () => {
 
   const cycleTheme = () => setTheme((t) => (t === "light" ? "sepia" : t === "sepia" ? "dark" : "light"));
 
-=======
-  // Reader settings
-  const [fontSize, setFontSize] = useState(18);
-  const [darkMode, setDarkMode] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
-
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   // Panels
   const [showNotes, setShowNotes] = useState(false);
   const [showHighlightsPanel, setShowHighlightsPanel] = useState(false);
@@ -137,7 +116,6 @@ const BookReader = () => {
   const contentRef = useRef<HTMLDivElement>(null);
 
   /* ─── Queries ──────────────────────────────────────────────────────── */
-<<<<<<< HEAD
   const { data: book, isLoading: bookLoading } = useQuery({
     queryKey: ["book", slug],
     queryFn: async () => {
@@ -167,34 +145,11 @@ const BookReader = () => {
 
 
   const { data: hasPurchased, isLoading: purchaseLoading } = useQuery({
-=======
-  const { data: book } = useQuery({
-    queryKey: ["book", slug],
-    queryFn: async () => {
-      const { data } = await supabase.from("books").select("id, title, slug, author, cover_url, price, is_free, is_featured, description, preview_chapters, purchase_count, file_type, created_at, updated_at").eq("slug", slug!).single();
-      return data;
-    },
-    enabled: !!slug,
-  });
-
-  const { data: chapters } = useQuery({
-    queryKey: ["all-chapters", book?.id],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from("book_chapters").select("*").eq("book_id", book!.id).order("chapter_number");
-      return data ?? [];
-    },
-    enabled: !!book?.id,
-  });
-
-  const { data: hasPurchased } = useQuery({
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     queryKey: ["purchase-check", book?.id, user?.id],
     queryFn: async () => {
       const { data } = await supabase.rpc("has_purchased_book", { _user_id: user!.id, _book_id: book!.id });
       return !!data;
     },
-<<<<<<< HEAD
     enabled: !!book?.id && !!user?.id && purchaseRequired,
     staleTime: 60 * 1000,
   });
@@ -230,18 +185,11 @@ const BookReader = () => {
     staleTime: 10 * 60 * 1000,
     gcTime: 30 * 60 * 1000,
   });
-=======
-    enabled: !!book?.id && !!user?.id && !book?.is_free,
-  });
-
-  const chapter = chapters?.find((c) => c.slug === chapterSlug);
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   const currentIndex = chapters?.findIndex((c) => c.slug === chapterSlug) ?? -1;
   const prevChapter = currentIndex > 0 ? chapters?.[currentIndex - 1] : null;
   const nextChapter = chapters && currentIndex < chapters.length - 1 ? chapters[currentIndex + 1] : null;
   const totalChapters = chapters?.length ?? 1;
   const chapterProgress = totalChapters > 0 ? ((currentIndex + 1) / totalChapters) * 100 : 0;
-<<<<<<< HEAD
   const readerDescription = book && chapter
     ? `${book.title} ka ${chapter.title} Hindi mein padhein. Sanskrit shlok, saral Hindi arth aur spiritual study ke liye GyandootNova reader.`
     : "GyandootNova reader mein dharmik granth Hindi mein padhein.";
@@ -281,8 +229,6 @@ const BookReader = () => {
     jsonLd: readerJsonLd,
     noindex: true,
   });
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 
   /* ─── Highlights ───────────────────────────────────────────────────── */
   const { data: highlights = [] } = useQuery<Highlight[]>({
@@ -445,7 +391,6 @@ const BookReader = () => {
     };
   }, [handleScroll]);
 
-<<<<<<< HEAD
   // Keyboard shortcuts: ← / → chapter nav, j/k page scroll, +/- font, t theme cycle, b bookmark, / TOC
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -546,42 +491,21 @@ const BookReader = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chapter?.id, chapterContent, contentLoading, savedProgress?.chapter_id, savedProgress?.scroll_percent, user?.id]);
 
-=======
-  useEffect(() => {
-    if (user && book?.id && chapter?.id) {
-      window.scrollTo(0, 0);
-      saveProgressMutation.mutate({ scrollPct: 0 });
-    }
-  }, [chapter?.id]);
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 
   /* ─── Text selection / highlight bar ──────────────────────────────── */
-  const handleMouseUp = useCallback(() => {
+  const handleSelection = useCallback(() => {
     if (!user) return;
-    const sel = window.getSelection();
-    if (!sel || sel.isCollapsed || !sel.toString().trim()) {
+    const cap = captureSelection(contentRef.current);
+    if (!cap) {
       setShowHighlightBar(false);
+      setSelectionInfo(null);
       return;
     }
-
-    const range = sel.getRangeAt(0);
-    const container = range.startContainer.parentElement;
-    const paragraphs = contentRef.current?.querySelectorAll("p[data-para-idx]");
-    let paraIdx = 0;
-    if (paragraphs) {
-      paragraphs.forEach((p) => {
-        if (p.contains(container)) paraIdx = parseInt(p.getAttribute("data-para-idx") ?? "0");
-      });
-    }
-
-    const rect = range.getBoundingClientRect();
-    setHighlightBarPos({ x: rect.left + rect.width / 2, y: rect.top + window.scrollY - 60 });
-    setSelectionInfo({
-      text: sel.toString(),
-      paraIdx,
-      start: range.startOffset,
-      end: range.endOffset,
+    setHighlightBarPos({
+      x: cap.rect.left + cap.rect.width / 2,
+      y: cap.rect.top + window.scrollY - 56,
     });
+    setSelectionInfo({ text: cap.text, paraIdx: cap.paraIdx, start: cap.start, end: cap.end });
     setShowHighlightBar(true);
   }, [user]);
 
@@ -600,101 +524,33 @@ const BookReader = () => {
     setSelectionInfo(null);
   };
 
-<<<<<<< HEAD
-=======
-  const copySelectedText = () => {
-    if (!selectionInfo) return;
-    navigator.clipboard.writeText(selectionInfo.text);
-    toast({ title: "Copied!", description: "Text copied to clipboard." });
-    window.getSelection()?.removeAllRanges();
-    setShowHighlightBar(false);
-    setSelectionInfo(null);
-  };
-
-  const searchMeaning = () => {
-    if (!selectionInfo) return;
-    const query = encodeURIComponent(selectionInfo.text.slice(0, 100) + " meaning in Hindi");
-    window.open(`https://www.google.com/search?q=${query}`, "_blank");
-    setShowHighlightBar(false);
-    setSelectionInfo(null);
-  };
-
-  /* ─── Download highlights summary ─────────────────────────────────── */
-  const downloadHighlightsSummary = () => {
-    if (!highlights.length || !book || !chapter) return;
-    let text = `📖 Highlights Summary\n`;
-    text += `Book: ${book.title}\n`;
-    text += `Chapter: ${chapter.title}\n`;
-    text += `Date: ${new Date().toLocaleDateString("hi-IN")}\n`;
-    text += `${"─".repeat(50)}\n\n`;
-
-    HIGHLIGHT_COLORS.forEach((c) => {
-      const colorHighlights = highlights.filter((h) => h.color === c.id);
-      if (colorHighlights.length === 0) return;
-      text += `🎨 ${c.label} (${colorHighlights.length})\n`;
-      colorHighlights.forEach((h, i) => {
-        text += `  ${i + 1}. "${h.selected_text}"\n`;
-      });
-      text += `\n`;
+  /* ─── Re-apply saved highlights on the rendered chapter ────────────── */
+  useEffect(() => {
+    if (!contentRef.current) return;
+    const root = contentRef.current;
+    const raf = requestAnimationFrame(() => {
+      applyHighlights(root, highlights as StoredHighlight[], (c) => getColorConfig(c).markClass);
     });
+    return () => cancelAnimationFrame(raf);
+  }, [highlights, chapterContent, fontSize, theme]);
 
-    text += `${"─".repeat(50)}\n`;
-    text += `Total Highlights: ${highlights.length}\n`;
-    text += `Generated by GyandootNova — gyandootnova.in\n`;
+  /* Click a highlight mark to remove it */
+  useEffect(() => {
+    const root = contentRef.current;
+    if (!root) return;
+    const onClick = (e: MouseEvent) => {
+      const mark = (e.target as HTMLElement | null)?.closest?.("mark[data-hl-id]");
+      const id = mark?.getAttribute("data-hl-id");
+      if (id) deleteHighlightMutation.mutate(id);
+    };
+    root.addEventListener("click", onClick);
+    return () => root.removeEventListener("click", onClick);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chapterContent]);
 
-    const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `highlights-${book.slug}-${chapter.slug}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
-    toast({ title: "Downloaded!", description: "Highlights summary saved." });
-  };
 
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
-  /* ─── Render paragraph with highlights ────────────────────────────── */
-  const renderParagraph = (text: string, idx: number) => {
-    const paraHighlights = highlights.filter((h) => h.paragraph_index === idx);
-    if (!paraHighlights.length) {
-      return <p key={idx} data-para-idx={idx} className="mb-4">{text}</p>;
-    }
-
-    const segments: { text: string; highlighted: boolean; highlightId?: string; color?: string }[] = [];
-    let lastEnd = 0;
-    const sorted = [...paraHighlights].sort((a, b) => a.start_offset - b.start_offset);
-
-    sorted.forEach((h) => {
-      const start = Math.max(0, h.start_offset);
-      const end = Math.min(text.length, h.end_offset);
-      if (start > lastEnd) segments.push({ text: text.slice(lastEnd, start), highlighted: false });
-      if (end > start) segments.push({ text: text.slice(start, end), highlighted: true, highlightId: h.id, color: h.color });
-      lastEnd = end;
-    });
-    if (lastEnd < text.length) segments.push({ text: text.slice(lastEnd), highlighted: false });
-
-    return (
-      <p key={idx} data-para-idx={idx} className="mb-4">
-        {segments.map((seg, si) =>
-          seg.highlighted ? (
-            <mark
-              key={si}
-              className={`${getColorConfig(seg.color ?? "yellow").markClass} rounded px-0.5 cursor-pointer`}
-              title="Click to remove highlight"
-              onClick={() => seg.highlightId && deleteHighlightMutation.mutate(seg.highlightId)}
-            >
-              {seg.text}
-            </mark>
-          ) : (
-            <span key={si}>{seg.text}</span>
-          )
-        )}
-      </p>
-    );
-  };
 
   /* ─── Access check ─────────────────────────────────────────────────── */
-<<<<<<< HEAD
   const canRead = !!book?.is_free || isPreviewChapter || !!hasPurchased;
 
   // Loading state — while book/chapters are being fetched
@@ -740,14 +596,6 @@ const BookReader = () => {
       <div className="flex min-h-screen flex-col items-center justify-center gap-4 px-4 text-center">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
         <p className="text-sm text-muted-foreground">Reading access check ho raha hai…</p>
-=======
-  const canRead = book?.is_free || chapter?.is_preview || hasPurchased;
-
-  if (!chapter || !book) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-muted-foreground">Chapter not found.</p>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       </div>
     );
   }
@@ -763,7 +611,6 @@ const BookReader = () => {
     );
   }
 
-<<<<<<< HEAD
   if (contentLoading) {
     return (
       <div className="min-h-screen bg-background text-foreground">
@@ -808,15 +655,6 @@ const BookReader = () => {
 
   return (
     <div className={`min-h-screen transition-colors ${themeShellClass}`}>
-=======
-  const paragraphs = chapter.content?.split("\n") ?? [];
-
-  return (
-    <div
-      className={`min-h-screen transition-colors ${darkMode ? "bg-gray-900 text-gray-100" : "bg-background text-foreground"}`}
-      onMouseUp={handleMouseUp}
-    >
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       {/* Scroll progress bar */}
       <div className="fixed top-0 left-0 right-0 z-50">
         <Progress value={scrollProgress} className="h-1 rounded-none" />
@@ -848,11 +686,7 @@ const BookReader = () => {
                 value={tocSearch}
                 onChange={(e) => setTocSearch(e.target.value)}
                 placeholder="Search chapters…"
-<<<<<<< HEAD
                 className={`w-full rounded-md border px-3 py-1.5 text-sm outline-none focus:ring-1 focus:ring-primary ${darkMode ? "bg-gray-800 border-gray-700 text-gray-100 placeholder:text-gray-300" : "bg-background border-input placeholder:text-muted-foreground"}`}
-=======
-                className={`w-full rounded-md border px-3 py-1.5 text-sm outline-none focus:ring-1 focus:ring-primary ${darkMode ? "bg-gray-800 border-gray-700 text-gray-100 placeholder:text-gray-500" : "bg-background border-input placeholder:text-muted-foreground"}`}
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
               />
             </div>
             <div className="flex-1 overflow-y-auto py-2">
@@ -869,11 +703,7 @@ const BookReader = () => {
                       isCurrent
                         ? "bg-primary/10 text-primary border-l-2 border-primary"
                         : darkMode
-<<<<<<< HEAD
                         ? "hover:bg-gray-800 text-gray-200"
-=======
-                        ? "hover:bg-gray-800 text-gray-300"
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                         : "hover:bg-muted text-foreground"
                     }`}
                   >
@@ -903,46 +733,9 @@ const BookReader = () => {
         </>
       )}
 
-<<<<<<< HEAD
       {/* Toolbar */}
       <div className={`sticky top-0 z-40 border-b px-4 py-2 ${toolbarClass}`}>
         <div className="mx-auto flex max-w-4xl items-center justify-between">
-=======
-      {/* Floating highlight color toolbar */}
-      {showHighlightBar && selectionInfo && (
-        <div
-          className="fixed z-[60] flex items-center gap-1.5 rounded-xl border bg-popover shadow-xl px-2.5 py-2 -translate-x-1/2"
-          style={{ left: highlightBarPos.x, top: highlightBarPos.y }}
-        >
-          <Highlighter className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-          <div className="flex items-center gap-1">
-            {HIGHLIGHT_COLORS.map((c) => (
-              <button
-                key={c.id}
-                title={c.label}
-                onClick={() => saveHighlight(c.id)}
-                className={`h-5 w-5 rounded-full ${c.swatch} border-2 transition-all hover:scale-110 ${selectedColor === c.id ? "border-foreground scale-110" : "border-transparent"}`}
-              />
-            ))}
-          </div>
-          <div className="w-px h-4 bg-border mx-0.5" />
-          <Button size="sm" variant="ghost" className="h-6 w-6 p-0" title="Copy" onClick={copySelectedText}>
-            <Copy className="h-3.5 w-3.5" />
-          </Button>
-          <Button size="sm" variant="ghost" className="h-6 w-6 p-0" title="Search Meaning" onClick={searchMeaning}>
-            <Search className="h-3.5 w-3.5" />
-          </Button>
-          <div className="w-px h-4 bg-border mx-0.5" />
-          <Button size="sm" variant="ghost" className="h-6 w-6 p-0" onClick={() => setShowHighlightBar(false)}>
-            <X className="h-3.5 w-3.5" />
-          </Button>
-        </div>
-      )}
-
-      {/* Toolbar */}
-      <div className={`sticky top-0 z-40 border-b px-4 py-2 ${darkMode ? "border-gray-700 bg-gray-900/95" : "bg-background/95 backdrop-blur"}`}>
-        <div className="mx-auto flex max-w-3xl items-center justify-between">
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           <div className="flex items-center gap-1">
             {/* TOC button */}
             <Button
@@ -962,13 +755,8 @@ const BookReader = () => {
             <Button variant="ghost" size="icon" onClick={() => setFontSize((s) => Math.max(14, s - 2))}><Minus className="h-4 w-4" /></Button>
             <span className="text-xs w-6 text-center">{fontSize}</span>
             <Button variant="ghost" size="icon" onClick={() => setFontSize((s) => Math.min(28, s + 2))}><Plus className="h-4 w-4" /></Button>
-<<<<<<< HEAD
             <Button variant="ghost" size="icon" onClick={cycleTheme} title={`Theme: ${theme}`}>
               {theme === "dark" ? <Sun className="h-4 w-4" /> : theme === "sepia" ? <Palette className="h-4 w-4 text-amber-700" /> : <Moon className="h-4 w-4" />}
-=======
-            <Button variant="ghost" size="icon" onClick={() => setDarkMode(!darkMode)}>
-              {darkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
             </Button>
             {user && (
               <>
@@ -1012,11 +800,7 @@ const BookReader = () => {
       {/* Notes panel */}
       {showNotes && user && (
         <div className={`sticky top-[49px] z-30 border-b px-4 py-3 ${darkMode ? "border-gray-700 bg-gray-800" : "bg-muted/60 backdrop-blur"}`}>
-<<<<<<< HEAD
           <div className="mx-auto max-w-4xl">
-=======
-          <div className="mx-auto max-w-3xl">
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
             <div className="flex items-center justify-between mb-2">
               <p className="text-sm font-medium flex items-center gap-1.5">
                 <StickyNote className="h-4 w-4 text-primary" /> My Notes — {chapter.title}
@@ -1046,11 +830,7 @@ const BookReader = () => {
       {/* Highlights panel */}
       {showHighlightsPanel && user && highlights.length > 0 && (
         <div className={`sticky top-[49px] z-30 border-b px-4 py-3 ${darkMode ? "border-gray-700 bg-gray-800" : "bg-muted/60 backdrop-blur"}`}>
-<<<<<<< HEAD
           <div className="mx-auto max-w-4xl">
-=======
-          <div className="mx-auto max-w-3xl">
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
                 <Highlighter className="h-4 w-4 text-muted-foreground" />
@@ -1058,16 +838,7 @@ const BookReader = () => {
                   {highlights.length} Highlight{highlights.length !== 1 ? "s" : ""} — {chapter.title}
                 </p>
               </div>
-<<<<<<< HEAD
               <Button size="sm" variant="ghost" onClick={() => setShowHighlightsPanel(false)}><X className="h-4 w-4" /></Button>
-=======
-              <div className="flex items-center gap-1">
-                <Button size="sm" variant="outline" className="h-7 text-xs gap-1" onClick={downloadHighlightsSummary}>
-                  <Download className="h-3 w-3" /> Download Summary
-                </Button>
-                <Button size="sm" variant="ghost" onClick={() => setShowHighlightsPanel(false)}><X className="h-4 w-4" /></Button>
-              </div>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
             </div>
             {/* Color filter buttons */}
             <div className="flex items-center gap-1.5 mb-3 flex-wrap">
@@ -1123,11 +894,7 @@ const BookReader = () => {
       )}
 
       {/* Chapter content */}
-<<<<<<< HEAD
       <article className="mx-auto max-w-4xl px-6 py-10">
-=======
-      <article className="mx-auto max-w-3xl px-6 py-10">
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
         <div className="mb-2 text-sm text-muted-foreground">
           Chapter {chapter.chapter_number} of {totalChapters}
         </div>
@@ -1150,9 +917,11 @@ const BookReader = () => {
         )}
         <div
           ref={contentRef}
-<<<<<<< HEAD
           className="max-w-none"
+          onMouseUp={handleSelection}
+          onTouchEnd={handleSelection}
         >
+
           <SecureRichReader
             content={rawContent}
             fontSize={fontSize}
@@ -1160,21 +929,11 @@ const BookReader = () => {
             theme={theme}
             watermarkText={watermarkText}
           />
-=======
-          className="prose prose-lg max-w-none leading-relaxed"
-          style={{ fontSize: `${fontSize}px` }}
-        >
-          {paragraphs.map((p, i) => renderParagraph(p, i))}
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
         </div>
       </article>
 
       {/* Book progress bar */}
-<<<<<<< HEAD
       <div className="mx-auto max-w-4xl px-6 pb-4">
-=======
-      <div className="mx-auto max-w-3xl px-6 pb-4">
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
         <div className="flex items-center gap-3 text-sm text-muted-foreground">
           <span className="shrink-0">Chapter {currentIndex + 1}/{totalChapters}</span>
           <Progress value={chapterProgress} className="flex-1 h-2" />
@@ -1183,11 +942,7 @@ const BookReader = () => {
       </div>
 
       {/* Navigation */}
-<<<<<<< HEAD
       <div className="mx-auto max-w-4xl px-6 pb-10">
-=======
-      <div className="mx-auto max-w-3xl px-6 pb-10">
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
         <div className="flex justify-between">
           {prevChapter ? (
             <Button variant="outline" onClick={() => navigate(`/books/${slug}/${prevChapter.slug}`)}>
@@ -1200,19 +955,43 @@ const BookReader = () => {
             </Button>
           ) : (
             <Button variant="outline" asChild>
-<<<<<<< HEAD
               <Link to={`/books/${slug}`}>Finished! Back to Book</Link>
-=======
-              <Link to={`/books/${slug}`}>🎉 Finished! Back to Book</Link>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
             </Button>
           )}
         </div>
       </div>
-<<<<<<< HEAD
+      {/* Floating highlight toolbar (appears on text selection) */}
+      {showHighlightBar && user && selectionInfo && (
+        <div
+          className="fixed z-[60] -translate-x-1/2 rounded-full border bg-background shadow-lg px-2 py-1.5 flex items-center gap-1.5"
+          style={{ left: highlightBarPos.x, top: Math.max(8, highlightBarPos.y - window.scrollY) }}
+        >
+          <Highlighter className="h-3.5 w-3.5 text-muted-foreground" />
+          {HIGHLIGHT_COLORS.map((c) => (
+            <button
+              key={c.id}
+              title={`Highlight ${c.label}`}
+              onClick={() => saveHighlight(c.id)}
+              className={`h-5 w-5 rounded-full border border-border ${c.swatch} ${selectedColor === c.id ? "ring-2 ring-primary ring-offset-1" : ""}`}
+            />
+          ))}
+          <button
+            title="Add note"
+            onClick={() => {
+              setNoteText((t) => `${t ? `${t}\n\n` : ""}“${selectionInfo.text.trim()}” — `);
+              setShowNotes(true);
+              setShowHighlightBar(false);
+              window.getSelection()?.removeAllRanges();
+            }}
+            className="ml-1 rounded-full p-1 hover:bg-muted"
+          >
+            <StickyNote className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      )}
+
       {book && <AskScripture bookId={book.id} bookTitle={book.title} />}
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
+
     </div>
   );
 };

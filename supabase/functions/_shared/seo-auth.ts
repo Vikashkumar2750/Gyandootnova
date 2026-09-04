@@ -8,9 +8,12 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 
 export async function assertSeoAuthorized(req: Request): Promise<Response | null> {
-  const cronSecret = Deno.env.get("SEO_AGENT_CRON_SECRET") || "";
   const provided = req.headers.get("x-cron-secret") || "";
-  if (cronSecret.length > 0 && provided === cronSecret) return null;
+  const cronSecrets = [
+    Deno.env.get("SEO_AGENT_CRON_SECRET") || "",
+    Deno.env.get("SEO_CRON_TOKEN") || "",
+  ].filter((s) => s.length > 0);
+  if (provided.length > 0 && cronSecrets.includes(provided)) return null;
 
   const authHeader = req.headers.get("Authorization") || "";
   if (authHeader.startsWith("Bearer ")) {

@@ -19,7 +19,7 @@ Deno.serve(async (req) => {
   try {
     const r = await fetch(`${url}/functions/v1/seo-blog-agent`, {
       method: "POST",
-      headers: { Authorization: `Bearer ${svc}`, apikey: svc, "Content-Type": "application/json" },
+      headers: { Authorization: `Bearer ${svc}`, apikey: svc, "x-cron-secret": Deno.env.get("SEO_CRON_TOKEN") ?? "", "Content-Type": "application/json" },
       body: JSON.stringify({ auto: true, publish_status: "scheduled" }),
     });
     results.agent = { status: r.status, body: await r.json().catch(() => ({})) };
@@ -44,7 +44,7 @@ Deno.serve(async (req) => {
       try {
         const r = await fetch(`${url}/functions/v1/seo-post-publish-hook`, {
           method: "POST",
-          headers: { Authorization: `Bearer ${svc}`, apikey: svc, "Content-Type": "application/json" },
+          headers: { Authorization: `Bearer ${svc}`, apikey: svc, "x-cron-secret": Deno.env.get("SEO_CRON_TOKEN") ?? "", "Content-Type": "application/json" },
           body: JSON.stringify({ post_id: p.id }),
         });
         hookResults.push({ post_id: p.id, status: r.status });

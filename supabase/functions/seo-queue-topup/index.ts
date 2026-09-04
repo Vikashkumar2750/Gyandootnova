@@ -11,7 +11,7 @@ const MAX_PER_RUN = 5; // safety: don't burn tokens in one shot
 async function invokeFn(url: string, svc: string, name: string, body: any) {
   const r = await fetch(`${url}/functions/v1/${name}`, {
     method: "POST",
-    headers: { Authorization: `Bearer ${svc}`, apikey: svc, "Content-Type": "application/json" },
+    headers: { Authorization: `Bearer ${svc}`, apikey: svc, "x-cron-secret": Deno.env.get("SEO_CRON_TOKEN") ?? "", "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
   const text = await r.text();

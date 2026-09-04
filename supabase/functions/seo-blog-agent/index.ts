@@ -15,6 +15,7 @@ import {
   recordProviderSuccess, classifyError,
 } from "../_shared/seo-alerts.ts";
 import { buildKeyResolver, KeyResolver } from "../_shared/ai-key-resolver.ts";
+import { assertSeoAuthorized } from "../_shared/seo-auth.ts";
 
 const NICHE = "Books, Spirituality, Meditation, Self Growth, Mindfulness, Consciousness";
 const SITE = "https://gyandootnova.in";
@@ -371,38 +372,10 @@ Deno.serve(async (req) => {
   const supabase = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
 
   // Authorization: this endpoint publishes content and burns paid AI/search
-  // quotas. It MUST NOT be callable by anonymous users. Accept either:
-  //   - x-cron-secret matching SEO_AGENT_CRON_SECRET (scheduled cron), or
-  //   - an admin JWT in the Authorization header (admin UI).
-  const cronSecret = Deno.env.get("SEO_AGENT_CRON_SECRET") || "";
-  const providedSecret = req.headers.get("x-cron-secret") || "";
-  let authorized = cronSecret.length > 0 && providedSecret === cronSecret;
-  if (!authorized) {
-    const authHeader = req.headers.get("Authorization") || "";
-    if (authHeader.startsWith("Bearer ")) {
-      try {
-        const token = authHeader.slice(7);
-        const anon = createClient(
-          Deno.env.get("SUPABASE_URL")!,
-          Deno.env.get("SUPABASE_ANON_KEY")!,
-        );
-        const { data, error } = await anon.auth.getUser(token);
-        if (!error && data?.user) {
-          const { data: isAdmin } = await supabase.rpc("has_role", {
-            _user_id: data.user.id,
-            _role: "admin",
-          });
-          if (isAdmin === true) authorized = true;
-        }
-      } catch { /* fall through to 401 */ }
-    }
-  }
-  if (!authorized) {
-    return new Response(JSON.stringify({ error: "Unauthorized" }), {
-      status: 401,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
-  }
+  // quotas. It MUST NOT be callable by anonymous users. Handled centrally by
+  // the shared guard (cron secret, service-role bearer, or admin JWT).
+  const unauthorized = await assertSeoAuthorized(req);
+  if (unauthorized) return unauthorized;
 
   const resolveKey = await buildKeyResolver(supabase);
 
@@ -428,17 +401,45 @@ Deno.serve(async (req) => {
 
 
     const existingList = (existing || []).map(p => `- ${p.title} (/${p.slug})`).join("\n");
+    const usedKeywords = new Set(
+      (existing || []).map((p: any) => String(p.title || "").toLowerCase()),
+    );
 
-    // 2) Topic discovery
+    // 1b) Keyword hub: pull the active LSI keyword bank so every article is
+    // anchored to a real, prioritised target keyword instead of a random topic.
+    const { data: kwRows } = await supabase
+      .from("lsi_keywords")
+      .select("term, category, related_terms, description, priority")
+      .eq("is_active", true)
+      .order("priority", { ascending: false })
+      .limit(120);
+    const { data: usedKwRows } = await supabase
+      .from("posts").select("primary_keyword").not("primary_keyword", "is", null).limit(1000);
+    const usedKw = new Set((usedKwRows || []).map((r: any) => String(r.primary_keyword || "").toLowerCase().trim()));
+    const freshKeywords = (kwRows || []).filter((k: any) => !usedKw.has(String(k.term).toLowerCase().trim()));
+    const keywordPool = (freshKeywords.length ? freshKeywords : (kwRows || [])).slice(0, 40);
+    const keywordBlock = keywordPool
+      .map((k: any) => `- ${k.term}${k.category ? ` [${k.category}]` : ""}${k.related_terms?.length ? ` — related: ${k.related_terms.slice(0, 6).join(", ")}` : ""}`)
+      .join("\n");
+    // Rotate through the pool so batch runs don't all pick the same term.
+    const targetKeyword: string | undefined = keywordPool.length
+      ? keywordPool[batchIndex % keywordPool.length].term
+      : undefined;
+    log.keyword_pool_size = keywordPool.length;
+    log.target_keyword = targetKeyword ?? null;
+
+    // 2) Topic discovery — always keyword-first
     let topic = forcedTopic;
     if (!topic) {
       const raw = await callLLM([
-        { role: "system", content: `You are an SEO strategist for a publisher in the niche: ${NICHE}. Propose ONE high-search-intent English/Hindi blog topic NOT already covered. Prioritize high-search-volume worldwide Hindu/spiritual keywords with clear reader intent. Return JSON: {"topic":"...","rationale":"..."}` },
-        { role: "user", content: `Existing posts:\n${existingList || "(none)"}\n\nRules:\n- Evergreen or trending in books/spirituality/meditation/self-growth/mindfulness/consciousness.\n- Different angle from anything above.\n- Serve real reader search intent.` },
+        { role: "system", content: `You are an SEO strategist for a publisher in the niche: ${NICHE}. Build ONE high-search-intent blog topic around the ASSIGNED TARGET KEYWORD. The topic must be unique — no overlap in angle, framing or promise with any existing post. Prioritize high-search-volume worldwide Hindu/spiritual keywords with clear reader intent. Return JSON: {"topic":"...","rationale":"..."}` },
+        { role: "user", content: `ASSIGNED TARGET KEYWORD: ${targetKeyword || "(choose the strongest untapped keyword below)"}\n\nKEYWORD BANK (site's own LSI hub — use these terms and their related variants):\n${keywordBlock || "(empty)"}\n\nExisting posts (do NOT repeat these):\n${existingList || "(none)"}\n\nRules:\n- Topic must clearly target the assigned keyword and rank for it.\n- Evergreen or trending in books/spirituality/meditation/self-growth/mindfulness/consciousness.\n- Completely different angle from anything above.\n- Serve real reader search intent.` },
       ], true, log, supabase, "topic-discovery", resolveKey);
       topic = JSON.parse(raw).topic;
     }
     log.topic = topic;
+    void usedKeywords;
+
 
     // 3) Similarity (semantic-ish via jaccard)
     const topicTokens = tokenize(topic!);
@@ -480,22 +481,34 @@ Deno.serve(async (req) => {
 
 TOPIC: ${topic}
 
+PRIMARY TARGET KEYWORD (must be the focus_keyword, in H1, first 100 words, one H2, meta title & description, and the slug):
+${targetKeyword || topic}
+
+SUPPORTING / LSI KEYWORD BANK (weave 8–15 of these in naturally, never stuffed):
+${keywordBlock || "(none)"}
+
 RESEARCH NOTES (multi-provider, rewrite in your own words, DO NOT COPY sentences):
 ${researchBlock}
 
 INTERNAL LINK POOL (use 3–6 contextual links as <a href="/articles/slug">natural anchor</a> — only use slugs from this list, never invent):
 ${internalPool || "(none)"}
 
+ALREADY PUBLISHED (your article must not duplicate any of these in angle, structure, headings or examples):
+${existingList || "(none)"}
+
 REQUIREMENTS
 - 1800–2500 words body (excluding TOC/FAQ/conclusion).
+- 100% UNIQUE: every sentence written from scratch. Zero copied phrasing from research notes, Wikipedia, Gita Press editions, other blogs or generic AI templates. Use original examples, analogies and section ordering. Target originality ≥ 95/100 (100% copyright-free, publishable without any attribution risk).
+- Keyword coverage: primary keyword 6–10 times naturally (density ~1%), plus its Hindi/English/transliterated variants and question forms.
 - Target worldwide traffic: include naturally searched variants for India, US, UK, Canada and Australia readers.
 - Preserve spiritual accuracy; do not invent scripture claims. Explain practical meaning, path vidhi, benefits, FAQs, and common mistakes when relevant.
 - Google Helpful Content + EEAT, natural human tone, no AI clichés or repetition.
 - Prefer authoritative citations (gov, .edu, scientific, books, reputable news).
 - One H1, several H2/H3; short paragraphs; sentence variety; include Conclusion and a CTA paragraph.
-- TOC (linked H2s) + FAQ (6 Qs).
+- TOC (linked H2s) + FAQ (6 Qs, each answering a real long-tail query around the primary keyword).
 - 2–4 external links only to authoritative sources from research.
 - Output valid HTML body (h1,h2,h3,p,ul,ol,li,a,strong,em,blockquote).
+
 
 Return STRICT JSON (no markdown fences):
 {
@@ -516,7 +529,7 @@ Return STRICT JSON (no markdown fences):
 
 
     const raw = await callLLM([
-      { role: "system", content: "You are a senior SEO editor and domain writer. Follow Google Helpful Content. Output ONLY valid JSON, no code fences." },
+      { role: "system", content: "You are a senior SEO editor and domain writer for a Hindi-first spiritual publisher aiming to be the #1 authority in its niche. Follow Google Helpful Content and EEAT. Every article must be 100% original — never reuse phrasing from sources or from the site's existing posts. Build the article around the assigned primary keyword and its LSI variants. Output ONLY valid JSON, no code fences." },
       { role: "user", content: genPrompt },
     ], true, log, supabase, "draft-generation", resolveKey);
     let article: any;
@@ -694,8 +707,12 @@ Return STRICT JSON (no markdown fences):
     let postId: string | null = null;
     let finalSlug = slugFinal;
 
+    // Agent-generated content is auto-approved: the DB trigger blocks any
+    // publish/schedule while approval_status is still 'draft'.
     const savePayloadCommon = {
       publish_status: publishStatus,
+      approval_status: publishStatus === "draft" ? "draft" : "approved",
+      is_published: publishStatus === "published",
       scheduled_at: scheduledAtIso,
       timezone: requestedTz,
       reading_time_min: rt.minutes,

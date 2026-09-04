@@ -107,7 +107,7 @@ export function buildOrganizationSchema(overrides: Record<string, unknown> = {})
     alternateName: ["Gyandoot", "Gyandoot Nova", "gyandootnova.in"],
     url: SITE,
     logo: ORG_LOGO,
-    email: "amrendra8765@gmail.com",
+    email: "gyandootnova57@gmail.com",
     telephone: "+91-91615-33353",
     foundingDate: "2024",
     description:
@@ -125,7 +125,7 @@ export function buildOrganizationSchema(overrides: Record<string, unknown> = {})
       {
         "@type": "ContactPoint",
         contactType: "customer support",
-        email: "amrendra8765@gmail.com",
+        email: "gyandootnova57@gmail.com",
         telephone: "+91-91615-33353",
         availableLanguage: ["Hindi", "English"],
       },

@@ -1,41 +1,25 @@
-<<<<<<< HEAD
 import { useEffect, useState } from "react";
-=======
-import { useEffect } from "react";
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 import { useNavigate, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-<<<<<<< HEAD
 import { useToast } from "@/hooks/use-toast";
 
-=======
-import Layout from "@/components/layout/Layout";
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-<<<<<<< HEAD
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import {
   BookOpen, Heart, User, Calendar, IndianRupee, PlayCircle,
   Bookmark, StickyNote, Highlighter, Download, FileText, Share2, Copy, Eye, Loader2
 } from "lucide-react";
 import useSEO from "@/hooks/useSEO";
-=======
-import {
-  BookOpen, Heart, User, Calendar, IndianRupee, PlayCircle,
-  Bookmark, StickyNote, Highlighter, Download, FileText, Share2, Copy
-} from "lucide-react";
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 
 const Profile = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
-<<<<<<< HEAD
   const { toast } = useToast();
 
   const [invoicePreview, setInvoicePreview] = useState<{
@@ -135,8 +119,6 @@ const Profile = () => {
     description: "Aapka GyandootNova profile — purchased books, reading progress, highlights, notes aur downloads ek jagah.",
     canonical: "/profile",
   });
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 
   useEffect(() => {
     if (!loading && !user) navigate("/auth");
@@ -190,7 +172,6 @@ const Profile = () => {
     queryFn: async () => {
       const { data } = await supabase
         .from("reading_progress")
-<<<<<<< HEAD
         .select("book_id, chapter_id, chapter_number, scroll_percent, updated_at")
         .eq("user_id", user!.id)
         .order("updated_at", { ascending: false });
@@ -224,11 +205,6 @@ const Profile = () => {
           overall_percent: Math.min(100, Math.round(chapterPct)),
         };
       });
-=======
-        .select("book_id, chapter_number, scroll_percent, updated_at")
-        .eq("user_id", user!.id);
-      return data ?? [];
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     },
   });
 
@@ -290,11 +266,7 @@ const Profile = () => {
     },
   });
 
-<<<<<<< HEAD
   if (loading) return <div className="container py-20 text-center text-muted-foreground">Loading...</div>;
-=======
-  if (loading) return <Layout><div className="container py-20 text-center text-muted-foreground">Loading...</div></Layout>;
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   if (!user) return null;
 
   const totalDonated = donations?.reduce((sum: number, d: any) => sum + Number(d.amount), 0) ?? 0;
@@ -304,11 +276,7 @@ const Profile = () => {
     allProgress?.find((pr) => pr.book_id === bookId);
 
   return (
-<<<<<<< HEAD
     <>
-=======
-    <Layout>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       <main className="container py-12 max-w-4xl">
         {/* Profile Header */}
         <section className="flex items-center gap-5 mb-10">
@@ -363,7 +331,6 @@ const Profile = () => {
           ) : (
             <div className="grid sm:grid-cols-2 gap-4">
               {completedPurchases.map((p: any) => {
-<<<<<<< HEAD
                 const progress: any = getBookProgress(p.book_id);
                 const progressPct = progress?.overall_percent ?? 0;
                 const resumeHref = p.book?.slug
@@ -374,12 +341,6 @@ const Profile = () => {
                 const lastRead = progress?.updated_at
                   ? new Date(progress.updated_at).toLocaleDateString("en-IN", { day: "numeric", month: "short" })
                   : null;
-=======
-                const progress = getBookProgress(p.book_id);
-                const progressPct = progress
-                  ? Math.min(Math.round((progress.chapter_number / 10) * 100), 100)
-                  : 0;
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                 return (
                   <Card key={p.id} className="flex flex-col p-4 gap-3">
                     <div className="flex items-start gap-4">
@@ -397,7 +358,6 @@ const Profile = () => {
                           <Calendar className="h-3 w-3" />
                           {new Date(p.created_at).toLocaleDateString("en-IN")}
                         </p>
-<<<<<<< HEAD
                         {(() => {
                           const paid = p.amount != null ? Number(p.amount) : (p.book?.price != null ? Number(p.book.price) : null);
                           if (paid == null || paid === 0) return null;
@@ -407,15 +367,12 @@ const Profile = () => {
                             <p className="text-xs font-medium mt-1">Paid: {symbol}{paid.toLocaleString()}</p>
                           );
                         })()}
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                       </div>
                     </div>
 
                     {progress ? (
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between text-xs text-muted-foreground">
-<<<<<<< HEAD
                           <span className="truncate pr-2">
                             Ch {progress.chapter_number}
                             {progress.total_chapters ? `/${progress.total_chapters}` : ""}
@@ -427,18 +384,11 @@ const Profile = () => {
                         {lastRead && (
                           <p className="text-[11px] text-muted-foreground">Last read {lastRead} · {progress.scroll_percent ?? 0}% into chapter</p>
                         )}
-=======
-                          <span>Chapter {progress.chapter_number}</span>
-                          <span>{progressPct}% complete</span>
-                        </div>
-                        <Progress value={progressPct} className="h-1.5" />
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                       </div>
                     ) : (
                       <p className="text-xs text-muted-foreground">Not started yet</p>
                     )}
 
-<<<<<<< HEAD
                     <div className="flex items-center justify-between gap-3 flex-wrap">
                       {resumeHref && (
                         <Link
@@ -464,17 +414,6 @@ const Profile = () => {
                         Invoice
                       </Button>
                     </div>
-=======
-                    {p.book?.slug && (
-                      <Link
-                        to={`/books/${p.book.slug}`}
-                        className="inline-flex items-center gap-1.5 text-xs text-primary font-medium hover:underline"
-                      >
-                        <PlayCircle className="h-3.5 w-3.5" />
-                        {progress ? "Continue Reading" : "Start Reading"}
-                      </Link>
-                    )}
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                   </Card>
                 );
               })}
@@ -588,7 +527,6 @@ const Profile = () => {
           </>
         )}
 
-<<<<<<< HEAD
         {/* Universal Referral Link */}
         <section className="mb-6">
           <h2 className="font-serif text-xl font-bold mb-4 flex items-center gap-2">
@@ -619,8 +557,6 @@ const Profile = () => {
           </Card>
         </section>
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
         {/* Referral Earnings */}
         <section className="mb-10">
           <h2 className="font-serif text-xl font-bold mb-4 flex items-center gap-2">
@@ -630,11 +566,7 @@ const Profile = () => {
             <Card>
               <CardContent className="py-8 text-center text-muted-foreground">
                 <Share2 className="h-8 w-8 mx-auto mb-2 opacity-30" />
-<<<<<<< HEAD
                 <p className="text-sm">No referral earnings yet. Share your universal link to earn commission!</p>
-=======
-                <p className="text-sm">No referral earnings yet. Share book links to earn commission!</p>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
               </CardContent>
             </Card>
           ) : (
@@ -720,7 +652,6 @@ const Profile = () => {
           )}
         </section>
       </main>
-<<<<<<< HEAD
 
       <Dialog open={!!invoicePreview} onOpenChange={(open) => { if (!open) closeInvoicePreview(); }}>
         <DialogContent className="max-w-4xl h-[85vh] flex flex-col p-0 gap-0">
@@ -774,9 +705,6 @@ const Profile = () => {
         </DialogContent>
       </Dialog>
     </>
-=======
-    </Layout>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   );
 };
 

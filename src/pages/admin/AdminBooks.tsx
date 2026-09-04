@@ -10,7 +10,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-<<<<<<< HEAD
 import { Plus, Pencil, Trash2, Upload, Image, FileText, X, ChevronRight, ArrowLeft, Globe, Eye, CheckCircle, AlertTriangle, Download } from "lucide-react";
 import { downloadTableAsCsv } from "@/lib/exportCsv";
 import { Progress } from "@/components/ui/progress";
@@ -20,12 +19,6 @@ import UploadCsvButton from "@/components/admin/UploadCsvButton";
 import SourcesPermissionsCard from "@/components/admin/SourcesPermissionsCard";
 import OriginalityPanel from "@/components/admin/OriginalityPanel";
 import { Send } from "lucide-react";
-=======
-import { Plus, Pencil, Trash2, Upload, Image, FileText, X, ChevronRight, ArrowLeft, Globe, Eye, CheckCircle, AlertTriangle } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
-import RichTextEditor from "@/components/RichTextEditor";
-import BulkBookUpload from "@/components/admin/BulkBookUpload";
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 
 const slugify = (t: string) => {
   const slug = t
@@ -82,25 +75,17 @@ const ChapterEditor = ({ book, onBack }: { book: any; onBack: () => void }) => {
   const { toast } = useToast();
   const [view, setView] = useState<"list" | "form">("list");
   const [editing, setEditing] = useState<any>(null);
-<<<<<<< HEAD
   const [form, setForm] = useState({
     title: "", content: "", chapter_number: 1, is_preview: true,
     source_type: "original" as "original" | "translation" | "public_domain" | "licensed" | "quoted_excerpt",
     source_citation: "",
     permission_notes: "",
   });
-=======
-  const [form, setForm] = useState({ title: "", content: "", chapter_number: 1, is_preview: true });
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 
   const { data: chapters } = useQuery({
     queryKey: ["admin-chapters", book.id],
     queryFn: async () => {
-<<<<<<< HEAD
       const { data } = await supabase.from("book_chapters").select("id, book_id, title, slug, chapter_number, is_preview, created_at, updated_at, approval_status, originality_score, originality_report, originality_checked_at, source_type, source_citation, permission_notes").eq("book_id", book.id).order("chapter_number");
-=======
-      const { data } = await supabase.from("book_chapters").select("*").eq("book_id", book.id).order("chapter_number");
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       return data ?? [];
     },
   });
@@ -133,7 +118,6 @@ const ChapterEditor = ({ book, onBack }: { book: any; onBack: () => void }) => {
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin-chapters", book.id] }); toast({ title: "Chapter deleted" }); },
   });
 
-<<<<<<< HEAD
   const resetChapterForm = () => {
     setForm({
       title: "", content: "", chapter_number: (chapters?.length ?? 0) + 1, is_preview: true,
@@ -156,26 +140,14 @@ const ChapterEditor = ({ book, onBack }: { book: any; onBack: () => void }) => {
     if (error) { toast({ title: "Failed to load chapter content", description: error.message, variant: "destructive" }); return; }
     const content = Array.isArray(data) ? (data[0]?.content ?? "") : (data as any)?.content ?? "";
     setForm((f) => ({ ...f, content }));
-=======
-  const resetChapterForm = () => { setForm({ title: "", content: "", chapter_number: (chapters?.length ?? 0) + 1, is_preview: true }); setEditing(null); setView("list"); };
-
-  const openEdit = (ch: any) => {
-    setEditing(ch);
-    setForm({ title: ch.title, content: ch.content ?? "", chapter_number: ch.chapter_number, is_preview: ch.is_preview });
-    setView("form");
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   };
 
   const openNew = () => {
     setEditing(null);
-<<<<<<< HEAD
     setForm({
       title: "", content: "", chapter_number: (chapters?.length ?? 0) + 1, is_preview: true,
       source_type: "original", source_citation: "", permission_notes: "",
     });
-=======
-    setForm({ title: "", content: "", chapter_number: (chapters?.length ?? 0) + 1, is_preview: true });
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     setView("form");
   };
 
@@ -211,7 +183,6 @@ const ChapterEditor = ({ book, onBack }: { book: any; onBack: () => void }) => {
             />
           </div>
 
-<<<<<<< HEAD
 
           {/* Sources & Permissions + Originality (new) */}
           <div className="grid gap-4 md:grid-cols-2 border-t border-border pt-4">
@@ -233,13 +204,10 @@ const ChapterEditor = ({ book, onBack }: { book: any; onBack: () => void }) => {
             />
           </div>
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           <div className="flex items-center justify-between pt-2">
             <div className="flex items-center gap-2">
               <Switch checked={form.is_preview} onCheckedChange={(v) => setForm({ ...form, is_preview: v })} />
               <Label>{form.is_preview ? "Free Preview" : "Paid Chapter"}</Label>
-<<<<<<< HEAD
               {editing?.approval_status && editing.approval_status !== "approved" && (
                 <span className="ml-3 text-xs text-amber-700">
                   · Needs admin approval before publish
@@ -268,11 +236,6 @@ const ChapterEditor = ({ book, onBack }: { book: any; onBack: () => void }) => {
                   <Send className="mr-1 h-4 w-4" /> Submit for Review
                 </Button>
               )}
-=======
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" onClick={resetChapterForm}>Cancel</Button>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
               <Button onClick={() => saveMutation.mutate()} disabled={!form.title || saveMutation.isPending}>
                 {saveMutation.isPending ? "Saving…" : editing ? "Update Chapter" : "Add Chapter"}
               </Button>
@@ -340,10 +303,7 @@ const AdminBooks = () => {
     title: "", slug: "", author: "GyandootNova", description: "", price: 0,
     is_free: true, is_featured: false, cover_url: "", file_url: "", file_type: "",
     preview_chapters: 0, category: "", referral_commission_percent: 0,
-<<<<<<< HEAD
     access_validity_days: null as number | null,
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   });
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [bookFile, setBookFile] = useState<File | null>(null);
@@ -366,13 +326,10 @@ const AdminBooks = () => {
     const bucket = folder === "covers" ? "book-covers" : "book-files";
     const { error } = await supabase.storage.from(bucket).upload(path, file, { upsert: true });
     if (error) throw error;
-<<<<<<< HEAD
     if (bucket === "book-files") {
       // Private bucket: store only the object path; admin RPC fetches it later.
       return path;
     }
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     const { data } = supabase.storage.from(bucket).getPublicUrl(path);
     return data.publicUrl;
   };
@@ -417,22 +374,15 @@ const AdminBooks = () => {
       const payload = {
         title: form.title, slug: finalSlug, author: form.author, description: form.description,
         price: form.is_free ? 0 : form.price, is_free: form.is_free, is_featured: form.is_featured,
-<<<<<<< HEAD
         cover_url, file_type, preview_chapters: form.preview_chapters, category: form.category,
         referral_commission_percent: form.referral_commission_percent,
         access_validity_days: form.is_free ? null : form.access_validity_days,
       };
       let bookId = editing?.id as string | undefined;
-=======
-        cover_url, file_url, file_type, preview_chapters: form.preview_chapters, category: form.category,
-        referral_commission_percent: form.referral_commission_percent,
-      };
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       if (editing) {
         const { error } = await supabase.from("books").update(payload).eq("id", editing.id);
         if (error) throw error;
       } else {
-<<<<<<< HEAD
         const { data: inserted, error } = await supabase.from("books").insert(payload).select("id").single();
         if (error) throw error;
         bookId = inserted?.id;
@@ -447,11 +397,6 @@ const AdminBooks = () => {
         if (rpcError) throw rpcError;
       }
 
-=======
-        const { error } = await supabase.from("books").insert(payload);
-        if (error) throw error;
-      }
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       setUploadProgress(100);
     },
     onSuccess: () => {
@@ -476,15 +421,11 @@ const AdminBooks = () => {
       title: "", slug: "", author: "GyandootNova", description: "", price: 0,
       is_free: true, is_featured: false, cover_url: "", file_url: "", file_type: "",
       preview_chapters: 0, category: "", referral_commission_percent: 0,
-<<<<<<< HEAD
       access_validity_days: null,
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     });
     setEditing(null); setCoverFile(null); setBookFile(null);
   };
 
-<<<<<<< HEAD
   const openEdit = async (book: any) => {
     setEditing(book);
     let fileUrl = "";
@@ -494,24 +435,14 @@ const AdminBooks = () => {
     } catch {
       // ignore
     }
-=======
-  const openEdit = (book: any) => {
-    setEditing(book);
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     setForm({
       title: book.title, slug: book.slug ?? "", author: book.author,
       description: book.description ?? "", price: book.price, is_free: book.is_free,
       is_featured: book.is_featured, cover_url: book.cover_url ?? "",
-<<<<<<< HEAD
       file_url: fileUrl, file_type: book.file_type ?? "",
       preview_chapters: book.preview_chapters ?? 0, category: book.category ?? "",
       referral_commission_percent: (book as any).referral_commission_percent ?? 0,
       access_validity_days: (book as any).access_validity_days ?? null,
-=======
-      file_url: book.file_url ?? "", file_type: book.file_type ?? "",
-      preview_chapters: book.preview_chapters ?? 0, category: book.category ?? "",
-      referral_commission_percent: (book as any).referral_commission_percent ?? 0,
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     });
     setOpen(true);
   };
@@ -528,25 +459,17 @@ const AdminBooks = () => {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="font-serif text-2xl font-bold sm:text-3xl">Books</h1>
-<<<<<<< HEAD
         <div className="flex gap-2 flex-wrap">
           <Button size="sm" variant="outline" onClick={() => downloadTableAsCsv({ table: "books", filenamePrefix: "books", orderBy: { column: "created_at", ascending: false } })}>
             <Download className="mr-1 h-4 w-4" /> Download All
           </Button>
           <UploadCsvButton table="books" label="Upload CSV" onDone={() => queryClient.invalidateQueries({ queryKey: ["admin-books"] })} />
-=======
-        <div className="flex gap-2">
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           <BulkBookUpload />
           <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) resetForm(); }}>
             <DialogTrigger asChild>
               <Button size="sm"><Plus className="mr-1 h-4 w-4" /> Add Book</Button>
             </DialogTrigger>
-<<<<<<< HEAD
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-=======
-          <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
             <DialogHeader>
               <DialogTitle className="font-serif">{editing ? "Edit Book" : "New Book"}</DialogTitle>
             </DialogHeader>
@@ -653,7 +576,6 @@ const AdminBooks = () => {
                     <Input type="number" min={0} max={100} value={form.referral_commission_percent} onChange={(e) => setForm({ ...form, referral_commission_percent: Number(e.target.value) })} className="mt-1" placeholder="e.g. 10" />
                     <p className="text-xs text-muted-foreground mt-1">Referrer को हर sale पर कितने % commission मिलेगा (0 = disabled)</p>
                   </div>
-<<<<<<< HEAD
                   <div>
                     <Label>Access Validity (Purchase ke baad kitne din tak access)</Label>
                     <select
@@ -669,8 +591,6 @@ const AdminBooks = () => {
                     </select>
                     <p className="text-xs text-muted-foreground mt-1">Buyer ko book kitne din tak read karne di jaye. Validity khatm hone par book lock ho jayegi aur repurchase ka option milega.</p>
                   </div>
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                 </>
               )}
 

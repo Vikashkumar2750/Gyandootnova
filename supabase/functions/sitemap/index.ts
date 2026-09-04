@@ -1,20 +1,13 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-<<<<<<< HEAD
 const headers = {
   "Content-Type": "application/xml; charset=utf-8",
   "Cache-Control": "public, max-age=3600, s-maxage=3600",
   "Access-Control-Allow-Origin": "*",
-=======
-const corsHeaders = {
-  "Content-Type": "application/xml; charset=utf-8",
-  "Cache-Control": "public, max-age=3600",
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 };
 
 const BASE_URL = "https://gyandootnova.in";
 
-<<<<<<< HEAD
 const encPath = (path: string) =>
   "/" + path.split("/").filter(Boolean).map(encodeURIComponent).join("/");
 
@@ -26,17 +19,6 @@ Deno.serve(async () => {
 
   const [booksRes, postsRes] = await Promise.all([
     supabase.from("books").select("id, slug, updated_at").order("created_at", { ascending: false }),
-=======
-Deno.serve(async () => {
-  const supabase = createClient(
-    Deno.env.get("SUPABASE_URL")!,
-    Deno.env.get("SUPABASE_ANON_KEY")!
-  );
-
-  // Fetch books and posts
-  const [booksRes, postsRes] = await Promise.all([
-    supabase.from("books").select("slug, updated_at").order("created_at", { ascending: false }),
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     supabase.from("posts").select("slug, updated_at").eq("is_published", true).order("created_at", { ascending: false }),
   ]);
 
@@ -47,7 +29,6 @@ Deno.serve(async () => {
     { loc: "/", priority: "1.0", changefreq: "daily" },
     { loc: "/books", priority: "0.9", changefreq: "daily" },
     { loc: "/articles", priority: "0.9", changefreq: "daily" },
-<<<<<<< HEAD
     { loc: "/our-story", priority: "0.7", changefreq: "monthly" },
     { loc: "/library", priority: "0.4", changefreq: "weekly" },
     { loc: "/about", priority: "0.7", changefreq: "monthly" },
@@ -102,28 +83,6 @@ Deno.serve(async () => {
   for (const post of posts) {
     const lastmod = post.updated_at ? post.updated_at.split("T")[0] : today;
     urls.push(`  <url><loc>${BASE_URL}${encPath(`/articles/${post.slug}`)}</loc><lastmod>${lastmod}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>`);
-=======
-    { loc: "/about", priority: "0.7", changefreq: "monthly" },
-    { loc: "/contact", priority: "0.6", changefreq: "monthly" },
-    { loc: "/services", priority: "0.7", changefreq: "monthly" },
-    { loc: "/faq", priority: "0.5", changefreq: "monthly" },
-    { loc: "/donate", priority: "0.6", changefreq: "monthly" },
-    { loc: "/testimonials", priority: "0.5", changefreq: "monthly" },
-  ];
-
-  let urls = staticPages.map(
-    (p) => `  <url><loc>${BASE_URL}${p.loc}</loc><changefreq>${p.changefreq}</changefreq><priority>${p.priority}</priority></url>`
-  );
-
-  for (const book of books) {
-    const lastmod = book.updated_at ? `<lastmod>${book.updated_at.split("T")[0]}</lastmod>` : "";
-    urls.push(`  <url><loc>${BASE_URL}/books/${book.slug}</loc>${lastmod}<changefreq>weekly</changefreq><priority>0.8</priority></url>`);
-  }
-
-  for (const post of posts) {
-    const lastmod = post.updated_at ? `<lastmod>${post.updated_at.split("T")[0]}</lastmod>` : "";
-    urls.push(`  <url><loc>${BASE_URL}/articles/${post.slug}</loc>${lastmod}<changefreq>weekly</changefreq><priority>0.7</priority></url>`);
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   }
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -131,9 +90,5 @@ Deno.serve(async () => {
 ${urls.join("\n")}
 </urlset>`;
 
-<<<<<<< HEAD
   return new Response(xml, { headers });
-=======
-  return new Response(xml, { headers: corsHeaders });
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 });

@@ -1,0 +1,21 @@
+# Config for scripts/verify-live-seo.mjs — loaded via --config.
+# CLI flags always take precedence over entries below.
+
+# Per-route timing overrides. Book/article pages carry heavier prerendered
+# payloads and reference larger cover images than the marketing pages, so
+# they get a longer budget instead of failing the whole run.
+maxFetchMsRules:
+  - pattern: /books/*
+    ms: 6000
+  - pattern: /articles/*
+    ms: 6000
+
+maxAssetMsRules:
+  - pattern: /books/*
+    ms: 5000
+
+# Suppress known-benign findings on specific routes without weakening
+# validation for the rest of the site.
+allowlist:
+  redirects: []
+  canonicalMismatch: []

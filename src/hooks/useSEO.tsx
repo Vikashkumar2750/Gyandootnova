@@ -6,7 +6,6 @@ interface SEOProps {
   canonical?: string;
   ogImage?: string;
   ogType?: string;
-<<<<<<< HEAD
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   /** If true, emits hreflang link tags for en-US/GB/AU/CA/IN + hi-IN + x-default pointing at the current canonical URL. */
   hreflang?: boolean;
@@ -20,15 +19,18 @@ const DEFAULT_OG_W = "1216";
 const DEFAULT_OG_H = "640";
 
 const HREFLANGS = ["en", "en-US", "en-GB", "en-AU", "en-CA", "en-IN", "hi-IN", "x-default"] as const;
-=======
-  jsonLd?: Record<string, unknown>;
-}
 
-const BASE_URL = "https://gyandootnova.in";
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
-
+/**
+ * Returns the single meta tag for this key, creating it if missing and removing
+ * any duplicates (prerendered head + client head can otherwise both emit one).
+ */
 const getOrCreateMeta = (attr: string, value: string): HTMLMetaElement => {
-  let el = document.querySelector(`meta[${attr}="${value}"]`) as HTMLMetaElement;
+  const found = Array.from(
+    document.querySelectorAll(`meta[${attr}="${value}"]`),
+  ) as HTMLMetaElement[];
+  // Keep the first, drop every duplicate.
+  found.slice(1).forEach((n) => n.remove());
+  let el = found[0];
   if (!el) {
     el = document.createElement("meta");
     const [key] = attr === "property" ? ["property"] : ["name"];
@@ -38,11 +40,8 @@ const getOrCreateMeta = (attr: string, value: string): HTMLMetaElement => {
   return el;
 };
 
-<<<<<<< HEAD
+
 const useSEO = ({ title, description, canonical, ogImage, ogType, jsonLd, hreflang, noindex }: SEOProps) => {
-=======
-const useSEO = ({ title, description, canonical, ogImage, ogType, jsonLd }: SEOProps) => {
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   useEffect(() => {
     // Title
     document.title = title.includes("GyandootNova") ? title : `${title} | GyandootNova`;
@@ -52,7 +51,6 @@ const useSEO = ({ title, description, canonical, ogImage, ogType, jsonLd }: SEOP
       getOrCreateMeta("name", "description").content = description;
     }
 
-<<<<<<< HEAD
     // Robots — noindex premium/reader pages so book listings rank instead of chapters.
     const robotsEl = getOrCreateMeta("name", "robots");
     robotsEl.content = noindex ? "noindex, nofollow" : "index, follow";
@@ -62,8 +60,6 @@ const useSEO = ({ title, description, canonical, ogImage, ogType, jsonLd }: SEOP
     const absImage = rawImage.startsWith("http") ? rawImage : `${BASE_URL}${rawImage}`;
     const isDefault = rawImage === DEFAULT_OG;
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     // OG tags
     const setOG = (property: string, content: string) => {
       getOrCreateMeta("property", property).content = content;
@@ -71,7 +67,6 @@ const useSEO = ({ title, description, canonical, ogImage, ogType, jsonLd }: SEOP
     setOG("og:title", document.title);
     if (description) setOG("og:description", description);
     if (ogType) setOG("og:type", ogType);
-<<<<<<< HEAD
     setOG("og:image", absImage);
     setOG("og:image:alt", title);
     if (isDefault) {
@@ -79,9 +74,6 @@ const useSEO = ({ title, description, canonical, ogImage, ogType, jsonLd }: SEOP
       setOG("og:image:height", DEFAULT_OG_H);
       setOG("og:image:type", "image/jpeg");
     }
-=======
-    if (ogImage) setOG("og:image", ogImage.startsWith("http") ? ogImage : `${BASE_URL}${ogImage}`);
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     if (canonical) setOG("og:url", `${BASE_URL}${canonical}`);
 
     // Twitter
@@ -91,16 +83,16 @@ const useSEO = ({ title, description, canonical, ogImage, ogType, jsonLd }: SEOP
     setTwitter("twitter:card", "summary_large_image");
     setTwitter("twitter:title", document.title);
     if (description) setTwitter("twitter:description", description);
-<<<<<<< HEAD
     setTwitter("twitter:image", absImage);
     setTwitter("twitter:image:alt", title);
-=======
-    if (ogImage) setTwitter("twitter:image", ogImage.startsWith("http") ? ogImage : `${BASE_URL}${ogImage}`);
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 
-    // Canonical
+    // Canonical — exactly one per page; drop any duplicates from the static head.
     if (canonical) {
-      let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+      const links = Array.from(
+        document.querySelectorAll('link[rel="canonical"]'),
+      ) as HTMLLinkElement[];
+      links.slice(1).forEach((n) => n.remove());
+      let link = links[0];
       if (!link) {
         link = document.createElement("link");
         link.rel = "canonical";
@@ -109,12 +101,13 @@ const useSEO = ({ title, description, canonical, ogImage, ogType, jsonLd }: SEOP
       link.href = `${BASE_URL}${canonical}`;
     }
 
-<<<<<<< HEAD
     // hreflang alternates — mark the current URL as valid for every English
     // market we're targeting (US/UK/AU/CA/IN) plus Hindi (India) and x-default.
     const hreflangEls: HTMLLinkElement[] = [];
     if (hreflang && canonical) {
-      document.querySelectorAll('link[data-dyn-hreflang="1"]').forEach((n) => n.remove());
+      // Remove every existing alternate (dynamic or prerendered) so each
+      // hreflang value appears exactly once.
+      document.querySelectorAll('link[rel="alternate"][hreflang]').forEach((n) => n.remove());
       HREFLANGS.forEach((lang) => {
         const l = document.createElement("link");
         l.rel = "alternate";
@@ -125,6 +118,7 @@ const useSEO = ({ title, description, canonical, ogImage, ogType, jsonLd }: SEOP
         hreflangEls.push(l);
       });
     }
+
 
     // JSON-LD — accepts a single object or an array; each renders as its own <script>.
     const scriptEls: HTMLScriptElement[] = [];
@@ -147,23 +141,6 @@ const useSEO = ({ title, description, canonical, ogImage, ogType, jsonLd }: SEOP
       hreflangEls.forEach((l) => l.remove());
     };
   }, [title, description, canonical, ogImage, ogType, jsonLd, hreflang, noindex]);
-=======
-    // JSON-LD
-    let scriptEl: HTMLScriptElement | null = null;
-    if (jsonLd) {
-      scriptEl = document.createElement("script");
-      scriptEl.type = "application/ld+json";
-      scriptEl.id = "dynamic-jsonld";
-      scriptEl.textContent = JSON.stringify(jsonLd);
-      document.getElementById("dynamic-jsonld")?.remove();
-      document.head.appendChild(scriptEl);
-    }
-
-    return () => {
-      scriptEl?.remove();
-    };
-  }, [title, description, canonical, ogImage, ogType, jsonLd]);
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 };
 
 export default useSEO;

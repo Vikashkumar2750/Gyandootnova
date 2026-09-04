@@ -16,6 +16,7 @@ const ALLOWED = new Set([
   "seo-post-publish-hook",
   "seo-social-captions",
   "seo-auto-run",
+  "seo-rank-optimizer",
 ]);
 
 // Commands where "already succeeded today" should block a re-run.
@@ -24,6 +25,7 @@ const ONCE_PER_DAY = new Set([
   "seo-daily-publisher",
   "seo-book-kb-refresh",
   "seo-gsc-sync",
+  "seo-rank-optimizer",
 ]);
 
 const MAX_ATTEMPTS = 3;
@@ -157,6 +159,7 @@ Deno.serve(async (req) => {
           headers: {
             Authorization: `Bearer ${svc}`,
             apikey: svc,
+            "x-cron-secret": Deno.env.get("SEO_CRON_TOKEN") ?? "",
             "Content-Type": "application/json",
           },
           body: JSON.stringify(payload.body ?? {}),

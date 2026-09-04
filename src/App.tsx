@@ -2,7 +2,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-<<<<<<< HEAD
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { LocaleProvider } from "@/hooks/useLocale";
@@ -10,16 +9,13 @@ import { useVisitorTracker } from "@/hooks/useVisitorTracker";
 
 
 
-=======
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "@/hooks/useAuth";
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
+import ErrorBoundary from "@/components/ErrorBoundary";
+import { installSelfHealing } from "@/lib/selfHeal";
 
 // Only eagerly load the homepage
 import Index from "./pages/Index";
 
-<<<<<<< HEAD
 // Dashboard sub-pages (small, imported eagerly to avoid lazy-default issue)
 import {
   PurchasedBooks, FreeBooks, ContinueReading, Favorites, RecentlyViewed, ReadingHistory,
@@ -35,8 +31,6 @@ import {
   ReadingInsights, ExclusiveContent,
 } from "./pages/dashboard/Phase3Pages";
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 // Lazy load all other pages for faster initial load
 const Books = lazy(() => import("./pages/Books"));
 const BookDetail = lazy(() => import("./pages/BookDetail"));
@@ -48,10 +42,7 @@ const Donate = lazy(() => import("./pages/Donate"));
 const Auth = lazy(() => import("./pages/Auth"));
 const Profile = lazy(() => import("./pages/Profile"));
 const About = lazy(() => import("./pages/About"));
-<<<<<<< HEAD
 const OurStory = lazy(() => import("./pages/OurStory"));
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 const Services = lazy(() => import("./pages/Services"));
 const Contact = lazy(() => import("./pages/Contact"));
 const FAQ = lazy(() => import("./pages/FAQ"));
@@ -65,8 +56,8 @@ const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
 const ShippingPolicy = lazy(() => import("./pages/ShippingPolicy"));
 const SitemapPage = lazy(() => import("./pages/Sitemap"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
+const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
 const NotFound = lazy(() => import("./pages/NotFound"));
-<<<<<<< HEAD
 const Keywords = lazy(() => import("./pages/Keywords"));
 const Library = lazy(() => import("./pages/Library"));
 const OfferLanding = lazy(() => import("./pages/OfferLanding"));
@@ -78,8 +69,6 @@ const DashboardLayout = lazy(() => import("./pages/dashboard/DashboardLayout"));
 const DashboardHome = lazy(() => import("./pages/dashboard/DashboardHome"));
 
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const AdminBooks = lazy(() => import("./pages/admin/AdminBooks"));
@@ -87,10 +76,10 @@ const AdminPosts = lazy(() => import("./pages/admin/AdminPosts"));
 const AdminDonations = lazy(() => import("./pages/admin/AdminDonations"));
 const AdminPurchases = lazy(() => import("./pages/admin/AdminPurchases"));
 const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
+const AdminDataExport = lazy(() => import("./pages/admin/AdminDataExport"));
 const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
 const AdminCoupons = lazy(() => import("./pages/admin/AdminCoupons"));
 const AdminReferrals = lazy(() => import("./pages/admin/AdminReferrals"));
-<<<<<<< HEAD
 const AdminAI = lazy(() => import("./pages/admin/AdminAI"));
 const AdminScripts = lazy(() => import("./pages/admin/AdminScripts"));
 const AdminAuthProviders = lazy(() => import("./pages/admin/AdminAuthProviders"));
@@ -103,6 +92,8 @@ const AdminIdentifiedVisitors = lazy(() => import("./pages/admin/AdminIdentified
 const AdminSeoCommand = lazy(() => import("./pages/admin/AdminSeoCommand"));
 const AdminTeam = lazy(() => import("./pages/admin/AdminTeam"));
 const AdminContentAudit = lazy(() => import("./pages/admin/AdminContentAudit"));
+const AdminCopyright = lazy(() => import("./pages/admin/AdminCopyright"));
+const AdminVerseStudio = lazy(() => import("./pages/admin/AdminVerseStudio"));
 const AdminSalesFunnel = lazy(() => import("./pages/admin/AdminSalesFunnel"));
 
 
@@ -129,8 +120,6 @@ const YatharthGeetaVsBhagavadGita = lazy(() => import("./pages/compare/YatharthG
 const GitaPressVsIskconGita = lazy(() => import("./pages/compare/GitaPressVsIskconGita"));
 const BestHindiBhagavadGitaTranslation = lazy(() => import("./pages/compare/BestHindiBhagavadGitaTranslation"));
 const RamcharitmanasVsValmikiRamayan = lazy(() => import("./pages/compare/RamcharitmanasVsValmikiRamayan"));
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 
 // Minimal loading spinner
 const PageLoader = () => (
@@ -141,12 +130,12 @@ const PageLoader = () => (
 
 const queryClient = new QueryClient();
 
-<<<<<<< HEAD
 const AppContent = () => {
   useVisitorTracker();
 
-
-
+  useEffect(() => {
+    installSelfHealing();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -157,6 +146,7 @@ const AppContent = () => {
             <Toaster />
             <Sonner />
             <BrowserRouter>
+            <ErrorBoundary>
             <Suspense fallback={<PageLoader />}>
               <Routes>
                 <Route path="/" element={<Index />} />
@@ -176,6 +166,7 @@ const AppContent = () => {
                 <Route path="/donate" element={<Donate />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/auth" element={<Auth />} />
+                <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
                 <Route path="/profile" element={<Navigate to="/dashboard/profile" replace />} />
 
                 {/* User Dashboard */}
@@ -285,7 +276,10 @@ const AppContent = () => {
                   <Route path="seo-command" element={<AdminSeoCommand />} />
                   <Route path="team" element={<AdminTeam />} />
                   <Route path="content-audit" element={<AdminContentAudit />} />
+                  <Route path="copyright" element={<AdminCopyright />} />
+                  <Route path="verse-studio" element={<AdminVerseStudio />} />
                   <Route path="settings" element={<AdminSettings />} />
+                  <Route path="data-export" element={<AdminDataExport />} />
                   <Route path="sales-funnel" element={<AdminSalesFunnel />} />
 
 
@@ -293,6 +287,7 @@ const AppContent = () => {
                 <Route path="*" element={<NotFound />} />
               </Routes>
               </Suspense>
+              </ErrorBoundary>
             </BrowserRouter>
           </LocaleProvider>
         </AuthProvider>
@@ -302,60 +297,5 @@ const AppContent = () => {
 };
 
 const App = () => <AppContent />;
-=======
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <AuthProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Suspense fallback={<PageLoader />}>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/books" element={<Books />} />
-              <Route path="/books/:slug" element={<BookDetail />} />
-              <Route path="/books/:slug/read-file" element={<FileBookReader />} />
-              <Route path="/books/:slug/:chapterSlug" element={<BookReader />} />
-              <Route path="/articles" element={<Articles />} />
-              <Route path="/articles/:slug" element={<ArticleDetail />} />
-              <Route path="/support-us" element={<Donate />} />
-              <Route path="/donate" element={<Donate />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/testimonials" element={<TestimonialsPage />} />
-              <Route path="/portfolio" element={<Portfolio />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms-conditions" element={<TermsConditions />} />
-              <Route path="/careers" element={<Careers />} />
-              <Route path="/support" element={<Support />} />
-              <Route path="/refund-policy" element={<RefundPolicy />} />
-              <Route path="/shipping-policy" element={<ShippingPolicy />} />
-              <Route path="/sitemap" element={<SitemapPage />} />
-              <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<AdminDashboard />} />
-                <Route path="users" element={<AdminUsers />} />
-                <Route path="books" element={<AdminBooks />} />
-                <Route path="posts" element={<AdminPosts />} />
-                <Route path="coupons" element={<AdminCoupons />} />
-                <Route path="donations" element={<AdminDonations />} />
-                <Route path="purchases" element={<AdminPurchases />} />
-                <Route path="referrals" element={<AdminReferrals />} />
-                <Route path="settings" element={<AdminSettings />} />
-              </Route>
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
-      </AuthProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 
 export default App;

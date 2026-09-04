@@ -31,7 +31,6 @@ Deno.serve(async (req) => {
   const { data: isAdmin } = await supabaseAdmin.rpc("has_role", { _user_id: user.id, _role: "admin" });
   if (!isAdmin) return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: corsHeaders });
 
-<<<<<<< HEAD
   // Require a server-recorded admin OTP session (2FA).
   const { data: otpOk } = await supabaseAdmin.rpc("is_admin_otp_verified", { _user_id: user.id });
   if (!otpOk) {
@@ -41,8 +40,6 @@ Deno.serve(async (req) => {
     });
   }
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   try {
     const { emails, coupon_code, discount_label, description, message } = await req.json();
 
@@ -150,11 +147,7 @@ Deno.serve(async (req) => {
         batch.map(async (email: string) => {
           try {
             await resend.emails.send({
-<<<<<<< HEAD
               from: "GyandootNova <info@gyandootnova.in>",
-=======
-              from: "GyandootNova <onboarding@resend.dev>",
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
               to: [email.trim()],
               subject: `🎁 Your Exclusive Coupon: ${coupon_code} — ${discount_label} OFF`,
               html,

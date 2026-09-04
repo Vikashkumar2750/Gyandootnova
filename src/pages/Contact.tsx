@@ -2,11 +2,7 @@ import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-<<<<<<< HEAD
 import { Mail, MapPin, Phone, Loader2, ExternalLink, BookMarked, MessageCircle } from "lucide-react";
-=======
-import { Mail, MapPin, Phone, Loader2 } from "lucide-react";
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -14,7 +10,6 @@ import useSEO from "@/hooks/useSEO";
 
 const Contact = () => {
   useSEO({
-<<<<<<< HEAD
     title: "Contact Us — Get in Touch with GyandootNova",
     description:
       "Books, orders, suggestions or partnerships — reach us via WhatsApp, email or the contact form. We reply the same day.",
@@ -45,7 +40,7 @@ const Contact = () => {
           "Spiritual publisher and digital library — an authoritative source for the Vedas, Upanishads, Gita, Ramayana, Mahabharata and other Sanatana Dharma scriptures.",
         url: "https://gyandootnova.in/contact",
         telephone: "+91 91615 33353",
-        email: "amrendra8765@gmail.com",
+        email: "gyandootnova57@gmail.com",
         address: {
           "@type": "PostalAddress",
           streetAddress: "Bhagwan Khera",
@@ -70,19 +65,10 @@ const Contact = () => {
 
   const { toast } = useToast();
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
-=======
-    title: "Contact GyandootNova — Spiritual Books Support & Enquiry",
-    description: "Contact GyandootNova for questions about dharmik granth, book orders, spiritual programs, or collaboration. Email, phone & contact form available.",
-    canonical: "/contact",
-  });
-  const { toast } = useToast();
-  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   const [sending, setSending] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-<<<<<<< HEAD
     const phoneDigits = form.phone.replace(/\D/g, "");
     if (phoneDigits.length < 10 || phoneDigits.length > 15) {
       toast({ title: "Mobile number required", description: "Please enter a valid mobile number (10–15 digits).", variant: "destructive" });
@@ -105,19 +91,6 @@ const Contact = () => {
       toast({ title: "Couldn't send", description: "Please try again in a moment, or email us directly.", variant: "destructive" });
     } finally {
 
-=======
-    setSending(true);
-    try {
-      const { data, error } = await supabase.functions.invoke("send-contact-email", {
-        body: form,
-      });
-      if (error) throw error;
-      toast({ title: "Message Sent ✅", description: "Thank you! We'll get back to you soon." });
-      setForm({ name: "", email: "", subject: "", message: "" });
-    } catch {
-      toast({ title: "Failed to send", description: "Please try again or email us directly.", variant: "destructive" });
-    } finally {
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       setSending(false);
     }
   };
@@ -126,7 +99,6 @@ const Contact = () => {
     <Layout>
       <main className="container py-16">
         <section className="text-center mb-16">
-<<<<<<< HEAD
           <h1 className="font-serif text-4xl md:text-5xl font-bold text-primary mb-4">Have something to say?</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             A complaint, a suggestion, or just a hello — whatever it is, write in. We read every message and reply the same day.
@@ -200,38 +172,18 @@ const Contact = () => {
           {/* Contact Info */}
           <div>
             <h2 className="font-serif text-2xl font-bold text-foreground mb-6">Direct contact</h2>
-=======
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-primary mb-4">Contact Us</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Have questions, feedback, or want to collaborate? We'd love to hear from you.
-          </p>
-        </section>
-
-        <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          {/* Contact Info */}
-          <div>
-            <h2 className="font-serif text-2xl font-bold text-foreground mb-6">Get in Touch</h2>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
             <div className="space-y-6">
               <div className="flex items-start gap-4">
                 <Mail className="h-6 w-6 text-primary mt-1" />
                 <div>
                   <p className="font-semibold text-foreground">Email</p>
-<<<<<<< HEAD
-                  <p className="text-muted-foreground">amrendra8765@gmail.com</p>
-=======
-                  <p className="text-muted-foreground">contact@gyandootnova.in</p>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
+                  <p className="text-muted-foreground">gyandootnova57@gmail.com</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <Phone className="h-6 w-6 text-primary mt-1" />
                 <div>
-<<<<<<< HEAD
                   <p className="font-semibold text-foreground">Phone / WhatsApp</p>
-=======
-                  <p className="font-semibold text-foreground">Phone</p>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                   <p className="text-muted-foreground">+91 91615 33353</p>
                 </div>
               </div>
@@ -239,7 +191,6 @@ const Contact = () => {
                 <MapPin className="h-6 w-6 text-primary mt-1" />
                 <div>
                   <p className="font-semibold text-foreground">Address</p>
-<<<<<<< HEAD
                   <p className="text-muted-foreground">Bhagwan Khera, Unnao, Uttar Pradesh 209863 — India</p>
                   <p className="text-xs text-muted-foreground mt-1">26.1780° N, 80.6534° E</p>
                   <a
@@ -250,15 +201,11 @@ const Contact = () => {
                   >
                     <ExternalLink className="h-3.5 w-3.5" /> Open in Google Maps
                   </a>
-=======
-                  <p className="text-muted-foreground">Unnao UP, India</p>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                 </div>
               </div>
             </div>
 
             <div className="mt-8 p-6 bg-muted/50 rounded-xl">
-<<<<<<< HEAD
               <h3 className="font-serif font-semibold text-foreground mb-2">When to reach us</h3>
               <p className="text-sm text-muted-foreground">Mon–Sat: 10 AM to 6 PM (India time)</p>
               <p className="text-sm text-muted-foreground">Sunday: closed</p>
@@ -275,41 +222,21 @@ const Contact = () => {
                 name="name"
                 aria-label="Your name"
                 placeholder="Your name"
-=======
-              <h3 className="font-serif font-semibold text-foreground mb-2">Working Hours</h3>
-              <p className="text-sm text-muted-foreground">Monday – Saturday: 10:00 AM – 6:00 PM IST</p>
-              <p className="text-sm text-muted-foreground">Sunday: Closed</p>
-            </div>
-          </div>
-
-          {/* Contact Form */}
-          <div>
-            <h2 className="font-serif text-2xl font-bold text-foreground mb-6">Send a Message</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <Input
-                placeholder="Your Name"
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                 required
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
               />
               <Input
-<<<<<<< HEAD
                 id="contact-email"
                 name="email"
                 type="email"
                 aria-label="Email address"
                 placeholder="Email address"
-=======
-                type="email"
-                placeholder="Your Email"
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                 required
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
               />
               <Input
-<<<<<<< HEAD
                 id="contact-phone"
                 name="phone"
                 type="tel"
@@ -324,22 +251,16 @@ const Contact = () => {
                 id="contact-subject"
                 name="subject"
                 aria-label="Subject"
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                 placeholder="Subject"
                 required
                 value={form.subject}
                 onChange={(e) => setForm({ ...form, subject: e.target.value })}
               />
               <Textarea
-<<<<<<< HEAD
                 id="contact-message"
                 name="message"
                 aria-label="Message"
                 placeholder="Write your message…"
-=======
-                placeholder="Your Message"
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                 required
                 rows={5}
                 value={form.message}
@@ -348,7 +269,6 @@ const Contact = () => {
               <Button type="submit" className="w-full" disabled={sending}>
                 {sending ? (
                   <>
-<<<<<<< HEAD
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Sending…
                   </>
                 ) : (
@@ -388,17 +308,6 @@ const Contact = () => {
             />
           </div>
         </section>
-=======
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Sending...
-                  </>
-                ) : (
-                  "Send Message"
-                )}
-              </Button>
-            </form>
-          </div>
-        </div>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       </main>
     </Layout>
   );

@@ -187,18 +187,13 @@ const BulkBookUpload = () => {
         }
 
         const slug = slugify(item.title);
-<<<<<<< HEAD
         const { data: inserted, error } = await supabase.from("books").insert({
-=======
-        const { error } = await supabase.from("books").insert({
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           title: item.title,
           author: item.author,
           slug,
           price: item.is_free ? 0 : item.price,
           is_free: item.is_free,
           cover_url,
-<<<<<<< HEAD
           file_type,
         }).select("id").single();
         if (error) throw error;
@@ -212,13 +207,6 @@ const BulkBookUpload = () => {
         }
 
 
-=======
-          file_url,
-          file_type,
-        });
-        if (error) throw error;
-
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
         done++;
         setProgress(Math.round((done / total) * 100));
       }

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import WhatsAppSupportButton from "@/components/WhatsAppSupportButton";
 
 export const NotificationsPage = () => {
   const { user } = useAuth();
@@ -47,11 +48,26 @@ export const NotificationsPage = () => {
 export const SupportPage = () => (
   <div className="space-y-4">
     <h1 className="font-serif text-2xl md:text-3xl">Support</h1>
+    <Card className="surface-card border-primary/30">
+      <CardContent className="p-5 flex flex-col sm:flex-row sm:items-center gap-3">
+        <div className="h-10 w-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+          <MessageCircle className="h-5 w-5" />
+        </div>
+        <div className="flex-1">
+          <div className="font-medium">WhatsApp support</div>
+          <div className="text-xs text-muted-foreground">
+            Turant madad — book ka naam aur aapki details message me apne aap aa jayengi.
+          </div>
+        </div>
+        <WhatsAppSupportButton size="sm" variant="default" label="WhatsApp खोलें" />
+      </CardContent>
+    </Card>
     <div className="grid md:grid-cols-2 gap-4">
       {[
+
         { icon: HelpCircle, title: "FAQ", desc: "Aksar puchhe jaane wale prashn.", to: "/faq" },
         { icon: MessageCircle, title: "Contact Form", desc: "Hume likh bhejein.", to: "/contact" },
-        { icon: Mail, title: "Email support", desc: "amrendra8765@gmail.com", to: "mailto:amrendra8765@gmail.com" },
+        { icon: Mail, title: "Email support", desc: "gyandootnova57@gmail.com", to: "mailto:gyandootnova57@gmail.com" },
         { icon: LifeBuoy, title: "Help Center", desc: "Guides aur troubleshooting.", to: "/support" },
       ].map((c) => (
         <Card key={c.title} className="surface-card">

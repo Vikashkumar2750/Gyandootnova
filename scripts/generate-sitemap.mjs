@@ -75,14 +75,20 @@ const STATIC = [
 ];
 
 async function fetchRows(table, select) {
-  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?select=${select}`, {
-    headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
-  });
-  if (!r.ok) {
-    console.warn(`[sitemap] ${table} fetch failed (${r.status})`);
+  // Network/DB outages must never fail the build — fall back to static routes.
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?select=${select}`, {
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+    });
+    if (!r.ok) {
+      console.warn(`[sitemap] ${table} fetch failed (${r.status})`);
+      return [];
+    }
+    return await r.json();
+  } catch (e) {
+    console.warn(`[sitemap] ${table} fetch failed (${e.message})`);
     return [];
   }
-  return r.json();
 }
 
 async function fetchReaderRows() {
@@ -163,5 +169,5 @@ async function main() {
 
 main().catch((e) => {
   console.error("[sitemap] generation failed:", e);
-  process.exit(1);
+  // Keep the existing sitemap.xml and let the build continue.
 });

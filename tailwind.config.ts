@@ -12,7 +12,6 @@ export default {
         sm: "1.5rem",
         lg: "2rem",
       },
-<<<<<<< HEAD
       screens: {
         "2xl": "1280px",
       },
@@ -27,14 +26,6 @@ export default {
       },
 
 
-=======
-    },
-    extend: {
-      fontFamily: {
-        serif: ["'Playfair Display'", "serif"],
-        sans: ["'Inter'", "sans-serif"],
-      },
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -44,10 +35,7 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
-<<<<<<< HEAD
           glow: "hsl(var(--primary-glow))",
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -73,7 +61,6 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-<<<<<<< HEAD
         gold: {
           DEFAULT: "hsl(var(--gold))",
           glow: "hsl(var(--gold-glow))",
@@ -86,8 +73,6 @@ export default {
           DEFAULT: "hsl(var(--royal-blue))",
           glow: "hsl(var(--royal-blue-glow))",
         },
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -99,7 +84,6 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
       },
-<<<<<<< HEAD
       backgroundImage: {
         "gradient-hero": "var(--gradient-hero)",
         "gradient-gold": "var(--gradient-gold)",
@@ -113,17 +97,12 @@ export default {
         card: "var(--shadow-card)",
         lift: "var(--shadow-lift)",
       },
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-<<<<<<< HEAD
         xl: "calc(var(--radius) + 4px)",
         "2xl": "calc(var(--radius) + 8px)",
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       },
       keyframes: {
         "accordion-down": {

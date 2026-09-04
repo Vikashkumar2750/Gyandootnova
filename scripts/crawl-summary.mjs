@@ -40,10 +40,11 @@ async function main() {
   const urls = Array.from(xml.matchAll(/<loc>([^<]+)<\/loc>/g)).map((m) => m[1]);
   console.log(`→ crawl-summary: ${urls.length} URLs from sitemap`);
 
+  const isWin = process.platform === "win32";
   const preview = spawn(
-    "bunx",
+    isWin ? "npx.cmd" : "npx",
     ["vite", "preview", "--port", String(PORT), "--strictPort"],
-    { stdio: ["ignore", "pipe", "pipe"], env: process.env }
+    { stdio: ["ignore", "pipe", "pipe"], env: process.env, shell: isWin }
   );
   preview.stderr.on("data", () => {});
   await waitForServer(ORIGIN);

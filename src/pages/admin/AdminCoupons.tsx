@@ -30,10 +30,7 @@ type Coupon = {
   is_active: boolean;
   expires_at: string | null;
   created_at: string;
-<<<<<<< HEAD
   repurchase_only?: boolean;
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   restricted_books?: Book[];
 };
 
@@ -46,15 +43,10 @@ const defaultForm = {
   min_order_amount: "",
   is_active: true,
   expires_at: "",
-<<<<<<< HEAD
   repurchase_only: false,
 };
 
 
-=======
-};
-
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 const defaultBulkForm = {
   prefix: "",
   count: "5",
@@ -139,15 +131,10 @@ const AdminCoupons = () => {
         min_order_amount: values.min_order_amount ? Number(values.min_order_amount) : 0,
         is_active: values.is_active,
         expires_at: values.expires_at ? new Date(values.expires_at).toISOString() : null,
-<<<<<<< HEAD
         repurchase_only: values.repurchase_only,
       };
 
 
-=======
-      };
-
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       let couponId = editCoupon?.id;
       if (editCoupon) {
         const { error } = await supabase.from("coupons" as any).update(payload).eq("id", editCoupon.id);
@@ -314,13 +301,9 @@ const AdminCoupons = () => {
       min_order_amount: coupon.min_order_amount ? String(coupon.min_order_amount) : "",
       is_active: coupon.is_active,
       expires_at: coupon.expires_at ? coupon.expires_at.slice(0, 16) : "",
-<<<<<<< HEAD
       repurchase_only: !!coupon.repurchase_only,
     });
 
-=======
-    });
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     setSelectedBookIds((coupon.restricted_books ?? []).map((b) => b.id));
     setDialogOpen(true);
   };
@@ -387,7 +370,6 @@ const AdminCoupons = () => {
                       </button>
                     </div>
                     {c.description && <p className="text-xs text-muted-foreground mt-0.5">{c.description}</p>}
-<<<<<<< HEAD
                     {c.repurchase_only && (
                       <Badge variant="outline" className="mt-1 text-[10px] border-amber-500/40 text-amber-600 dark:text-amber-400">
                         Repurchase only
@@ -395,9 +377,6 @@ const AdminCoupons = () => {
                     )}
                   </TableCell>
 
-=======
-                  </TableCell>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                   <TableCell>
                     <Badge variant="outline">
                       {c.discount_type === "percent" ? `${c.discount_value}%` : `₹${c.discount_value}`} OFF
@@ -475,11 +454,7 @@ const AdminCoupons = () => {
 
       {/* Create / Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={(o) => { setDialogOpen(o); if (!o) { setEditCoupon(null); setForm(defaultForm); setSelectedBookIds([]); } }}>
-<<<<<<< HEAD
         <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
-=======
-        <DialogContent className="max-w-md">
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           <DialogHeader>
             <DialogTitle>{editCoupon ? "Edit Coupon" : "Create Coupon"}</DialogTitle>
           </DialogHeader>
@@ -610,7 +585,6 @@ const AdminCoupons = () => {
               )}
             </div>
 
-<<<<<<< HEAD
             <div className="rounded-md border border-amber-500/30 bg-amber-500/5 p-3 space-y-1">
               <div className="flex items-center gap-2">
                 <Switch
@@ -625,8 +599,6 @@ const AdminCoupons = () => {
               </p>
             </div>
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
             <div className="flex items-center gap-2">
               <Switch
                 id="is_active"
@@ -635,10 +607,7 @@ const AdminCoupons = () => {
               />
               <Label htmlFor="is_active">Active</Label>
             </div>
-<<<<<<< HEAD
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancel</Button>

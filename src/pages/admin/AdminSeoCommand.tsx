@@ -84,7 +84,7 @@ const StatusBadge = ({ s }: { s: JobRun["status"] }) => {
 const ALL_FNS = [
   "seo-daily-publisher", "seo-queue-topup", "seo-book-kb-refresh",
   "seo-gsc-sync", "seo-post-publish-hook", "seo-social-captions",
-  "seo-blog-agent", "seo-auto-run",
+  "seo-blog-agent", "seo-auto-run", "seo-rank-optimizer",
 ];
 
 const AdminSeoCommand = () => {
@@ -182,6 +182,7 @@ const AdminSeoCommand = () => {
   const runDaily = (force = false) => dispatch("seo-daily-publisher", {}, "Daily publisher", force);
   const refreshKb = (force = false) => dispatch("seo-book-kb-refresh", { force: true }, "Book KB refresh", force);
   const topUp = () => dispatch("seo-queue-topup", {}, "Queue top-up");
+  const rankOptimize = (force = false) => dispatch("seo-rank-optimizer", { limit: 5 }, "Rank optimizer", force);
   const publishHook = async (id: string) => { await call("seo-post-publish-hook", { post_id: id }, "Publish hook"); await load(); };
   const genSocial = async (id: string) => { await call("seo-social-captions", { post_id: id }, "Social captions"); await load(); };
 
@@ -250,9 +251,13 @@ const AdminSeoCommand = () => {
           <Button onClick={() => refreshKb(false)} disabled={!!busy} size="sm" variant="outline">
             {busy === "Book KB refresh" ? <Loader2 className="h-4 w-4 animate-spin" /> : <BookOpen className="h-4 w-4" />} Refresh Book KB
           </Button>
+          <Button onClick={() => rankOptimize(false)} disabled={!!busy} size="sm" variant="secondary">
+            {busy === "Rank optimizer" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Target className="h-4 w-4" />} Rank Optimizer
+          </Button>
           <Button onClick={syncGsc} disabled={!!busy} variant="outline" size="sm">
             {busy === "GSC sync" ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCcw className="h-4 w-4" />} Sync GSC
           </Button>
+
         </div>
       </div>
 

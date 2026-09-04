@@ -71,7 +71,6 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
-<<<<<<< HEAD
 
 ## SSR / SEO verification (`scripts/verify-ssr-seo.sh`)
 
@@ -131,5 +130,3 @@ curl, so what you see is what crawlers see.
    include it. Add it to the route list and re-deploy.
 
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4

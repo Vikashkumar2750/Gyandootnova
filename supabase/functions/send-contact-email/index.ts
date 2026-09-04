@@ -1,23 +1,16 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-<<<<<<< HEAD
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY")!;
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const ADMIN_EMAIL = "amrendra8765@gmail.com";
-=======
-
-const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY")!;
-const ADMIN_EMAIL = "contact@gyandootnova.com";
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
+const ADMIN_EMAIL = "gyandootnova57@gmail.com";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-<<<<<<< HEAD
 // HTML escape to prevent injection in the rendered admin email.
 const esc = (v: unknown) =>
   String(v ?? "")
@@ -44,13 +37,10 @@ function rateLimited(req: Request): boolean {
   return entry.count > MAX_PER_WINDOW;
 }
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-<<<<<<< HEAD
     if (rateLimited(req)) {
       return new Response(JSON.stringify({ error: "Too many requests. Try again shortly." }), {
         status: 429,
@@ -78,12 +68,6 @@ serve(async (req) => {
     const safeEmail = esc(email);
     const safeSubject = esc(subject);
     const safeMessage = esc(message).replace(/\n/g, "<br>");
-=======
-    const { name, email, subject, message } = await req.json();
-    if (!name || !email || !subject || !message) {
-      return new Response(JSON.stringify({ error: "All fields are required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-    }
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 
     const html = `
       <div style="font-family: 'Georgia', serif; max-width: 600px; margin: 0 auto; background: #fafaf8; border-radius: 12px; overflow: hidden;">
@@ -92,7 +76,6 @@ serve(async (req) => {
         </div>
         <div style="padding: 32px;">
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
-<<<<<<< HEAD
             <tr><td style="padding: 8px 0; color: #888; width: 80px;">Name</td><td style="padding: 8px 0; font-weight: 600;">${safeName}</td></tr>
             <tr><td style="padding: 8px 0; color: #888;">Email</td><td style="padding: 8px 0;">${safeEmail}</td></tr>
             <tr><td style="padding: 8px 0; color: #888;">Subject</td><td style="padding: 8px 0; font-weight: 600;">${safeSubject}</td></tr>
@@ -100,22 +83,12 @@ serve(async (req) => {
           <div style="background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 20px;">
             <p style="margin: 0 0 8px; color: #888; font-size: 12px; text-transform: uppercase;">Message</p>
             <p style="margin: 0; line-height: 1.7; color: #333;">${safeMessage}</p>
-=======
-            <tr><td style="padding: 8px 0; color: #888; width: 80px;">Name</td><td style="padding: 8px 0; font-weight: 600;">${name}</td></tr>
-            <tr><td style="padding: 8px 0; color: #888;">Email</td><td style="padding: 8px 0;"><a href="mailto:${email}" style="color: #8B1A1A;">${email}</a></td></tr>
-            <tr><td style="padding: 8px 0; color: #888;">Subject</td><td style="padding: 8px 0; font-weight: 600;">${subject}</td></tr>
-          </table>
-          <div style="background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 20px;">
-            <p style="margin: 0 0 8px; color: #888; font-size: 12px; text-transform: uppercase;">Message</p>
-            <p style="margin: 0; line-height: 1.7; color: #333;">${message.replace(/\n/g, "<br>")}</p>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           </div>
           <p style="margin-top: 24px; font-size: 12px; color: #aaa;">Sent from GyandootNova Contact Form</p>
         </div>
       </div>
     `;
 
-<<<<<<< HEAD
     // Persist the enquiry so admins can see it in the admin panel,
     // even if email delivery later fails.
     try {
@@ -131,47 +104,30 @@ serve(async (req) => {
       console.error("contact_enquiries insert error:", logErr);
     }
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${RESEND_API_KEY}` },
       body: JSON.stringify({
-<<<<<<< HEAD
         from: "GyandootNova <info@gyandootnova.in>",
         to: [ADMIN_EMAIL],
         reply_to: email,
         subject: `Contact: ${subject}`.slice(0, 200),
-=======
-        from: "GyandootNova <onboarding@resend.dev>",
-        to: [ADMIN_EMAIL],
-        reply_to: email,
-        subject: `Contact: ${subject}`,
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
         html,
       }),
     });
 
     if (!res.ok) {
       const err = await res.text();
-<<<<<<< HEAD
       console.error("Resend error:", err);
       // Email failed but enquiry is saved — still tell the user we got it.
       return new Response(JSON.stringify({ success: true, emailDelivered: false }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
-=======
-      throw new Error(err);
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     }
 
     return new Response(JSON.stringify({ success: true }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   } catch (e) {
-<<<<<<< HEAD
     console.error("send-contact-email error:", e);
     return new Response(JSON.stringify({ error: "Unexpected error" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-=======
-    return new Response(JSON.stringify({ error: e.message }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   }
 });

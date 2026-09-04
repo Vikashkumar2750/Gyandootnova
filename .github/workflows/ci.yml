@@ -1,0 +1,139 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    name: Typecheck, lint, build & prerender
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Install Playwright Chromium
+        run: bunx playwright install --with-deps chromium
+      - name: Typecheck
+        run: bun run typecheck
+      - name: Lint
+        run: bun run lint
+      - name: Unit tests (JSON-LD schema + cart persistence)
+        # These block merges on any JSON-LD or cart-persistence regression.
+        run: bun run test
+      - name: Verify sitemap.xml + robots.txt cover required public routes
+        # Regenerates sitemap.xml and asserts /articles, /library, /cart, etc.
+        # are listed and not blocked by robots.txt.
+        run: node scripts/verify-sitemap-routes.mjs
+      - name: Build (runs prerender + SEO check via postbuild)
+        run: bun run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
+      - name: Upload dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 3
+
+  seo-live-verify:
+    name: Live SEO verifier (curl-based)
+    runs-on: ubuntu-latest
+    needs: verify
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - name: Download prerendered dist
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - name: Serve dist on :4175
+        run: |
+          bunx vite preview --port 4175 --strictPort > preview.log 2>&1 &
+          echo $! > preview.pid
+          for i in $(seq 1 40); do
+            if curl -fsS http://localhost:4175/ > /dev/null; then echo "preview up"; break; fi
+            sleep 0.5
+          done
+      - name: Run live SEO verifier against local preview
+        run: |
+          node scripts/verify-live-seo.mjs \
+            --origin=http://localhost:4175 \
+            --concurrency=8 \
+            --min-concurrency=2 \
+            --retries=3 \
+            --backoff=500 \
+            --timeout=15000 \
+            --min-words=60 \
+            --max-fetch-ms=4000 \
+            --max-asset-ms=3000 \
+            --config=.github/seo-verify.config.yaml \
+            --report=dist/seo-live-report.json \
+            --html=dist/seo-live-report.html \
+            --csv=dist/seo-live-report.csv \
+            --sarif=dist/seo-live-report.sarif \
+            --debug-log=dist/seo-live-debug.ndjson \
+            --github-summary
+      - name: Stop preview
+        if: always()
+        run: kill "$(cat preview.pid)" || true
+      - name: Upload SEO reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-live-report
+          path: |
+            dist/seo-live-report.json
+            dist/seo-live-report.html
+            dist/seo-live-report.csv
+            dist/seo-live-report.sarif
+          retention-days: 14
+          if-no-files-found: warn
+      - name: Upload SEO debug log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-live-debug
+          path: dist/seo-live-debug.ndjson
+          retention-days: 14
+          if-no-files-found: warn
+      - name: Upload SARIF to GitHub code scanning
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: dist/seo-live-report.sarif
+          category: seo-live-verify
+
+
+
+
+  lighthouse:
+    name: Lighthouse performance budgets
+    runs-on: ubuntu-latest
+    needs: verify
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - name: Download prerendered dist
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - name: Run Lighthouse CI
+        run: bunx lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}

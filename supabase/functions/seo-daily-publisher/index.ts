@@ -39,7 +39,7 @@ function readability(text: string): number {
 async function invokeFn(url: string, svc: string, name: string, body: any) {
   const r = await fetch(`${url}/functions/v1/${name}`, {
     method: "POST",
-    headers: { Authorization: `Bearer ${svc}`, apikey: svc, "Content-Type": "application/json" },
+    headers: { Authorization: `Bearer ${svc}`, apikey: svc, "x-cron-secret": Deno.env.get("SEO_CRON_TOKEN") ?? "", "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
   const text = await r.text();
@@ -152,7 +152,7 @@ Deno.serve(async (req) => {
     }
     const originality = Math.round((1 - origMax) * 100);
     const seoScore = Number(post?.content_score || 0);
-    const passed = seoScore >= 70 && rd >= 55 && originality >= 85;
+    const passed = seoScore >= 70 && rd >= 55 && originality >= 95;
 
     await sb.from("posts").update({
       readability_score: rd,
@@ -165,7 +165,7 @@ Deno.serve(async (req) => {
         checks: {
           seo_over_70: seoScore >= 70,
           readability_over_55: rd >= 55,
-          originality_over_85: originality >= 85,
+          originality_over_95: originality >= 95,
         },
       },
     }).eq("id", postId);
@@ -173,9 +173,9 @@ Deno.serve(async (req) => {
 
     // 6.1) If originality is below threshold, kick auto-rewrite (async, non-blocking).
     // The rewrite function emails the admin on success or exhausted attempts.
-    if (originality < 85) {
+    if (originality < 95) {
       log("auto_rewrite_triggered", { originality });
-      invokeFn(url, svc, "seo-auto-rewrite", { post_id: postId, threshold: 85, max_attempts: 2 })
+      invokeFn(url, svc, "seo-auto-rewrite", { post_id: postId, threshold: 95, max_attempts: 3 })
         .catch((e) => log("auto_rewrite_error", { error: String(e?.message || e) }));
     }
 

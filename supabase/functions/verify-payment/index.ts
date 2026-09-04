@@ -1,8 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-<<<<<<< HEAD
-import { convertInr } from "../_shared/fx.ts";
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
+import { normalizeCurrency, paypalAmount } from "../_shared/currency.ts";
+import { PAYPAL_API_BASE } from "../_shared/paypal.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -38,18 +36,9 @@ Deno.serve(async (req) => {
       });
     }
 
-<<<<<<< HEAD
     // Guest purchases are allowed — verify-payment will look up the pending row by order_id.
     // No auth required.
 
-=======
-    if (type === "purchase" && !user) {
-      return new Response(JSON.stringify({ error: "Login required for purchase verification" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 
     if (gateway === "razorpay") {
       return await verifyRazorpay(supabase, user, order_id, payment_id, signature, type);
@@ -70,6 +59,14 @@ Deno.serve(async (req) => {
   }
 });
 
+const CURRENCY_SYMBOLS: Record<string, string> = {
+  INR: "₹", USD: "$", GBP: "£", EUR: "€", CAD: "C$", AUD: "A$", JPY: "¥", SGD: "S$",
+  AED: "AED ", SAR: "SAR ",
+};
+// Same number, different currency — never converted.
+const money = (amount: number, code: string) =>
+  `${CURRENCY_SYMBOLS[normalizeCurrency(code)] ?? ""}${amount} ${normalizeCurrency(code)}`;
+
 async function sendReceipt(
   supabase: any,
   user: any,
@@ -86,6 +83,7 @@ async function sendReceipt(
 
   try {
     let amount = 0;
+    let currencyCode = "INR";
     let bookTitle = "";
     let recipientEmail = user?.email || "";
     let recipientName = "";
@@ -93,28 +91,20 @@ async function sendReceipt(
     if (type === "purchase") {
       const { data: purchase } = await supabase
         .from("purchases")
-<<<<<<< HEAD
-        .select("book_id, created_at, guest_email, guest_name, claim_token")
-=======
-        .select("book_id, created_at")
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
+        .select("book_id, created_at, guest_email, guest_name, claim_token, amount, currency")
         .eq("razorpay_order_id", orderId)
         .single();
       if (purchase?.book_id) {
         const { data: book } = await supabase
           .from("books")
-<<<<<<< HEAD
           .select("title, price, slug")
-=======
-          .select("title, price")
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           .eq("id", purchase.book_id)
           .single();
         if (book) {
           bookTitle = book.title;
-          amount = book.price;
+          amount = Number(purchase.amount ?? book.price);
         }
-<<<<<<< HEAD
+        currencyCode = normalizeCurrency(purchase.currency ?? "INR");
         if (purchase.guest_email) {
           recipientEmail = purchase.guest_email;
           recipientName = purchase.guest_name ?? "";
@@ -125,17 +115,16 @@ async function sendReceipt(
         (globalThis as any).__claimUrl = `https://gyandootnova.in/claim/${purchase.claim_token}`;
       } else {
         (globalThis as any).__claimUrl = "";
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       }
     } else {
       const { data: donation } = await supabase
         .from("donations")
-        .select("amount, donor_name, donor_email")
+        .select("amount, donor_name, donor_email, currency")
         .eq("razorpay_order_id", orderId)
         .single();
       if (donation) {
         amount = donation.amount;
+        currencyCode = normalizeCurrency(donation.currency ?? "INR");
         recipientName = donation.donor_name || "";
         if (donation.donor_email) recipientEmail = donation.donor_email;
       }
@@ -165,21 +154,16 @@ async function sendReceipt(
           <p>Thank you for your purchase! Your book is now ready to read.</p>
           <div style="background: #FFF8E1; border-left: 4px solid #FBC02D; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
             <p style="margin: 0 0 8px; font-weight: bold; color: #333;">📖 ${bookTitle}</p>
-            <p style="margin: 0; color: #555;">Amount: <strong>₹${amount}</strong></p>
+            <p style="margin: 0; color: #555;">Amount: <strong>${money(amount, currencyCode)}</strong></p>
             <p style="margin: 8px 0 0; color: #888; font-size: 13px;">Payment ID: ${paymentId}</p>
             <p style="margin: 4px 0 0; color: #888; font-size: 13px;">Date: ${date}</p>
             <p style="margin: 4px 0 0; color: #888; font-size: 13px;">Gateway: ${gateway.charAt(0).toUpperCase() + gateway.slice(1)}</p>
           </div>
           <p>You can start reading your book anytime by visiting your library.</p>
           <div style="text-align: center; margin-top: 25px;">
-<<<<<<< HEAD
             <a href="${(globalThis as any).__claimUrl || "https://gyandootnova.in/dashboard"}" style="background: #B71C1C; color: white; text-decoration: none; padding: 12px 30px; border-radius: 6px; font-weight: bold;">Access Your Book</a>
           </div>
 
-=======
-            <a href="https://gyandootnova.lovable.app/books" style="background: #B71C1C; color: white; text-decoration: none; padding: 12px 30px; border-radius: 6px; font-weight: bold;">Open My Books</a>
-          </div>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           <hr style="margin-top: 30px; border: none; border-top: 1px solid #eee;" />
           <p style="color: #999; font-size: 12px; text-align: center;">GyandootNova — Illuminating spiritual seekers with sacred knowledge.</p>
         </div>`
@@ -192,7 +176,7 @@ async function sendReceipt(
           <p>Namaste${recipientName ? ` ${recipientName}` : ""},</p>
           <p>Thank you for your generous donation! Your kindness helps spread spiritual knowledge to seekers everywhere.</p>
           <div style="background: #E8F5E9; border-left: 4px solid #4CAF50; padding: 15px 20px; margin: 20px 0; border-radius: 4px;">
-            <p style="margin: 0 0 8px; font-weight: bold; color: #333;">❤️ Donation Amount: <strong>₹${amount}</strong></p>
+            <p style="margin: 0 0 8px; font-weight: bold; color: #333;">❤️ Donation Amount: <strong>${money(amount, currencyCode)}</strong></p>
             <p style="margin: 8px 0 0; color: #888; font-size: 13px;">Payment ID: ${paymentId}</p>
             <p style="margin: 4px 0 0; color: #888; font-size: 13px;">Date: ${date}</p>
             <p style="margin: 4px 0 0; color: #888; font-size: 13px;">Gateway: ${gateway.charAt(0).toUpperCase() + gateway.slice(1)}</p>
@@ -209,11 +193,7 @@ async function sendReceipt(
         Authorization: `Bearer ${resendKey}`,
       },
       body: JSON.stringify({
-<<<<<<< HEAD
         from: "GyandootNova <info@gyandootnova.in>",
-=======
-        from: "GyandootNova <onboarding@resend.dev>",
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
         to: [recipientEmail],
         subject,
         html,
@@ -265,6 +245,47 @@ async function verifyRazorpay(
     });
   }
 
+  // Verify the actual captured amount + currency with Razorpay (never trust the client).
+  const keyId = Deno.env.get("RAZORPAY_KEY_ID");
+  if (keyId) {
+    try {
+      const payRes = await fetch(`https://api.razorpay.com/v1/payments/${paymentId}`, {
+        headers: { Authorization: "Basic " + btoa(`${keyId}:${keySecret}`) },
+      });
+      if (payRes.ok) {
+        const pay = await payRes.json();
+        const expectedTable = type === "purchase" ? "purchases" : "donations";
+        const { data: row } = await supabase
+          .from(expectedTable)
+          .select("amount, currency")
+          .eq("razorpay_order_id", orderId)
+          .maybeSingle();
+        const expectedAmount = Number(row?.amount ?? 0);
+        const expectedCurrency = normalizeCurrency(row?.currency ?? "INR");
+
+        const orderMatches = pay?.order_id === orderId;
+        const currencyMatches = String(pay?.currency ?? "").toUpperCase() === expectedCurrency;
+        const amountMatches = expectedAmount > 0
+          ? Number(pay?.amount) === Math.round(expectedAmount * 100)
+          : true;
+        const captured = pay?.status === "captured" || pay?.status === "authorized";
+
+        if (!orderMatches || !currencyMatches || !amountMatches || !captured) {
+          console.error("Razorpay payment mismatch", {
+            orderId, paymentId, expectedAmount, expectedCurrency,
+            got: { order_id: pay?.order_id, amount: pay?.amount, currency: pay?.currency, status: pay?.status },
+          });
+          return new Response(JSON.stringify({ error: "Payment verification failed" }), {
+            status: 400,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+      }
+    } catch (e) {
+      console.warn("Razorpay payment fetch failed, relying on signature only:", e);
+    }
+  }
+
   const table = type === "purchase" ? "purchases" : "donations";
 
   // For donations, match by order_id only (no user_id filter for anonymous)
@@ -291,7 +312,6 @@ async function verifyRazorpay(
     });
   }
 
-<<<<<<< HEAD
   // Increment purchase count, redeem coupon, and create referral for books
   if (type === "purchase") {
     const { data: purchase } = await supabase
@@ -300,21 +320,11 @@ async function verifyRazorpay(
       .eq("razorpay_order_id", orderId)
       .maybeSingle();
 
-=======
-  // Increment purchase count and create referral for books
-  if (type === "purchase") {
-    const { data: purchase } = await supabase
-      .from("purchases")
-      .select("book_id, user_id, referrer_id")
-      .eq("razorpay_order_id", orderId)
-      .single();
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     if (purchase?.book_id) {
       await supabase.rpc("increment_purchase_count", { _book_id: purchase.book_id }).catch(() => {
         console.warn("Could not increment purchase count");
       });
 
-<<<<<<< HEAD
       // Atomic, idempotent coupon redemption: only increment if not already redeemed.
       if (purchase.coupon_id && !purchase.coupon_redeemed_at) {
         const { data: claimed } = await supabase
@@ -330,8 +340,6 @@ async function verifyRazorpay(
         }
       }
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       // Create referral record if referrer exists
       if (purchase.referrer_id) {
         try {
@@ -340,11 +348,7 @@ async function verifyRazorpay(
             .select("price, referral_commission_percent")
             .eq("id", purchase.book_id)
             .single();
-<<<<<<< HEAD
 
-=======
-          
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           if (book && book.referral_commission_percent > 0) {
             const commissionAmount = Math.round((book.price * book.referral_commission_percent / 100) * 100) / 100;
             await supabase.from("referrals").insert({
@@ -376,8 +380,8 @@ async function verifyRazorpay(
 }
 
 async function verifyPaypal(supabase: any, user: any, orderId: string, type: string) {
-  const clientId = Deno.env.get("PAYPAL_CLIENT_ID");
-  const clientSecret = Deno.env.get("PAYPAL_CLIENT_SECRET");
+  const clientId = Deno.env.get("PAYPAL_CLIENT_ID")?.trim();
+  const clientSecret = Deno.env.get("PAYPAL_CLIENT_SECRET")?.trim();
   if (!clientId || !clientSecret) {
     return new Response(JSON.stringify({ error: "PayPal not configured" }), {
       status: 500,
@@ -385,7 +389,7 @@ async function verifyPaypal(supabase: any, user: any, orderId: string, type: str
     });
   }
 
-  const tokenRes = await fetch("https://api-m.paypal.com/v1/oauth2/token", {
+  const tokenRes = await fetch(`${PAYPAL_API_BASE}/v1/oauth2/token`, {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -395,7 +399,7 @@ async function verifyPaypal(supabase: any, user: any, orderId: string, type: str
   });
   const { access_token } = await tokenRes.json();
 
-  const captureRes = await fetch(`https://api-m.paypal.com/v2/checkout/orders/${orderId}/capture`, {
+  const captureRes = await fetch(`${PAYPAL_API_BASE}/v2/checkout/orders/${orderId}/capture`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -420,11 +424,9 @@ async function verifyPaypal(supabase: any, user: any, orderId: string, type: str
     });
   }
 
-<<<<<<< HEAD
-  // SECURITY: cross-check the captured amount against the expected converted
-  // book/donation price so a tampered client-side FX rate cannot unlock paid
-  // content for pennies. Reject if the captured amount is materially below
-  // what the server would have quoted.
+  // SECURITY: cross-check the captured amount/currency against the order that
+  // the server created. There is NO exchange-rate conversion — the captured
+  // amount must equal the stored numeric amount in the stored currency.
   const capture = captureData.purchase_units?.[0]?.payments?.captures?.[0];
   const capturedAmountStr = capture?.amount?.value;
   const capturedCurrency = capture?.amount?.currency_code;
@@ -437,57 +439,40 @@ async function verifyPaypal(supabase: any, user: any, orderId: string, type: str
     });
   }
 
-  // Resolve the expected INR base amount for this order.
-  let expectedInr = 0;
+  // Resolve the expected amount + currency from the pending order row.
+  let expectedAmount = 0;
+  let expectedCurrency = "";
   if (type === "purchase") {
     const { data: pRow } = await supabase
       .from("purchases")
-      .select("book_id, coupon_id")
+      .select("book_id, coupon_id, amount, currency")
       .eq("razorpay_order_id", orderId)
       .maybeSingle();
-    if (pRow?.book_id) {
+    expectedCurrency = normalizeCurrency(pRow?.currency);
+    expectedAmount = Number(pRow?.amount ?? 0);
+    if (!expectedAmount && pRow?.book_id) {
       const { data: book } = await supabase
-        .from("books")
-        .select("price")
-        .eq("id", pRow.book_id)
-        .maybeSingle();
-      expectedInr = Number(book?.price ?? 0);
-      // If a coupon was applied at order creation, honour it as an upper bound.
-      if (pRow.coupon_id) {
-        const { data: coupon } = await supabase
-          .from("coupons")
-          .select("discount_type, discount_value")
-          .eq("id", pRow.coupon_id)
-          .maybeSingle();
-        if (coupon) {
-          const disc = coupon.discount_type === "percent"
-            ? Math.round((expectedInr * Number(coupon.discount_value)) / 100)
-            : Number(coupon.discount_value);
-          expectedInr = Math.max(1, expectedInr - disc);
-        }
-      }
+        .from("books").select("price").eq("id", pRow.book_id).maybeSingle();
+      expectedAmount = Number(book?.price ?? 0);
     }
   } else {
     const { data: dRow } = await supabase
       .from("donations")
-      .select("amount")
+      .select("amount, currency")
       .eq("razorpay_order_id", orderId)
       .maybeSingle();
-    expectedInr = Number(dRow?.amount ?? 0);
+    expectedAmount = Number(dRow?.amount ?? 0);
+    expectedCurrency = normalizeCurrency(dRow?.currency);
   }
 
-  if (expectedInr > 0) {
-    const { converted: expectedForeign } = await convertInr(expectedInr, capturedCurrency);
-    // Allow a 15% tolerance for FX drift between order creation and capture,
-    // plus any minor rounding differences.
-    const minAcceptable = expectedForeign * 0.85;
-    if (capturedAmount < minAcceptable) {
-      console.error("PayPal amount mismatch", {
-        orderId,
-        expectedInr,
-        expectedForeign,
-        capturedAmount,
-        capturedCurrency,
+  if (expectedAmount > 0) {
+    const expectedStr = paypalAmount(expectedAmount, expectedCurrency);
+    const currencyOk = capturedCurrency.toUpperCase() === expectedCurrency;
+    // Allow only sub-cent rounding differences — no conversion tolerance.
+    const amountOk = Math.abs(capturedAmount - Number(expectedStr)) < 0.01;
+    if (!currencyOk || !amountOk) {
+      console.error("PayPal amount/currency mismatch", {
+        orderId, expectedStr, expectedCurrency, capturedAmount, capturedCurrency,
       });
       return new Response(
         JSON.stringify({ error: "Payment amount does not match order total" }),
@@ -497,9 +482,6 @@ async function verifyPaypal(supabase: any, user: any, orderId: string, type: str
   }
 
   const captureId = capture?.id || "";
-=======
-  const captureId = captureData.purchase_units?.[0]?.payments?.captures?.[0]?.id || "";
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   const table = type === "purchase" ? "purchases" : "donations";
 
   let updateQuery = supabase

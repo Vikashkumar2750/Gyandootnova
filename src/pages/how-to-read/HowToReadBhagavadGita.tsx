@@ -41,10 +41,11 @@ const faqs = [
 
 const HowToReadBhagavadGita = () => {
   useSEO({
-    title: "How to Read the Bhagavad Gita — Beginner's Guide (2026)",
+    title: "How to Read the Bhagavad Gita — Step-by-Step Guide",
     description:
-      "Step-by-step guide to reading the Bhagavad Gita: which chapter to start with, best translations in Hindi and English, daily reading plan, and answers to common doubts.",
+      "How to read the Bhagavad Gita properly: which chapter to start with, the best Hindi and English translations, an 18-day reading plan, how long it takes, and answers to common doubts.",
     canonical: path,
+
     ogType: "article",
     hreflang: true,
     jsonLd: [
@@ -112,14 +113,32 @@ const HowToReadBhagavadGita = () => {
           <section>
             <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary">Step 3 — Follow a 21-day reading plan</h2>
             <p>The Gita has 18 chapters. A sustainable schedule:</p>
-            <ul>
-              <li><strong>Day 1:</strong> Chapter 2 (foundational teaching).</li>
-              <li><strong>Days 2–3:</strong> Chapters 1 and 3.</li>
-              <li><strong>Days 4–18:</strong> One chapter per day, in order.</li>
-              <li><strong>Days 19–21:</strong> Re-read Chapters 2, 12 (Bhakti Yoga) and 18 (Moksha Sannyasa Yoga).</li>
-            </ul>
+            <div className="overflow-x-auto">
+              <table>
+                <thead>
+                  <tr><th>Days</th><th>What to read</th><th>Why</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Day 1</td><td>Chapter 2 — Sankhya Yoga</td><td>The philosophical core of the whole Gita</td></tr>
+                  <tr><td>Days 2–3</td><td>Chapters 1 and 3</td><td>Context, then karma yoga in practice</td></tr>
+                  <tr><td>Days 4–18</td><td>One chapter per day, in order</td><td>Steady 15–30 minute sessions</td></tr>
+                  <tr><td>Days 19–21</td><td>Re-read Chapters 2, 12, 18</td><td>Wisdom, devotion and liberation summarised</td></tr>
+                </tbody>
+              </table>
+            </div>
             <p>15–30 minutes a day is enough. Consistency matters more than duration.</p>
           </section>
+
+          <section>
+            <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary">How to read the Bhagavad Gita in Hindi</h2>
+            <p>
+              हिंदी पाठकों के लिए क्रम सरल है — पहले श्लोक का हिंदी अनुवाद पढ़ें, फिर संस्कृत श्लोक को
+              धीरे-धीरे उच्चारण के साथ पढ़ें, और अंत में भावार्थ पर 5 मिनट चिंतन करें। रोज़ एक अध्याय
+              इसी विधि से पढ़ने पर 18 दिन में पूरी गीता पूर्ण हो जाती है। GyandootNova के ऑनलाइन रीडर
+              में हिंदी अनुवाद के साथ अध्याय-वार पाठ उपलब्ध है।
+            </p>
+          </section>
+
 
           <section>
             <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary">Step 4 — Reflect, don't rush</h2>

@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { CURRENCIES, gatewayForCurrency, type CurrencyCode } from "@/lib/currency";
 
 declare global {
   interface Window {
@@ -9,22 +10,21 @@ declare global {
 export type PaymentGateway = "razorpay" | "paypal";
 
 interface CreateOrderParams {
-<<<<<<< HEAD
-  amount: number; // Always in INR (source-of-truth)
-=======
+  /**
+   * Numeric amount exactly as stored in the database.
+   * NEVER converted — only the currency code changes.
+   */
   amount: number;
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   type: "donation" | "purchase";
+  /** Optional override; normally derived from `buyer_currency`. */
   gateway?: PaymentGateway;
   book_id?: string;
   name?: string;
   email?: string;
-<<<<<<< HEAD
   coupon_id?: string;
   referrer_id?: string;
-  // Buyer's display currency + live INR→currency rate (for PayPal international pricing)
-  buyer_currency?: string;
-  buyer_fx_rate?: number;
+  /** Buyer's selected currency. INR -> Razorpay, others -> PayPal. */
+  buyer_currency?: CurrencyCode;
   // Guest checkout — when the user is not logged in.
   guest_email?: string;
   guest_name?: string;
@@ -32,8 +32,6 @@ interface CreateOrderParams {
 
 export interface PaymentSuccessInfo {
   claim_token?: string;
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 }
 
 function loadRazorpayScript(): Promise<void> {
@@ -49,17 +47,22 @@ function loadRazorpayScript(): Promise<void> {
 
 export async function initiatePayment(
   params: CreateOrderParams,
-<<<<<<< HEAD
   onSuccess: (info?: PaymentSuccessInfo) => void,
-=======
-  onSuccess: () => void,
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   onFailure: (error: string) => void
 ) {
-  const gateway = params.gateway || "razorpay";
+  const currency: CurrencyCode = params.buyer_currency ?? "INR";
+  const routed = gatewayForCurrency(currency);
+
+  if (routed === "unsupported") {
+    onFailure(
+      `${CURRENCIES[currency]?.label ?? currency} (${currency}) payments are not supported yet. Please switch to INR, USD, GBP, EUR, CAD, AUD, JPY or SGD.`
+    );
+    return;
+  }
+
+  const gateway: PaymentGateway = params.gateway ?? routed;
 
   try {
-<<<<<<< HEAD
     const { data: { session } } = await supabase.auth.getSession();
 
     // Guest checkout: purchase without login requires guest_email
@@ -68,26 +71,8 @@ export async function initiatePayment(
       return;
     }
 
-=======
-    // For purchases, session is required. For donations, it's optional.
-    const { data: { session } } = await supabase.auth.getSession();
-
-    if (params.type === "purchase" && !session) {
-      onFailure("Please log in to purchase books");
-      return;
-    }
-
-    // Invoke edge function — pass auth header only if logged in
-    const invokeOptions = session
-      ? { body: { ...params, gateway } }
-      : {
-          body: { ...params, gateway },
-          headers: { Authorization: "Bearer anonymous" },
-        };
-
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     const res = await supabase.functions.invoke("create-order", {
-      body: { ...params, gateway },
+      body: { ...params, gateway, buyer_currency: currency },
       headers: session ? {} : { Authorization: "" },
     });
 
@@ -112,11 +97,7 @@ async function handleRazorpayCheckout(
   orderData: any,
   params: CreateOrderParams,
   accessToken: string | null,
-<<<<<<< HEAD
   onSuccess: (info?: PaymentSuccessInfo) => void,
-=======
-  onSuccess: () => void,
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   onFailure: (error: string) => void
 ) {
   await loadRazorpayScript();
@@ -143,21 +124,12 @@ async function handleRazorpayCheckout(
       if (verifyRes.error || !verifyRes.data?.success) {
         onFailure("Payment verification failed");
       } else {
-<<<<<<< HEAD
         onSuccess({ claim_token: orderData.claim_token });
       }
     },
     prefill: {
       name: params.name || params.guest_name || "",
       email: params.email || params.guest_email || "",
-=======
-        onSuccess();
-      }
-    },
-    prefill: {
-      name: params.name || "",
-      email: params.email || "",
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     },
     theme: { color: "#B71C1C" },
     modal: {
@@ -173,11 +145,7 @@ function handlePaypalCheckout(
   orderData: any,
   params: CreateOrderParams,
   accessToken: string | null,
-<<<<<<< HEAD
   onSuccess: (info?: PaymentSuccessInfo) => void,
-=======
-  onSuccess: () => void,
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   onFailure: (error: string) => void
 ) {
   if (!orderData.approve_url) {
@@ -202,11 +170,7 @@ function handlePaypalCheckout(
       if (verifyRes.error || !verifyRes.data?.success) {
         onFailure("Payment verification failed or was cancelled");
       } else {
-<<<<<<< HEAD
         onSuccess({ claim_token: orderData.claim_token });
-=======
-        onSuccess();
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       }
     }
   }, 1000);

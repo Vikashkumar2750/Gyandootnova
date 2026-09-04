@@ -7,6 +7,8 @@ import TextHub from "@/components/TextHub";
 const BestHindiBhagavadGitaTranslation = () => (
   <TextHub
     slug="best-hindi-bhagavad-gita-translation"
+    basePath="/compare"
+    breadcrumb={{ name: "Book Comparisons", path: "/books" }}
     english="Best Hindi Bhagavad Gita Translation — Top Editions Compared"
     hindi="सर्वश्रेष्ठ हिंदी भगवद्‌गीता संस्करण"
     tagline="Beginners, sadhaks aur academic पाठकों के लिए सबसे अच्छी Hindi Bhagavad Gita editions — honest comparison, price, commentary style aur कहाँ से पढ़ें/खरीदें।"

@@ -2,8 +2,8 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
+import { mcpPlugin } from "@lovable.dev/mcp-js/stacks/supabase/vite";
 
-<<<<<<< HEAD
 // Compute a stable build id at config-load time so it is embedded in the
 // client bundle. Falls back to an ISO timestamp for local dev builds.
 const BUILD_ID =
@@ -12,8 +12,6 @@ const BUILD_ID =
   process.env.VERCEL_GIT_COMMIT_SHA ||
   new Date().toISOString();
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
@@ -22,14 +20,20 @@ export default defineConfig(({ mode }) => ({
     hmr: {
       overlay: false,
     },
+    // Layer folders (frontend/, backend/, database/) are navigation views that
+    // symlink to the real source dirs — don't watch them twice.
+    watch: {
+      ignored: ["**/frontend/**", "**/backend/**", "**/database/**"],
+    },
+    fs: { allow: [path.resolve(__dirname)] },
   },
-  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
+
+  plugins: [react(), mcpPlugin(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
-<<<<<<< HEAD
   define: {
     __BUILD_ID__: JSON.stringify(BUILD_ID),
     __BUILT_AT__: JSON.stringify(new Date().toISOString()),
@@ -58,6 +62,4 @@ export default defineConfig(({ mode }) => ({
     },
     chunkSizeWarningLimit: 900,
   },
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 }));

@@ -5,12 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-<<<<<<< HEAD
 import { Settings, MessageCircle, Facebook, Instagram, Youtube, Linkedin, Flame, BookOpen, FileText } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-=======
-import { Settings, MessageCircle, Facebook, Instagram, Youtube, Linkedin } from "lucide-react";
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 import { useState, useEffect } from "react";
 
 const SOCIAL_KEYS = [
@@ -21,7 +17,21 @@ const SOCIAL_KEYS = [
   { key: "linkedin_url", label: "LinkedIn URL", icon: Linkedin, placeholder: "https://linkedin.com/company/gyandootnova", hint: "Full LinkedIn profile or company URL" },
 ];
 
-<<<<<<< HEAD
+const WHATSAPP_KEYS = [
+  {
+    key: "whatsapp_message_general",
+    label: "General support message",
+    placeholder: "Namaste GyandootNova team! 🙏\n\nMujhe support chahiye.\n\nPage: {page}\nEmail: {email}\n\nMeri problem: ",
+    hint: "Placeholders: {page} {email} {site} — खाली छोड़ें तो default message जाएगा।",
+  },
+  {
+    key: "whatsapp_message_book",
+    label: "Book support message",
+    placeholder: "Namaste GyandootNova team! 🙏\n\nBook: {book}\nLink: {url}\nEmail: {email}\n\nIs book me meri problem: ",
+    hint: "Book page / reader से WhatsApp खुलने पर यह जाता है। Placeholders: {book} {url} {email} {site}",
+  },
+];
+
 const URGENCY_KEYS = [
   { key: "urgency_enabled", label: "Banner Enabled", placeholder: "true", hint: "true या false — banner on/off" },
   { key: "urgency_coupon", label: "Coupon Code", placeholder: "BHAKTI20", hint: "Banner में दिखेगा (coupon table में भी active होना चाहिए)" },
@@ -48,17 +58,12 @@ const PAN_RE = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
 const LOGO_ALLOWED = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
 const LOGO_MAX_BYTES = 2 * 1024 * 1024;
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 const AdminSettings = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [values, setValues] = useState<Record<string, string>>({});
-<<<<<<< HEAD
   const [logoUploading, setLogoUploading] = useState(false);
   const [logoPreviewError, setLogoPreviewError] = useState(false);
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 
   const { data: settings, isLoading } = useQuery({
     queryKey: ["admin-settings"],
@@ -96,7 +101,6 @@ const AdminSettings = () => {
     },
   });
 
-<<<<<<< HEAD
   const validateInvoiceFields = (): string | null => {
     const gstin = (values.invoice_gstin ?? "").trim().toUpperCase();
     if (gstin && !GSTIN_RE.test(gstin)) {
@@ -119,7 +123,7 @@ const AdminSettings = () => {
       toast({ title: "Invalid invoice settings", description: err, variant: "destructive" });
       return;
     }
-    const updates = [...SOCIAL_KEYS, ...URGENCY_KEYS, ...BOOK_KEYS, ...INVOICE_KEYS].map(({ key }) => ({ key, value: values[key] ?? "" }));
+    const updates = [...SOCIAL_KEYS, ...WHATSAPP_KEYS, ...URGENCY_KEYS, ...BOOK_KEYS, ...INVOICE_KEYS].map(({ key }) => ({ key, value: values[key] ?? "" }));
     mutation.mutate(updates);
   };
 
@@ -156,13 +160,6 @@ const AdminSettings = () => {
     setLogoPreviewError(false);
   };
 
-=======
-  const handleSave = () => {
-    const updates = SOCIAL_KEYS.map(({ key }) => ({ key, value: values[key] ?? "" }));
-    mutation.mutate(updates);
-  };
-
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   return (
     <div>
       <div className="flex items-center gap-2 mb-6">
@@ -170,7 +167,6 @@ const AdminSettings = () => {
         <h1 className="font-serif text-3xl font-bold">Site Settings</h1>
       </div>
 
-<<<<<<< HEAD
       <div className="space-y-6 max-w-2xl">
         <Card>
           <CardHeader>
@@ -184,21 +180,6 @@ const AdminSettings = () => {
               <p className="text-sm text-muted-foreground">Loading settings...</p>
             ) : (
               SOCIAL_KEYS.map(({ key, label, icon: Icon, placeholder, hint }) => (
-=======
-      <Card className="max-w-2xl">
-        <CardHeader>
-          <CardTitle>Social Media & Contact Links</CardTitle>
-          <CardDescription>
-            These links appear in the header (WhatsApp) and footer of your website. Leave blank to hide.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-5">
-          {isLoading ? (
-            <p className="text-sm text-muted-foreground">Loading settings...</p>
-          ) : (
-            <>
-              {SOCIAL_KEYS.map(({ key, label, icon: Icon, placeholder, hint }) => (
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                 <div key={key} className="space-y-1.5">
                   <Label className="flex items-center gap-2">
                     <Icon className="h-4 w-4 text-muted-foreground" />
@@ -211,7 +192,6 @@ const AdminSettings = () => {
                   />
                   <p className="text-xs text-muted-foreground">{hint}</p>
                 </div>
-<<<<<<< HEAD
               ))
             )}
           </CardContent>
@@ -244,6 +224,37 @@ const AdminSettings = () => {
             )}
           </CardContent>
         </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <MessageCircle className="h-5 w-5 text-primary" /> WhatsApp Support Messages
+            </CardTitle>
+            <CardDescription>
+              User जब WhatsApp support button दबाएगा तो यही pre-filled message जाएगा। Book page पर book वाला template use होता है।
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-5">
+            {isLoading ? (
+              <p className="text-sm text-muted-foreground">Loading...</p>
+            ) : (
+              WHATSAPP_KEYS.map(({ key, label, placeholder, hint }) => (
+                <div key={key} className="space-y-1.5">
+                  <Label>{label}</Label>
+                  <Textarea
+                    value={values[key] ?? ""}
+                    onChange={(e) => setValues((prev) => ({ ...prev, [key]: e.target.value }))}
+                    placeholder={placeholder}
+                    rows={5}
+                  />
+                  <p className="text-xs text-muted-foreground whitespace-pre-line">{hint}</p>
+                </div>
+              ))
+            )}
+          </CardContent>
+        </Card>
+
+
 
         <Card>
           <CardHeader>
@@ -367,21 +378,6 @@ const AdminSettings = () => {
           {mutation.isPending ? "Saving..." : "Save All Settings"}
         </Button>
       </div>
-=======
-              ))}
-
-              <Button
-                className="mt-4 w-full sm:w-auto"
-                onClick={handleSave}
-                disabled={mutation.isPending}
-              >
-                {mutation.isPending ? "Saving..." : "Save Settings"}
-              </Button>
-            </>
-          )}
-        </CardContent>
-      </Card>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     </div>
   );
 };

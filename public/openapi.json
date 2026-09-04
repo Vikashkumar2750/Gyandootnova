@@ -4,7 +4,7 @@
     "title": "GyandootNova Agent API",
     "description": "Public, unauthenticated read-only API exposing GyandootNova's published spiritual articles and sacred texts for AI agents and assistants.",
     "version": "1.0.0",
-    "contact": { "name": "GyandootNova", "url": "https://gyandootnova.in", "email": "amrendra8765@gmail.com" }
+    "contact": { "name": "GyandootNova", "url": "https://gyandootnova.in", "email": "gyandootnova57@gmail.com" }
   },
   "servers": [
     { "url": "https://vrzngahawxtbpwrgxtmb.supabase.co/functions/v1", "description": "Production" }

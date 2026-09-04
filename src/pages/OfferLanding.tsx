@@ -8,6 +8,8 @@ import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Check, Loader2, ShieldCheck, Zap, RotateCcw, Star } from "lucide-react";
 import { initiatePayment } from "@/lib/payment";
+import { useLocale } from "@/hooks/useLocale";
+import CurrencySelector from "@/components/CurrencySelector";
 import { useTrackOnMount, trackSalesEvent } from "@/hooks/useAnalytics";
 import GuestCheckoutDialog from "@/components/GuestCheckoutDialog";
 import SalesTrustBar from "@/components/SalesTrustBar";
@@ -73,6 +75,7 @@ const OfferLanding = () => {
   }, [book, coupon, user]);
 
   const [guestOpen, setGuestOpen] = useState(false);
+  const { currency, formatPrice, gateway } = useLocale();
   const [buying, setBuying] = useState(false);
 
   const finalAmount = useMemo(() => {
@@ -89,7 +92,7 @@ const OfferLanding = () => {
       {
         amount: finalAmount,
         type: "purchase",
-        gateway: "razorpay",
+        buyer_currency: currency,
         book_id: book.id,
         coupon_id: coupon?.coupon_id,
         guest_email: guest?.email,
@@ -146,7 +149,7 @@ const OfferLanding = () => {
   }
 
   const original = book.is_free ? 0 : Math.round(book.price * 2.2);
-  const priceLabel = book.is_free ? "Free" : `₹${finalAmount}`;
+  const priceLabel = book.is_free ? "Free" : `${formatPrice(finalAmount)}`;
 
   return (
     <div className="min-h-screen bg-background">
@@ -203,11 +206,12 @@ const OfferLanding = () => {
 
             <div className="mt-6 flex items-baseline gap-3">
               <span className="text-4xl font-bold text-primary">{priceLabel}</span>
+              <span className="ml-3 inline-block align-middle"><CurrencySelector compact /></span>
               {!book.is_free && original > finalAmount && (
                 <>
-                  <span className="text-lg line-through text-muted-foreground">₹{original}</span>
+                  <span className="text-lg line-through text-muted-foreground">{formatPrice(original)}</span>
                   <span className="rounded-md bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-800">
-                    Save ₹{original - finalAmount}
+                    Save {formatPrice(original - finalAmount)}
                   </span>
                 </>
               )}

@@ -20,7 +20,7 @@ import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { sendAlert } from "../_shared/seo-alerts.ts";
 import { assertSeoAuthorized } from "../_shared/seo-auth.ts";
 
-const DEFAULT_THRESHOLD = 92;
+const DEFAULT_THRESHOLD = 95;
 const DEFAULT_MAX_ATTEMPTS = 3;
 const AI_MODEL = "google/gemini-2.5-flash";
 
@@ -114,6 +114,26 @@ Deno.serve(async (req) => {
   // Sweep mode: fix all recently published posts under threshold.
   if (body.sweep === true && !body.post_id) {
     const since = new Date(Date.now() - 30 * 86400_000).toISOString();
+
+    // 1) Score any post that has never been checked, so nothing goes live
+    //    with unknown copyright/originality status.
+    const { data: unscored } = await sb
+      .from("posts")
+      .select("id, title, content, originality_score")
+      .is("originality_score", null)
+      .limit(20);
+    const scored: any[] = [];
+    for (const p of unscored || []) {
+      const s = await scoreOriginality(sb, p);
+      await sb.from("posts").update({
+        originality_score: s,
+        originality_checked_at: new Date().toISOString(),
+        quality_passed: s >= threshold,
+      }).eq("id", p.id);
+      scored.push({ post_id: p.id, score: s });
+    }
+
+    // 2) Rewrite everything still below the threshold.
     const { data: rows } = await sb
       .from("posts")
       .select("id, title, originality_score, updated_at")
@@ -126,12 +146,12 @@ Deno.serve(async (req) => {
     for (const r of rows || []) {
       const r2 = await fetch(`${url}/functions/v1/seo-auto-rewrite`, {
         method: "POST",
-        headers: { Authorization: `Bearer ${svc}`, apikey: svc, "Content-Type": "application/json" },
+        headers: { Authorization: `Bearer ${svc}`, apikey: svc, "x-cron-secret": Deno.env.get("SEO_CRON_TOKEN") ?? "", "Content-Type": "application/json" },
         body: JSON.stringify({ post_id: r.id, threshold, max_attempts: maxAttempts }),
       });
       results.push({ post_id: r.id, status: r2.status });
     }
-    return new Response(JSON.stringify({ success: true, sweep: true, results }), {
+    return new Response(JSON.stringify({ success: true, sweep: true, scored, results }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }

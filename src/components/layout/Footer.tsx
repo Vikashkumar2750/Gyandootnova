@@ -1,10 +1,6 @@
 import { Link } from "react-router-dom";
-<<<<<<< HEAD
 import { Mail, Facebook, Linkedin, Youtube, Instagram, MessageCircle } from "lucide-react";
 
-=======
-import { BookOpen, Mail, Facebook, Linkedin, Youtube, Instagram, MessageCircle } from "lucide-react";
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -28,7 +24,6 @@ const Footer = () => {
   const whatsappNumber = settings?.whatsapp_number?.replace(/\s+/g, "") ?? "";
   const whatsappLink = whatsappNumber ? `https://wa.me/${whatsappNumber.replace("+", "")}` : null;
 
-<<<<<<< HEAD
   // Admin may save social URLs without a protocol ("facebook.com/gyandootnova"),
   // which the browser then resolves as a same-origin relative path
   // (https://gyandootnova.in/facebook.com/gyandootnova). Normalize to absolute
@@ -46,13 +41,6 @@ const Footer = () => {
     { icon: Linkedin, href: toAbsoluteUrl(settings?.linkedin_url), label: "LinkedIn" },
     { icon: Instagram, href: toAbsoluteUrl(settings?.instagram_url), label: "Instagram" },
     { icon: Youtube, href: toAbsoluteUrl(settings?.youtube_url), label: "YouTube" },
-=======
-  const socialLinks = [
-    { icon: Facebook, href: settings?.facebook_url || null, label: "Facebook" },
-    { icon: Linkedin, href: settings?.linkedin_url || null, label: "LinkedIn" },
-    { icon: Instagram, href: settings?.instagram_url || null, label: "Instagram" },
-    { icon: Youtube, href: settings?.youtube_url || null, label: "YouTube" },
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     { icon: MessageCircle, href: whatsappLink, label: "WhatsApp" },
   ].filter((s) => s.href);
 
@@ -62,7 +50,6 @@ const Footer = () => {
   };
 
   return (
-<<<<<<< HEAD
     <footer className="relative w-full border-t border-border/60 bg-ink text-cream overflow-hidden">
       <div
         aria-hidden="true"
@@ -103,20 +90,6 @@ const Footer = () => {
             </p>
 
 
-=======
-    <footer className="w-full border-t border-border bg-foreground text-background">
-      <div className="w-full max-w-screen-2xl mx-auto px-4 lg:px-8 py-14">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-5">
-          {/* Brand */}
-          <div className="lg:col-span-1">
-            <Link to="/" className="flex items-center gap-2 mb-4" aria-label="Homepage">
-              <BookOpen className="h-6 w-6 text-secondary" />
-              <span className="font-serif text-lg font-bold text-secondary">GyandootNova</span>
-            </Link>
-            <p className="text-sm text-background/70 leading-relaxed">
-              Illuminating spiritual seekers with sacred books, articles, and transformative programs.
-            </p>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
             <div className="mt-5 flex flex-wrap gap-3">
               {socialLinks.length > 0
                 ? socialLinks.map(({ icon: Icon, href, label }) => (
@@ -131,7 +104,6 @@ const Footer = () => {
                       <Icon className="h-4 w-4" />
                     </a>
                   ))
-<<<<<<< HEAD
                 : [
                     { Icon: Facebook, label: "Facebook" },
                     { Icon: Linkedin, label: "LinkedIn" },
@@ -147,14 +119,6 @@ const Footer = () => {
                     >
                       <Icon className="h-4 w-4" aria-hidden="true" />
                       <span className="sr-only">{label} (coming soon)</span>
-=======
-                : [Facebook, Linkedin, Instagram, Youtube, MessageCircle].map((Icon, i) => (
-                    <span
-                      key={i}
-                      className="flex h-9 w-9 items-center justify-center rounded-full bg-background/10 text-background/20"
-                    >
-                      <Icon className="h-4 w-4" />
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                     </span>
                   ))}
             </div>
@@ -164,7 +128,6 @@ const Footer = () => {
           <div>
             <h3 className="font-serif font-semibold mb-4 text-secondary">Explore</h3>
             <nav aria-label="Footer explore links" className="flex flex-col gap-2.5 text-sm text-background/70">
-<<<<<<< HEAD
               <Link to="/" className="hover:text-secondary transition-colors">Home</Link>
               <Link to="/about" className="hover:text-secondary transition-colors">Our Story</Link>
               <Link to="/books" className="hover:text-secondary transition-colors">Books</Link>
@@ -174,59 +137,17 @@ const Footer = () => {
               <Link to="/testimonials" className="hover:text-secondary transition-colors">Testimonials</Link>
             </nav>
 
-=======
-              <Link to="/" className="hover:text-secondary transition-colors">
-                Home
-              </Link>
-              <Link to="/about" className="hover:text-secondary transition-colors">
-                About Us
-              </Link>
-              <Link to="/books" className="hover:text-secondary transition-colors">
-                Books
-              </Link>
-              <Link to="/articles" className="hover:text-secondary transition-colors">
-                Articles
-              </Link>
-              <Link to="/services" className="hover:text-secondary transition-colors">
-                Services
-              </Link>
-              <Link to="/portfolio" className="hover:text-secondary transition-colors">
-                Portfolio
-              </Link>
-              <Link to="/testimonials" className="hover:text-secondary transition-colors">
-                Testimonials
-              </Link>
-            </nav>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           </div>
 
           {/* Support */}
           <div>
             <h3 className="font-serif font-semibold mb-4 text-secondary">Support</h3>
             <nav aria-label="Footer support links" className="flex flex-col gap-2.5 text-sm text-background/70">
-<<<<<<< HEAD
               <Link to="/contact" className="hover:text-secondary transition-colors">Contact</Link>
               <Link to="/support-us" className="hover:text-secondary transition-colors">Support Us</Link>
               <Link to="/faq" className="hover:text-secondary transition-colors">FAQ</Link>
               <Link to="/support" className="hover:text-secondary transition-colors">Help Center</Link>
               <Link to="/careers" className="hover:text-secondary transition-colors">Careers</Link>
-=======
-              <Link to="/contact" className="hover:text-secondary transition-colors">
-                Contact
-              </Link>
-              <Link to="/support-us" className="hover:text-secondary transition-colors">
-                Support Us
-              </Link>
-              <Link to="/faq" className="hover:text-secondary transition-colors">
-                FAQ
-              </Link>
-              <Link to="/support" className="hover:text-secondary transition-colors">
-                Help Center
-              </Link>
-              <Link to="/careers" className="hover:text-secondary transition-colors">
-                Careers
-              </Link>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
               <a
                 href="https://gyandootnova.in/sitemap.xml"
                 target="_blank"
@@ -242,54 +163,28 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   className="flex items-center gap-1.5 hover:text-secondary transition-colors"
                 >
-<<<<<<< HEAD
                   <MessageCircle className="h-3.5 w-3.5" /> Message on WhatsApp
                 </a>
               )}
             </nav>
 
-=======
-                  <MessageCircle className="h-3.5 w-3.5" /> WhatsApp Us
-                </a>
-              )}
-            </nav>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           </div>
 
           {/* Legal */}
           <div>
             <h3 className="font-serif font-semibold mb-4 text-secondary">Legal</h3>
             <nav aria-label="Footer legal links" className="flex flex-col gap-2.5 text-sm text-background/70">
-<<<<<<< HEAD
               <Link to="/privacy-policy" className="hover:text-secondary transition-colors">Privacy Policy</Link>
               <Link to="/terms-conditions" className="hover:text-secondary transition-colors">Terms & Conditions</Link>
               <Link to="/refund-policy" className="hover:text-secondary transition-colors">Refund & Cancellation</Link>
               <Link to="/shipping-policy" className="hover:text-secondary transition-colors">Shipping</Link>
-=======
-              <Link to="/privacy-policy" className="hover:text-secondary transition-colors">
-                Privacy Policy
-              </Link>
-              <Link to="/terms-conditions" className="hover:text-secondary transition-colors">
-                Terms & Conditions
-              </Link>
-              <Link to="/refund-policy" className="hover:text-secondary transition-colors">
-                Refund & Cancellation
-              </Link>
-              <Link to="/shipping-policy" className="hover:text-secondary transition-colors">
-                Shipping & Delivery
-              </Link>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
             </nav>
           </div>
 
           {/* Newsletter */}
           <div>
             <h3 className="font-serif font-semibold mb-4 text-secondary">Stay Connected</h3>
-<<<<<<< HEAD
             <p className="text-sm text-background/70 mb-3">One curated article a week — that's all, no spam.</p>
-=======
-            <p className="text-sm text-background/70 mb-3">Subscribe for spiritual wisdom and updates.</p>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
             <form onSubmit={handleNewsletter} className="flex gap-2">
               <input
                 type="email"
@@ -300,27 +195,17 @@ const Footer = () => {
                 className="flex-1 rounded-md bg-background/10 border border-background/20 px-3 py-2 text-sm text-background placeholder:text-background/40 focus:outline-none focus:ring-1 focus:ring-secondary"
               />
               <Button type="submit" size="sm" className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
-<<<<<<< HEAD
                 Subscribe
               </Button>
             </form>
 
             <div className="mt-4 flex items-start gap-2">
               <Mail className="h-4 w-4 text-secondary mt-0.5" />
-              <p className="text-sm text-background/70">amrendra8765@gmail.com</p>
-=======
-                Join
-              </Button>
-            </form>
-            <div className="mt-4 flex items-start gap-2">
-              <Mail className="h-4 w-4 text-secondary mt-0.5" />
-              <p className="text-sm text-background/70">contact@gyandootnova.in</p>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
+              <p className="text-sm text-background/70">gyandootnova57@gmail.com</p>
             </div>
           </div>
         </div>
 
-<<<<<<< HEAD
         {/* WhatsApp CTA row (C.6) — replaces old keyword-stuffed line */}
         {whatsappLink && (
           <div className="mt-10 rounded-xl border border-background/15 bg-background/5 p-5 flex flex-col md:flex-row items-center justify-between gap-4">
@@ -343,31 +228,30 @@ const Footer = () => {
             <Link to="/refund-policy" className="hover:text-secondary transition-colors">Refund</Link>
           </div>
         </div>
+        <p className="mt-3 text-center text-xs text-background/50">
+          Last updated:{" "}
+          <time dateTime={__BUILT_AT__}>
+            {new Date(__BUILT_AT__).toLocaleString("en-IN", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              timeZone: "Asia/Kolkata",
+            })}{" "}
+            IST
+          </time>
+        </p>
         <p
-          className="mt-3 text-center text-[10px] font-mono text-background/30"
+          className="mt-1 text-center text-[10px] font-mono text-background/30"
           title={`Built ${__BUILT_AT__}`}
           data-build-id={__BUILD_ID__}
         >
-          build {String(__BUILD_ID__).slice(0, 12)} · {__BUILT_AT__}
+          build {String(__BUILD_ID__).slice(0, 12)}
         </p>
 
 
-=======
-        <div className="mt-10 border-t border-background/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-background/40">
-          <p>© {new Date().getFullYear()} GyandootNova. All rights reserved.</p>
-          <div className="flex gap-4">
-            <Link to="/privacy-policy" className="hover:text-secondary transition-colors">
-              Privacy Policy
-            </Link>
-            <Link to="/terms-conditions" className="hover:text-secondary transition-colors">
-              Terms of Service
-            </Link>
-            <Link to="/refund-policy" className="hover:text-secondary transition-colors">
-              Refund Policy
-            </Link>
-          </div>
-        </div>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
+
       </div>
     </footer>
   );

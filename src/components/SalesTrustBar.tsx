@@ -1,20 +1,14 @@
-import { ShieldCheck, Zap, BookOpen, Lock, RotateCcw } from "lucide-react";
+import { ShieldCheck, Zap, BookOpen, RotateCcw } from "lucide-react";
+import { useSiteStats } from "@/hooks/useSiteStats";
 
 /**
  * High-conversion trust bar for /books & book detail.
- * Communicates the four buyer objections in one glance:
- *  - Will I actually get the book? (Instant access)
- *  - Is my money safe?            (Secure payment)
- *  - What if I don't like it?     (7-day money back)
- *  - Are others buying?           (Reader count)
+ * Communicates the four buyer objections in one glance. The catalogue figure
+ * is read live from the database — never a hardcoded/invented reader count.
  */
-export default function SalesTrustBar({
-  readers = 10000,
-  compact = false,
-}: {
-  readers?: number;
-  compact?: boolean;
-}) {
+export default function SalesTrustBar({ compact = false }: { compact?: boolean }) {
+  const { data } = useSiteStats();
+
   const items = [
     {
       icon: Zap,
@@ -33,10 +27,11 @@ export default function SalesTrustBar({
     },
     {
       icon: BookOpen,
-      title: `${readers.toLocaleString("en-IN")}+ Readers`,
-      sub: "Trusted by seekers across India",
+      title: data ? `${data.books} Titles in Library` : "Curated Library",
+      sub: "Original translations and commentary",
     },
   ];
+
 
   return (
     <div

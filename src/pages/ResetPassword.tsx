@@ -8,10 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { KeyRound } from "lucide-react";
-<<<<<<< HEAD
 import useSEO from "@/hooks/useSEO";
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
@@ -21,7 +18,6 @@ const ResetPassword = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-<<<<<<< HEAD
   useSEO({
     title: "Reset Your Password | GyandootNova",
     description: "Apna GyandootNova account password securely reset karein — naya password set karke sign in karein.",
@@ -29,8 +25,6 @@ const ResetPassword = () => {
     noindex: true,
   });
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   useEffect(() => {
     // Supabase sets the session via URL hash on redirect
     supabase.auth.getSession().then(({ data: { session } }) => {

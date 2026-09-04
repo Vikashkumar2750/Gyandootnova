@@ -1,15 +1,10 @@
-<<<<<<< HEAD
 import DOMPurify from "dompurify";
 import { useEffect, useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-=======
-import { useParams, Link } from "react-router-dom";
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import useSEO from "@/hooks/useSEO";
 import Layout from "@/components/layout/Layout";
-<<<<<<< HEAD
 import { Loader2, ChevronLeft, ChevronRight, Home } from "lucide-react";
 import { ContinueReadingInvite } from "@/components/BrandExperience";
 
@@ -40,17 +35,10 @@ function extractKeywords(post: { title?: string; meta_title?: string; excerpt?: 
 const ArticleDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-=======
-import { Loader2, ChevronLeft, ChevronRight } from "lucide-react";
-
-const ArticleDetail = () => {
-  const { slug } = useParams<{ slug: string }>();
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 
   const { data: post, isLoading } = useQuery({
     queryKey: ["post", slug],
     queryFn: async () => {
-<<<<<<< HEAD
       const requestedSlug = slug;
       if (!requestedSlug) return null;
 
@@ -249,10 +237,23 @@ const ArticleDetail = () => {
     gcTime: 60 * 60 * 1000,
   });
 
+  // Language targeting must follow the actual article language — hardcoding
+  // hi-IN on English posts sends mixed signals to search engines.
+  const langSample = `${post?.title ?? ""} ${(post?.excerpt ?? "").replace(/<[^>]*>/g, "")} ${(post?.content ?? "").replace(/<[^>]*>/g, "").slice(0, 2000)}`;
+  const devanagari = (langSample.match(/[\u0900-\u097F]/g) || []).length;
+  const latin = (langSample.match(/[A-Za-z]/g) || []).length;
+  const isHindi = devanagari > latin;
+  const articleLang = isHindi ? "hi-IN" : "en-IN";
+
   const rawDesc = (post?.meta_description || post?.excerpt?.replace(/<[^>]*>/g, "").trim() || "").slice(0, 155);
   const articleDesc = (rawDesc && rawDesc.length >= 20)
     ? rawDesc
-    : (post ? `${post.title} — GyandootNova पर आध्यात्मिक लेख, विचार और ज्ञान पढ़ें।` : "Spiritual articles and insights at GyandootNova.");
+    : (post
+        ? (isHindi
+            ? `${post.title} — GyandootNova पर आध्यात्मिक लेख, विचार और ज्ञान पढ़ें।`
+            : `${post.title} — read this spiritual article, insight and commentary on GyandootNova.`)
+        : "Spiritual articles and insights at GyandootNova.");
+
 
   const breadcrumbJsonLd = post ? {
     "@context": "https://schema.org",
@@ -263,44 +264,6 @@ const ArticleDetail = () => {
       { "@type": "ListItem", "position": 3, "name": post.title, "item": `https://gyandootnova.in/articles/${post.slug}` },
     ],
   } : undefined;
-=======
-      const { data } = await supabase.from("posts").select("*").eq("slug", slug!).eq("is_published", true).single();
-      return data;
-    },
-    enabled: !!slug,
-  });
-
-  // Fetch older and newer posts for navigation
-  const { data: navPosts } = useQuery({
-    queryKey: ["post-nav", post?.created_at],
-    queryFn: async () => {
-      const createdAt = post!.created_at;
-      const [olderRes, newerRes] = await Promise.all([
-        supabase
-          .from("posts")
-          .select("title, slug")
-          .eq("is_published", true)
-          .lt("created_at", createdAt)
-          .order("created_at", { ascending: false })
-          .limit(1),
-        supabase
-          .from("posts")
-          .select("title, slug")
-          .eq("is_published", true)
-          .gt("created_at", createdAt)
-          .order("created_at", { ascending: true })
-          .limit(1),
-      ]);
-      return {
-        older: olderRes.data?.[0] ?? null,
-        newer: newerRes.data?.[0] ?? null,
-      };
-    },
-    enabled: !!post,
-  });
-
-  const articleDesc = post?.meta_description || post?.excerpt?.replace(/<[^>]*>/g, "").slice(0, 155) || (post ? `Read ${post.title} on GyandootNova.` : "Spiritual articles and insights at GyandootNova.");
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 
   const articleJsonLd = post ? {
     "@context": "https://schema.org",
@@ -308,11 +271,10 @@ const ArticleDetail = () => {
     "headline": post.title,
     "description": articleDesc,
     "url": `https://gyandootnova.in/articles/${post.slug}`,
-<<<<<<< HEAD
     "mainEntityOfPage": { "@type": "WebPage", "@id": `https://gyandootnova.in/articles/${post.slug}` },
     "datePublished": post.created_at,
     "dateModified": post.updated_at,
-    "inLanguage": "hi-IN",
+    "inLanguage": articleLang,
     ...(post.cover_url && { "image": post.cover_url }),
     "author": { "@type": "Organization", "name": "GyandootNova", "url": "https://gyandootnova.in" },
     "publisher": {
@@ -324,7 +286,8 @@ const ArticleDetail = () => {
   const faqJsonLd = post ? {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": [
+    "inLanguage": articleLang,
+    "mainEntity": isHindi ? [
       {
         "@type": "Question",
         "name": `${post.title} किस बारे में है?`,
@@ -338,40 +301,56 @@ const ArticleDetail = () => {
       {
         "@type": "Question",
         "name": "और आध्यात्मिक लेख कहाँ मिलेंगे?",
-        "acceptedAnswer": { "@type": "Answer", "text": "हमारे Articles सेक्शन में वेद, उपनिषद, गीता और आधुनिक आध्यात्मिक विषयों पर सैकड़ों लेख उपलब्ध हैं।" },
+        "acceptedAnswer": { "@type": "Answer", "text": "हमारे Articles सेक्शन में वेद, उपनिषद, गीता और ध्यान जैसे विषयों पर लेख उपलब्ध हैं।" },
       },
       {
         "@type": "Question",
         "name": "क्या मैं इस लेख को साझा कर सकता हूँ?",
         "acceptedAnswer": { "@type": "Answer", "text": "बिल्कुल — WhatsApp, Facebook, X या LinkedIn पर share बटन से आप इसे तुरंत साझा कर सकते हैं।" },
       },
+    ] : [
+      {
+        "@type": "Question",
+        "name": `What is "${post.title}" about?`,
+        "acceptedAnswer": { "@type": "Answer", "text": (post.excerpt || articleDesc).slice(0, 500) },
+      },
+      {
+        "@type": "Question",
+        "name": "Is this article free to read?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes — every article on GyandootNova is free to read in full." },
+      },
+      {
+        "@type": "Question",
+        "name": "Where can I find more articles like this?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Our Articles section covers the Vedas, Upanishads, Bhagavad Gita and meditation practice." },
+      },
+      {
+        "@type": "Question",
+        "name": "Can I share this article?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes — use the WhatsApp, Facebook, X or LinkedIn share buttons on this page." },
+      },
     ],
   } : undefined;
 
-=======
-    "datePublished": post.created_at,
-    "dateModified": post.updated_at,
-    ...(post.cover_url && { "image": post.cover_url }),
-    "publisher": {
-      "@type": "Organization",
-      "name": "GyandootNova",
-      "url": "https://gyandootnova.in",
-    },
-  } : undefined;
 
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   useSEO({
     title: post ? (post.meta_title || post.title) : "Loading Article... | GyandootNova",
     description: articleDesc,
     canonical: post ? `/articles/${post.slug}` : undefined,
     ogImage: post?.cover_url ?? undefined,
     ogType: "article",
-<<<<<<< HEAD
     jsonLd: post ? [articleJsonLd, breadcrumbJsonLd, faqJsonLd] : undefined,
-=======
-    jsonLd: articleJsonLd,
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   });
+
+  // Keep <html lang> aligned with the article's real language, restore on exit.
+  useEffect(() => {
+    if (!post) return;
+    const prev = document.documentElement.lang;
+    document.documentElement.lang = isHindi ? "hi" : "en";
+    return () => { document.documentElement.lang = prev; };
+  }, [post, isHindi]);
+
+
 
   if (isLoading) {
     return <Layout><div className="flex justify-center py-32"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div></Layout>;
@@ -385,7 +364,6 @@ const ArticleDetail = () => {
     <Layout>
       <article className="py-12">
         <div className="container max-w-3xl">
-<<<<<<< HEAD
           {/* Breadcrumb — SEO-friendly navigation */}
           <nav aria-label="Breadcrumb" className="mb-6">
             <ol className="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
@@ -406,10 +384,6 @@ const ArticleDetail = () => {
 
           <span className="text-xs font-medium uppercase tracking-wider text-primary">{post.post_type}</span>
           <h1 className="mt-2 font-serif text-3xl font-bold md:text-4xl notranslate" translate="no">{post.title}</h1>
-=======
-          <span className="text-xs font-medium uppercase tracking-wider text-primary">{post.post_type}</span>
-          <h1 className="mt-2 font-serif text-3xl font-bold md:text-4xl">{post.title}</h1>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           <p className="mt-2 text-muted-foreground">
             {new Date(post.created_at).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}
           </p>
@@ -419,7 +393,6 @@ const ArticleDetail = () => {
             </div>
           )}
           <div
-<<<<<<< HEAD
             className="prose prose-lg mt-8 max-w-none leading-relaxed notranslate"
             translate="no"
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content ?? "") }}
@@ -441,47 +414,12 @@ const ArticleDetail = () => {
                   <div>
                     <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Next</span>
                     <p className="mt-1 text-sm font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2">{navPosts.newer.title}</p>
-=======
-            className="prose prose-lg mt-8 max-w-none leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: post.content ?? "" }}
-          />
-
-          {/* Prev / Next Navigation */}
-          {navPosts && (navPosts.older || navPosts.newer) && (
-            <nav className="mt-12 border-t border-border pt-8 grid grid-cols-2 gap-4">
-              {navPosts.older ? (
-                <Link
-                  to={`/articles/${navPosts.older.slug}`}
-                  className="group flex items-start gap-2 text-left"
-                >
-                  <ChevronLeft className="mt-1 h-5 w-5 shrink-0 text-muted-foreground group-hover:text-primary transition-colors" />
-                  <div>
-                    <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Previous</span>
-                    <p className="mt-1 text-sm font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2">
-                      {navPosts.older.title}
-                    </p>
-                  </div>
-                </Link>
-              ) : <div />}
-
-              {navPosts.newer ? (
-                <Link
-                  to={`/articles/${navPosts.newer.slug}`}
-                  className="group flex items-start gap-2 text-right justify-end"
-                >
-                  <div>
-                    <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Next</span>
-                    <p className="mt-1 text-sm font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2">
-                      {navPosts.newer.title}
-                    </p>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                   </div>
                   <ChevronRight className="mt-1 h-5 w-5 shrink-0 text-muted-foreground group-hover:text-primary transition-colors" />
                 </Link>
               ) : <div />}
             </nav>
           )}
-<<<<<<< HEAD
 
           {relatedPosts && relatedPosts.length > 0 && (
             <section className="mt-16 border-t border-border pt-10">
@@ -546,11 +484,6 @@ const ArticleDetail = () => {
       <ContinueReadingInvite />
     </Layout>
 
-=======
-        </div>
-      </article>
-    </Layout>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   );
 };
 

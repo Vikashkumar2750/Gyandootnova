@@ -7,6 +7,8 @@ import TextHub from "@/components/TextHub";
 const GitaPressVsIskconGita = () => (
   <TextHub
     slug="gita-press-vs-iskcon-gita"
+    basePath="/compare"
+    breadcrumb={{ name: "Book Comparisons", path: "/books" }}
     english="Gita Press vs ISKCON Bhagavad Gita — Difference, Which is Better"
     hindi="गीता प्रेस बनाम ISKCON भगवद्‌गीता"
     tagline="Gita Press (Gorakhpur) की Sadhak Sanjivani और ISKCON की Bhagavad-gita As It Is — commentary, translation approach, price aur किसके लिए कौन-सा edition सही है, पूरा honest comparison।"

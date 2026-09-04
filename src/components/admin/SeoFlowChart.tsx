@@ -71,7 +71,7 @@ const STEPS: StepDef[] = [
   { n: 16, icon: BarChart3, title: "Track Rankings", desc: "GSC pulls clicks, CTR, impressions, position daily into posts table.",
     action: "seo-gsc-sync writes gsc_clicks/impressions/ctr/position", cron: "seo-gsc-sync-daily", duration: "10–20s",
     logMatch: (r) => (r.steps || []).some?.((s: any) => s?.name === "gsc") },
-  { n: 17, icon: Mail, title: "Email Report", desc: "HTML performance report emailed to amrendra8765@gmail.com after each publish.",
+  { n: 17, icon: Mail, title: "Email Report", desc: "HTML performance report emailed to gyandootnova57@gmail.com after each publish.",
     action: "Resend send → HTML performance report", cron: "seo-post-publish-hook", duration: "2–3s",
     logMatch: (r) => (r.steps || []).some?.((s: any) => s?.name === "email") },
   { n: 18, icon: Repeat, title: "Queue Next 30 Blogs", desc: "Every 6h: if scheduled < 30, seo-queue-topup generates new drafts. Never empty.",

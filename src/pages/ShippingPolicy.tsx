@@ -1,5 +1,4 @@
 import Layout from "@/components/layout/Layout";
-<<<<<<< HEAD
 import useSEO from "@/hooks/useSEO";
 
 const ShippingPolicy = () => {
@@ -10,11 +9,6 @@ const ShippingPolicy = () => {
   });
   return (
 
-=======
-
-const ShippingPolicy = () => {
-  return (
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     <Layout>
       <main className="container py-16 max-w-3xl mx-auto prose prose-neutral dark:prose-invert">
         <h1 className="font-serif text-4xl font-bold text-primary">Shipping & Delivery Policy</h1>
@@ -47,11 +41,7 @@ const ShippingPolicy = () => {
         <ol>
           <li>Refresh the page and check your account.</li>
           <li>Wait a few minutes — payment verification may take up to 5 minutes.</li>
-<<<<<<< HEAD
-          <li>If the issue persists, contact us at <a href="mailto:amrendra8765@gmail.com" className="text-primary">amrendra8765@gmail.com</a> with your payment ID.</li>
-=======
-          <li>If the issue persists, contact us at <a href="mailto:support@gyandootnova.com" className="text-primary">support@gyandootnova.com</a> with your payment ID.</li>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
+          <li>If the issue persists, contact us at <a href="mailto:gyandootnova57@gmail.com" className="text-primary">gyandootnova57@gmail.com</a> with your payment ID.</li>
         </ol>
 
         <h2>6. No Physical Shipping</h2>

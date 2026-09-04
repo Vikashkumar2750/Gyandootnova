@@ -1,8 +1,5 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
-<<<<<<< HEAD
 import AskScripture from "@/components/AskScripture";
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -10,7 +7,6 @@ import { ArrowLeft, Loader2, BookOpen, AlertTriangle } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import SecurePdfViewer from "@/components/SecurePdfViewer";
-<<<<<<< HEAD
 import { useAntiCopy } from "@/hooks/useAntiCopy";
 import logoImg from "@/assets/logo.jpeg";
 import useSEO from "@/hooks/useSEO";
@@ -18,11 +14,6 @@ import useSEO from "@/hooks/useSEO";
 const FileBookReader = () => {
   useAntiCopy();
   useSEO({ title: "Read Book | GyandootNova", canonical: "/", noindex: true });
-=======
-import logoImg from "@/assets/logo.jpeg";
-
-const FileBookReader = () => {
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   const { slug } = useParams<{ slug: string }>();
   const { user, loading: authLoading } = useAuth();
   const [darkMode, setDarkMode] = useState(false);
@@ -89,7 +80,6 @@ const FileBookReader = () => {
     return () => document.removeEventListener("contextmenu", handler);
   }, []);
 
-<<<<<<< HEAD
   // Anti-screenshot: blur content when page not visible or window loses focus
   useEffect(() => {
     const root = document.getElementById("reader-secure-root");
@@ -119,8 +109,6 @@ const FileBookReader = () => {
     };
   }, []);
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   // Prevent keyboard shortcuts for saving/printing/developer tools
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -155,7 +143,6 @@ const FileBookReader = () => {
     };
   }, []);
 
-<<<<<<< HEAD
   // Anti-screenshot: detect screenshot keys and blur content + show warning
   useEffect(() => {
     const root = document.getElementById("reader-secure-root");
@@ -239,8 +226,6 @@ const FileBookReader = () => {
     return () => clearInterval(id);
   }, []);
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   if (authLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -335,7 +320,6 @@ const FileBookReader = () => {
 
   return (
     <div
-<<<<<<< HEAD
       id="reader-secure-root"
       className={`min-h-screen select-none reader-secure ${darkMode ? "bg-gray-900 text-gray-100" : "bg-background text-foreground"}`}
       style={{ WebkitUserSelect: "none", userSelect: "none" }}
@@ -364,37 +348,14 @@ const FileBookReader = () => {
           <div className="flex items-center gap-1.5">
             <span className="text-[10px] sm:text-xs text-muted-foreground uppercase">{fileType}</span>
             <Button variant="ghost" size="sm" className="h-8 w-8 p-0" onClick={() => setDarkMode(!darkMode)}>
-=======
-      className={`min-h-screen select-none ${darkMode ? "bg-gray-900 text-gray-100" : "bg-background text-foreground"}`}
-      style={{ WebkitUserSelect: "none", userSelect: "none" }}
-    >
-      {/* Toolbar */}
-      <div className={`sticky top-0 z-40 border-b px-4 py-2 ${darkMode ? "border-gray-700 bg-gray-900/95" : "bg-background/95 backdrop-blur"}`}>
-        <div className="mx-auto flex max-w-5xl items-center justify-between">
-          <Button variant="ghost" size="sm" asChild>
-            <Link to={`/books/${slug}`}>
-              <ArrowLeft className="mr-1 h-4 w-4" />
-              <span className="hidden sm:inline">{book.title}</span>
-              <span className="sm:hidden">Back</span>
-            </Link>
-          </Button>
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground uppercase">{fileType}</span>
-            <Button variant="ghost" size="sm" onClick={() => setDarkMode(!darkMode)}>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
               {darkMode ? "☀️" : "🌙"}
             </Button>
           </div>
         </div>
       </div>
 
-<<<<<<< HEAD
       {/* Content - minimal padding on mobile for max reading area */}
       <div className="mx-auto max-w-6xl px-1 sm:px-3 md:px-4 py-2 sm:py-4">
-=======
-      {/* Content */}
-      <div className="mx-auto max-w-5xl px-4 py-6">
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
         {isLoading && (
           <div className="flex flex-col items-center justify-center py-32 gap-3">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -457,10 +418,7 @@ const FileBookReader = () => {
           </div>
         )}
       </div>
-<<<<<<< HEAD
       {book && <AskScripture bookId={book.id} bookTitle={book.title} />}
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     </div>
   );
 };

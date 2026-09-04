@@ -6,7 +6,7 @@ import { assertSeoAuthorized } from "../_shared/seo-auth.ts";
 
 const SITE = "https://gyandootnova.in";
 const GSC_SITE_URL = "https://gyandootnova.in/";
-const REPORT_TO = "amrendra8765@gmail.com";
+const REPORT_TO = "gyandootnova57@gmail.com";
 const GATEWAY = "https://connector-gateway.lovable.dev";
 
 async function submitToGsc(articleUrl: string) {
@@ -52,7 +52,7 @@ async function generateCaptions(post: any) {
     const svc = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const r = await fetch(`${supabaseUrl}/functions/v1/seo-social-captions`, {
       method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${svc}`, apikey: svc },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${svc}`, apikey: svc, "x-cron-secret": Deno.env.get("SEO_CRON_TOKEN") ?? "" },
       body: JSON.stringify({ post_id: post.id }),
     });
     const j = await r.json().catch(() => ({}));

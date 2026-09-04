@@ -14,7 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-<<<<<<< HEAD
       admin_otp_sessions: {
         Row: {
           created_at: string
@@ -295,21 +294,76 @@ export type Database = {
         }
         Relationships: []
       }
+      app_errors: {
+        Row: {
+          ai_diagnosis: string | null
+          auto_fix: string | null
+          created_at: string
+          emailed_at: string | null
+          fingerprint: string
+          id: string
+          last_seen_at: string
+          message: string
+          needs_ai: boolean
+          occurrences: number
+          route: string | null
+          severity: string
+          source: string
+          stack: string | null
+          status: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          ai_diagnosis?: string | null
+          auto_fix?: string | null
+          created_at?: string
+          emailed_at?: string | null
+          fingerprint: string
+          id?: string
+          last_seen_at?: string
+          message: string
+          needs_ai?: boolean
+          occurrences?: number
+          route?: string | null
+          severity?: string
+          source?: string
+          stack?: string | null
+          status?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          ai_diagnosis?: string | null
+          auto_fix?: string | null
+          created_at?: string
+          emailed_at?: string | null
+          fingerprint?: string
+          id?: string
+          last_seen_at?: string
+          message?: string
+          needs_ai?: boolean
+          occurrences?: number
+          route?: string | null
+          severity?: string
+          source?: string
+          stack?: string | null
+          status?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       book_chapters: {
         Row: {
           approval_notes: string | null
           approval_status: Database["public"]["Enums"]["approval_status_t"]
-=======
-      book_chapters: {
-        Row: {
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           book_id: string
           chapter_number: number
           content: string | null
           created_at: string
           id: string
           is_preview: boolean
-<<<<<<< HEAD
           last_edited_at: string | null
           last_edited_by: string | null
           originality_checked_at: string | null
@@ -321,25 +375,18 @@ export type Database = {
           slug: string
           source_citation: string | null
           source_type: Database["public"]["Enums"]["source_type_t"] | null
-=======
-          slug: string
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           title: string
           updated_at: string
         }
         Insert: {
-<<<<<<< HEAD
           approval_notes?: string | null
           approval_status?: Database["public"]["Enums"]["approval_status_t"]
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           book_id: string
           chapter_number?: number
           content?: string | null
           created_at?: string
           id?: string
           is_preview?: boolean
-<<<<<<< HEAD
           last_edited_at?: string | null
           last_edited_by?: string | null
           originality_checked_at?: string | null
@@ -351,25 +398,18 @@ export type Database = {
           slug: string
           source_citation?: string | null
           source_type?: Database["public"]["Enums"]["source_type_t"] | null
-=======
-          slug: string
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           title: string
           updated_at?: string
         }
         Update: {
-<<<<<<< HEAD
           approval_notes?: string | null
           approval_status?: Database["public"]["Enums"]["approval_status_t"]
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           book_id?: string
           chapter_number?: number
           content?: string | null
           created_at?: string
           id?: string
           is_preview?: boolean
-<<<<<<< HEAD
           last_edited_at?: string | null
           last_edited_by?: string | null
           originality_checked_at?: string | null
@@ -381,9 +421,6 @@ export type Database = {
           slug?: string
           source_citation?: string | null
           source_type?: Database["public"]["Enums"]["source_type_t"] | null
-=======
-          slug?: string
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           title?: string
           updated_at?: string
         }
@@ -397,7 +434,6 @@ export type Database = {
           },
         ]
       }
-<<<<<<< HEAD
       book_files: {
         Row: {
           book_id: string
@@ -527,8 +563,6 @@ export type Database = {
           },
         ]
       }
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       bookmarks: {
         Row: {
           book_id: string
@@ -585,20 +619,13 @@ export type Database = {
       }
       books: {
         Row: {
-<<<<<<< HEAD
           access_validity_days: number | null
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           author: string
           category: string | null
           cover_url: string | null
           created_at: string
           description: string | null
           file_type: string | null
-<<<<<<< HEAD
-=======
-          file_url: string | null
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           id: string
           is_featured: boolean
           is_free: boolean
@@ -611,20 +638,13 @@ export type Database = {
           updated_at: string
         }
         Insert: {
-<<<<<<< HEAD
           access_validity_days?: number | null
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           author?: string
           category?: string | null
           cover_url?: string | null
           created_at?: string
           description?: string | null
           file_type?: string | null
-<<<<<<< HEAD
-=======
-          file_url?: string | null
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           id?: string
           is_featured?: boolean
           is_free?: boolean
@@ -637,20 +657,13 @@ export type Database = {
           updated_at?: string
         }
         Update: {
-<<<<<<< HEAD
           access_validity_days?: number | null
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           author?: string
           category?: string | null
           cover_url?: string | null
           created_at?: string
           description?: string | null
           file_type?: string | null
-<<<<<<< HEAD
-=======
-          file_url?: string | null
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           id?: string
           is_featured?: boolean
           is_free?: boolean
@@ -709,7 +722,6 @@ export type Database = {
           },
         ]
       }
-<<<<<<< HEAD
       contact_enquiries: {
         Row: {
           admin_notes: string | null
@@ -788,8 +800,6 @@ export type Database = {
         }
         Relationships: []
       }
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       coupon_books: {
         Row: {
           book_id: string
@@ -835,10 +845,7 @@ export type Database = {
           is_active: boolean
           max_uses: number | null
           min_order_amount: number | null
-<<<<<<< HEAD
           repurchase_only: boolean
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           updated_at: string
           used_count: number
         }
@@ -853,10 +860,7 @@ export type Database = {
           is_active?: boolean
           max_uses?: number | null
           min_order_amount?: number | null
-<<<<<<< HEAD
           repurchase_only?: boolean
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           updated_at?: string
           used_count?: number
         }
@@ -871,16 +875,12 @@ export type Database = {
           is_active?: boolean
           max_uses?: number | null
           min_order_amount?: number | null
-<<<<<<< HEAD
           repurchase_only?: boolean
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           updated_at?: string
           used_count?: number
         }
         Relationships: []
       }
-<<<<<<< HEAD
       custom_scripts: {
         Row: {
           content: string
@@ -973,15 +973,15 @@ export type Database = {
           },
         ]
       }
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       donations: {
         Row: {
           amount: number
           created_at: string
+          currency: string
           donor_email: string | null
           donor_name: string | null
           id: string
+          payment_gateway: string
           razorpay_order_id: string | null
           razorpay_payment_id: string | null
           razorpay_signature: string | null
@@ -991,9 +991,11 @@ export type Database = {
         Insert: {
           amount: number
           created_at?: string
+          currency?: string
           donor_email?: string | null
           donor_name?: string | null
           id?: string
+          payment_gateway?: string
           razorpay_order_id?: string | null
           razorpay_payment_id?: string | null
           razorpay_signature?: string | null
@@ -1003,9 +1005,11 @@ export type Database = {
         Update: {
           amount?: number
           created_at?: string
+          currency?: string
           donor_email?: string | null
           donor_name?: string | null
           id?: string
+          payment_gateway?: string
           razorpay_order_id?: string | null
           razorpay_payment_id?: string | null
           razorpay_signature?: string | null
@@ -1014,7 +1018,48 @@ export type Database = {
         }
         Relationships: []
       }
-<<<<<<< HEAD
+      editorial_agent_runs: {
+        Row: {
+          created_at: string
+          details: Json | null
+          error: string | null
+          id: string
+          keyword: string | null
+          originality_score: number | null
+          post_id: string | null
+          quality_score: number | null
+          revisions: number | null
+          status: string
+          topic: string | null
+        }
+        Insert: {
+          created_at?: string
+          details?: Json | null
+          error?: string | null
+          id?: string
+          keyword?: string | null
+          originality_score?: number | null
+          post_id?: string | null
+          quality_score?: number | null
+          revisions?: number | null
+          status?: string
+          topic?: string | null
+        }
+        Update: {
+          created_at?: string
+          details?: Json | null
+          error?: string | null
+          id?: string
+          keyword?: string | null
+          originality_score?: number | null
+          post_id?: string | null
+          quality_score?: number | null
+          revisions?: number | null
+          status?: string
+          topic?: string | null
+        }
+        Relationships: []
+      }
       lsi_keywords: {
         Row: {
           category: string | null
@@ -1336,57 +1381,12 @@ export type Database = {
           title?: string
           updated_at?: string
           word_count?: number | null
-=======
-      posts: {
-        Row: {
-          content: string | null
-          cover_url: string | null
-          created_at: string
-          excerpt: string | null
-          id: string
-          is_published: boolean
-          meta_description: string | null
-          meta_title: string | null
-          post_type: string
-          slug: string
-          title: string
-          updated_at: string
-        }
-        Insert: {
-          content?: string | null
-          cover_url?: string | null
-          created_at?: string
-          excerpt?: string | null
-          id?: string
-          is_published?: boolean
-          meta_description?: string | null
-          meta_title?: string | null
-          post_type?: string
-          slug: string
-          title: string
-          updated_at?: string
-        }
-        Update: {
-          content?: string | null
-          cover_url?: string | null
-          created_at?: string
-          excerpt?: string | null
-          id?: string
-          is_published?: boolean
-          meta_description?: string | null
-          meta_title?: string | null
-          post_type?: string
-          slug?: string
-          title?: string
-          updated_at?: string
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
         }
         Relationships: []
       }
       profiles: {
         Row: {
           avatar_url: string | null
-<<<<<<< HEAD
           birthday: string | null
           created_at: string
           display_name: string | null
@@ -1394,17 +1394,11 @@ export type Database = {
           phone: string | null
           reading_goal_minutes: number
           spiritual_intention: string | null
-=======
-          created_at: string
-          display_name: string | null
-          id: string
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           updated_at: string
           user_id: string
         }
         Insert: {
           avatar_url?: string | null
-<<<<<<< HEAD
           birthday?: string | null
           created_at?: string
           display_name?: string | null
@@ -1412,17 +1406,11 @@ export type Database = {
           phone?: string | null
           reading_goal_minutes?: number
           spiritual_intention?: string | null
-=======
-          created_at?: string
-          display_name?: string | null
-          id?: string
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           updated_at?: string
           user_id: string
         }
         Update: {
           avatar_url?: string | null
-<<<<<<< HEAD
           birthday?: string | null
           created_at?: string
           display_name?: string | null
@@ -1430,11 +1418,6 @@ export type Database = {
           phone?: string | null
           reading_goal_minutes?: number
           spiritual_intention?: string | null
-=======
-          created_at?: string
-          display_name?: string | null
-          id?: string
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           updated_at?: string
           user_id?: string
         }
@@ -1442,7 +1425,6 @@ export type Database = {
       }
       purchases: {
         Row: {
-<<<<<<< HEAD
           amount: number | null
           book_id: string
           claim_token: string | null
@@ -1452,17 +1434,13 @@ export type Database = {
           currency: string
           guest_email: string | null
           guest_name: string | null
-=======
-          book_id: string
-          created_at: string
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           id: string
+          payment_gateway: string
           razorpay_order_id: string | null
           razorpay_payment_id: string | null
           razorpay_signature: string | null
           referrer_id: string | null
           status: string
-<<<<<<< HEAD
           user_id: string | null
         }
         Insert: {
@@ -1475,20 +1453,13 @@ export type Database = {
           currency?: string
           guest_email?: string | null
           guest_name?: string | null
-=======
-          user_id: string
-        }
-        Insert: {
-          book_id: string
-          created_at?: string
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           id?: string
+          payment_gateway?: string
           razorpay_order_id?: string | null
           razorpay_payment_id?: string | null
           razorpay_signature?: string | null
           referrer_id?: string | null
           status?: string
-<<<<<<< HEAD
           user_id?: string | null
         }
         Update: {
@@ -1501,24 +1472,14 @@ export type Database = {
           currency?: string
           guest_email?: string | null
           guest_name?: string | null
-=======
-          user_id: string
-        }
-        Update: {
-          book_id?: string
-          created_at?: string
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           id?: string
+          payment_gateway?: string
           razorpay_order_id?: string | null
           razorpay_payment_id?: string | null
           razorpay_signature?: string | null
           referrer_id?: string | null
           status?: string
-<<<<<<< HEAD
           user_id?: string | null
-=======
-          user_id?: string
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
         }
         Relationships: [
           {
@@ -1528,7 +1489,6 @@ export type Database = {
             referencedRelation: "books"
             referencedColumns: ["id"]
           },
-<<<<<<< HEAD
           {
             foreignKeyName: "purchases_coupon_id_fkey"
             columns: ["coupon_id"]
@@ -1536,8 +1496,6 @@ export type Database = {
             referencedRelation: "coupons"
             referencedColumns: ["id"]
           },
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
         ]
       }
       reading_progress: {
@@ -1627,7 +1585,6 @@ export type Database = {
         }
         Relationships: []
       }
-<<<<<<< HEAD
       sales_events: {
         Row: {
           created_at: string
@@ -1989,42 +1946,51 @@ export type Database = {
         }
         Relationships: []
       }
+      seo_report_runs: {
+        Row: {
+          created_at: string
+          id: string
+          kind: string
+          report_date: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kind?: string
+          report_date: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kind?: string
+          report_date?: string
+        }
+        Relationships: []
+      }
       settings: {
         Row: {
           id: string
           is_public: boolean
-=======
-      settings: {
-        Row: {
-          id: string
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           key: string
           updated_at: string
           value: string | null
         }
         Insert: {
           id?: string
-<<<<<<< HEAD
           is_public?: boolean
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           key: string
           updated_at?: string
           value?: string | null
         }
         Update: {
           id?: string
-<<<<<<< HEAD
           is_public?: boolean
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           key?: string
           updated_at?: string
           value?: string | null
         }
         Relationships: []
       }
-<<<<<<< HEAD
       team_members: {
         Row: {
           avatar_url: string | null
@@ -2117,8 +2083,6 @@ export type Database = {
           },
         ]
       }
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       text_highlights: {
         Row: {
           book_id: string
@@ -2191,7 +2155,6 @@ export type Database = {
         }
         Relationships: []
       }
-<<<<<<< HEAD
       visitor_logs: {
         Row: {
           browser: string | null
@@ -2270,15 +2233,14 @@ export type Database = {
         }
         Relationships: []
       }
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-<<<<<<< HEAD
       admin_db_storage_stats: { Args: never; Returns: Json }
+      admin_export_columns: { Args: never; Returns: Json }
+      admin_export_schema: { Args: never; Returns: Json }
       admin_get_book_file_url: { Args: { _book_id: string }; Returns: string }
       admin_get_chapter_full: {
         Args: { _chapter_id: string }
@@ -2298,15 +2260,12 @@ export type Database = {
         Args: { _book_id: string; _file_url: string }
         Returns: undefined
       }
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       apply_coupon:
         | { Args: { _code: string; _order_amount: number }; Returns: Json }
         | {
             Args: { _book_id?: string; _code: string; _order_amount: number }
             Returns: Json
           }
-<<<<<<< HEAD
       get_book_chapter_index: {
         Args: { _book_id: string }
         Returns: {
@@ -2342,8 +2301,6 @@ export type Database = {
           status: string
         }[]
       }
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       get_user_donations: {
         Args: { _user_id: string }
         Returns: {
@@ -2358,7 +2315,6 @@ export type Database = {
       get_user_purchases: {
         Args: { _user_id: string }
         Returns: {
-<<<<<<< HEAD
           access_validity_days: number
           amount: number
           book_id: string
@@ -2375,14 +2331,6 @@ export type Database = {
         Args: { _area: string; _user_id: string }
         Returns: boolean
       }
-=======
-          book_id: string
-          created_at: string
-          id: string
-          status: string
-        }[]
-      }
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       has_purchased_book: {
         Args: { _book_id: string; _user_id: string }
         Returns: boolean
@@ -2402,7 +2350,6 @@ export type Database = {
         Args: { _book_id: string }
         Returns: undefined
       }
-<<<<<<< HEAD
       is_admin_otp_verified: { Args: { _user_id: string }; Returns: boolean }
       publish_scheduled_posts: { Args: never; Returns: undefined }
       review_chapter: {
@@ -2441,11 +2388,6 @@ export type Database = {
         | "public_domain"
         | "licensed"
         | "quoted_excerpt"
-=======
-    }
-    Enums: {
-      app_role: "admin" | "user"
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2573,7 +2515,6 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-<<<<<<< HEAD
       app_role: [
         "admin",
         "user",
@@ -2598,9 +2539,6 @@ export const Constants = {
         "licensed",
         "quoted_excerpt",
       ],
-=======
-      app_role: ["admin", "user"],
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     },
   },
 } as const

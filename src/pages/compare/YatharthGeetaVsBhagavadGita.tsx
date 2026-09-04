@@ -8,6 +8,8 @@ import TextHub from "@/components/TextHub";
 const YatharthGeetaVsBhagavadGita = () => (
   <TextHub
     slug="yatharth-geeta-vs-bhagavad-gita"
+    basePath="/compare"
+    breadcrumb={{ name: "Book Comparisons", path: "/books" }}
     english="Yatharth Geeta vs Bhagavad Gita — Difference, Which is Better"
     hindi="यथार्थ गीता बनाम भगवद्‌गीता"
     tagline="A clear, honest comparison of Swami Adgadanand's Yatharth Geeta and the original Bhagavad Gita — verses, commentary style, translation approach, and which edition suits which reader."

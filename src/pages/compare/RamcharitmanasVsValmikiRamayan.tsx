@@ -7,6 +7,8 @@ import TextHub from "@/components/TextHub";
 const RamcharitmanasVsValmikiRamayan = () => (
   <TextHub
     slug="ramcharitmanas-vs-valmiki-ramayan"
+    basePath="/compare"
+    breadcrumb={{ name: "Book Comparisons", path: "/books" }}
     english="Ramcharitmanas vs Valmiki Ramayan — Difference, Which to Read"
     hindi="रामचरितमानस बनाम वाल्मीकि रामायण"
     tagline="Tulsidas जी की रामचरितमानस और महर्षि वाल्मीकि की मूल रामायण में क्या फ़र्क है — language, story, कांड, aur किसके लिए कौन-सा सही है, पूरा honest comparison।"

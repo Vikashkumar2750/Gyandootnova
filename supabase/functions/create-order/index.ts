@@ -1,8 +1,8 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-<<<<<<< HEAD
-import { convertInr, PAYPAL_SUPPORTED as _PP_SUPPORTED } from "../_shared/fx.ts";
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
+import {
+  gatewayForCurrency, normalizeCurrency, paypalAmount, razorpayAmount, PAYPAL_SUPPORTED,
+} from "../_shared/currency.ts";
+import { PAYPAL_API_BASE } from "../_shared/paypal.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -20,37 +20,36 @@ Deno.serve(async (req) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-<<<<<<< HEAD
     const {
-      amount, type, book_id, name, email, gateway = "razorpay",
-      coupon_id, referrer_id, buyer_currency, buyer_fx_rate,
+      amount, type, book_id, name, email,
+      coupon_id, referrer_id, buyer_currency,
       guest_email, guest_name,
     } = await req.json();
+
+    // ---- Currency + gateway routing (NO exchange-rate conversion) ----
+    const currency = normalizeCurrency(buyer_currency);
+    const gateway = gatewayForCurrency(currency);
+    if (gateway === "unsupported") {
+      return new Response(
+        JSON.stringify({
+          error: `${currency} is not supported by our payment providers. Please choose INR, USD, GBP, EUR, CAD, AUD, JPY or SGD.`,
+          unsupported_currency: currency,
+        }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
 
     // Auth is optional. Purchases allow logged-in OR guest (guest_email required).
     let user: any = null;
     const authHeader = req.headers.get("Authorization");
     if (authHeader && !authHeader.endsWith("Bearer ") && !authHeader.endsWith("Bearer anonymous")) {
-=======
-    const { amount, type, book_id, name, email, gateway = "razorpay", coupon_id, referrer_id } = await req.json();
-
-    // For purchases, auth is required. For donations, auth is optional.
-    let user: any = null;
-    const authHeader = req.headers.get("Authorization");
-    if (authHeader) {
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       const token = authHeader.replace("Bearer ", "");
       const { data: { user: authUser } } = await supabase.auth.getUser(token);
       user = authUser ?? null;
     }
 
-<<<<<<< HEAD
     if (type === "purchase" && !user && !guest_email) {
       return new Response(JSON.stringify({ error: "Login OR guest email required to purchase" }), {
-=======
-    if (type === "purchase" && !user) {
-      return new Response(JSON.stringify({ error: "Login required to purchase books" }), {
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
         status: 401,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -88,19 +87,11 @@ Deno.serve(async (req) => {
       }
       verifiedAmount = book.price;
 
-<<<<<<< HEAD
       // Apply coupon discount if coupon_id provided (skip for guests — repurchase check needs user)
       if (coupon_id) {
         const { data: coupon } = await supabase
           .from("coupons")
           .select("id, discount_type, discount_value, min_order_amount, max_uses, used_count, is_active, expires_at, repurchase_only")
-=======
-      // Apply coupon discount if coupon_id provided
-      if (coupon_id) {
-        const { data: coupon } = await supabase
-          .from("coupons")
-          .select("id, discount_type, discount_value, min_order_amount, max_uses, used_count, is_active, expires_at")
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           .eq("id", coupon_id)
           .eq("is_active", true)
           .single();
@@ -111,10 +102,6 @@ Deno.serve(async (req) => {
           const hasUses = !coupon.max_uses || coupon.used_count < coupon.max_uses;
           const meetsMin = verifiedAmount >= (coupon.min_order_amount ?? 0);
 
-<<<<<<< HEAD
-=======
-          // Enforce book restriction server-side
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           let bookAllowed = true;
           const { count: restrictionCount } = await supabase
             .from("coupon_books")
@@ -130,7 +117,6 @@ Deno.serve(async (req) => {
             bookAllowed = (matchCount ?? 0) > 0;
           }
 
-<<<<<<< HEAD
           let repurchaseOk = true;
           if ((coupon as any).repurchase_only) {
             if (!user?.id) {
@@ -152,9 +138,6 @@ Deno.serve(async (req) => {
           }
 
           if (notExpired && hasUses && meetsMin && bookAllowed && repurchaseOk) {
-=======
-          if (notExpired && hasUses && meetsMin && bookAllowed) {
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
             let discount = 0;
             if (coupon.discount_type === "percent") {
               discount = Math.round((verifiedAmount * coupon.discount_value / 100) * 100) / 100;
@@ -168,21 +151,9 @@ Deno.serve(async (req) => {
     }
 
     if (gateway === "razorpay") {
-<<<<<<< HEAD
       return await handleRazorpay(supabase, user, verifiedAmount, type, book_id, name, email, coupon_id, referrer_id, guest_email, guest_name);
-    } else if (gateway === "paypal") {
-      return await handlePaypal(supabase, user, verifiedAmount, type, book_id, name, email, coupon_id, referrer_id, buyer_currency, guest_email, guest_name);
-=======
-      return await handleRazorpay(supabase, user, verifiedAmount, type, book_id, name, email, coupon_id, referrer_id);
-    } else if (gateway === "paypal") {
-      return await handlePaypal(supabase, user, verifiedAmount, type, book_id, name, email, coupon_id, referrer_id);
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
-    } else {
-      return new Response(JSON.stringify({ error: "Unsupported gateway" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
     }
+    return await handlePaypal(supabase, user, verifiedAmount, type, book_id, name, email, coupon_id, referrer_id, currency, guest_email, guest_name);
   } catch (err) {
     console.error("create-order error:", err);
     return new Response(JSON.stringify({ error: "Internal server error" }), {
@@ -192,7 +163,6 @@ Deno.serve(async (req) => {
   }
 });
 
-<<<<<<< HEAD
 function newClaimToken(): string {
   const bytes = new Uint8Array(24);
   crypto.getRandomValues(bytes);
@@ -203,11 +173,6 @@ async function handleRazorpay(
   supabase: any, user: any, amount: number, type: string,
   book_id?: string, name?: string, email?: string, coupon_id?: string, referrer_id?: string,
   guest_email?: string, guest_name?: string,
-=======
-async function handleRazorpay(
-  supabase: any, user: any, amount: number, type: string,
-  book_id?: string, name?: string, email?: string, coupon_id?: string, referrer_id?: string
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 ) {
   const keyId = Deno.env.get("RAZORPAY_KEY_ID");
   const keySecret = Deno.env.get("RAZORPAY_KEY_SECRET");
@@ -225,11 +190,7 @@ async function handleRazorpay(
       Authorization: "Basic " + btoa(`${keyId}:${keySecret}`),
     },
     body: JSON.stringify({
-<<<<<<< HEAD
-      amount: Math.round(amount * 100),
-=======
-      amount: Math.round(amount * 100), // paise
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
+      amount: razorpayAmount(amount, "INR"),
       currency: "INR",
       receipt: `${type}_${Date.now()}`,
     }),
@@ -245,7 +206,6 @@ async function handleRazorpay(
   }
 
   const order = await orderRes.json();
-<<<<<<< HEAD
   const isGuest = !user && !!guest_email;
   const claim_token = type === "purchase" && isGuest ? newClaimToken() : undefined;
 
@@ -260,32 +220,13 @@ async function handleRazorpay(
       status: "pending",
       amount,
       currency: "INR",
+      payment_gateway: "razorpay",
     };
     if (referrer_id && referrer_id !== user?.id) {
       purchaseData.referrer_id = referrer_id;
     }
     if (coupon_id) purchaseData.coupon_id = coupon_id;
     await supabase.from("purchases").insert(purchaseData);
-=======
-
-  // Store pending record
-  if (type === "purchase") {
-    const purchaseData: any = {
-      user_id: user.id,
-      book_id,
-      razorpay_order_id: order.id,
-      status: "pending",
-    };
-    // Store referrer_id if present and not self-referral
-    if (referrer_id && referrer_id !== user.id) {
-      purchaseData.referrer_id = referrer_id;
-    }
-    await supabase.from("purchases").insert(purchaseData);
-    // Increment coupon usage if applied
-    if (coupon_id) {
-      await supabase.rpc("increment_coupon_usage", { _coupon_id: coupon_id });
-    }
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   } else {
     await supabase.from("donations").insert({
       user_id: user?.id ?? null,
@@ -294,35 +235,25 @@ async function handleRazorpay(
       donor_email: email || user?.email || null,
       razorpay_order_id: order.id,
       status: "pending",
+      currency: "INR",
+      payment_gateway: "razorpay",
     });
   }
 
   return new Response(
-<<<<<<< HEAD
     JSON.stringify({ gateway: "razorpay", order_id: order.id, key_id: keyId, amount: order.amount, currency: order.currency, claim_token }),
-=======
-    JSON.stringify({ gateway: "razorpay", order_id: order.id, key_id: keyId, amount: order.amount, currency: order.currency }),
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
   );
 }
-
-<<<<<<< HEAD
-const PAYPAL_SUPPORTED = _PP_SUPPORTED;
 
 async function handlePaypal(
   supabase: any, user: any, amount: number, type: string,
   book_id?: string, name?: string, email?: string, coupon_id?: string, referrer_id?: string,
   buyer_currency?: string,
   guest_email?: string, guest_name?: string,
-=======
-async function handlePaypal(
-  supabase: any, user: any, amount: number, type: string,
-  book_id?: string, name?: string, email?: string, coupon_id?: string, referrer_id?: string
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 ) {
-  const clientId = Deno.env.get("PAYPAL_CLIENT_ID");
-  const clientSecret = Deno.env.get("PAYPAL_CLIENT_SECRET");
+  const clientId = Deno.env.get("PAYPAL_CLIENT_ID")?.trim();
+  const clientSecret = Deno.env.get("PAYPAL_CLIENT_SECRET")?.trim();
   if (!clientId || !clientSecret) {
     return new Response(JSON.stringify({ error: "PayPal not configured" }), {
       status: 500,
@@ -330,11 +261,7 @@ async function handlePaypal(
     });
   }
 
-<<<<<<< HEAD
-=======
-  // Get access token
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
-  const tokenRes = await fetch("https://api-m.paypal.com/v1/oauth2/token", {
+  const tokenRes = await fetch(`${PAYPAL_API_BASE}/v1/oauth2/token`, {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -344,27 +271,34 @@ async function handlePaypal(
   });
 
   if (!tokenRes.ok) {
-    console.error("PayPal token error:", await tokenRes.text());
-    return new Response(JSON.stringify({ error: "PayPal auth failed" }), {
-      status: 500,
+    const tokenErr = await tokenRes.text();
+    console.error("PayPal token error:", tokenErr, "base:", PAYPAL_API_BASE);
+    const invalidClient = tokenErr.includes("invalid_client");
+    return new Response(JSON.stringify({
+      error: invalidClient
+        ? "International payments are temporarily unavailable. Please pay in INR or contact support."
+        : "PayPal auth failed",
+      code: invalidClient ? "paypal_invalid_credentials" : "paypal_auth_failed",
+    }), {
+      status: 503,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 
   const { access_token } = await tokenRes.json();
 
-<<<<<<< HEAD
-  // SECURITY: server-side FX only. Ignore any client-supplied rate — a hostile
-  // buyer would otherwise send `buyer_fx_rate: 0.00001` and pay pennies.
-  const { rate: _rate, formatted: paypalValue, currency } =
-    await convertInr(amount, buyer_currency || "USD");
+  // NO CONVERSION: the same numeric amount is charged in the buyer's currency.
+  const currency = normalizeCurrency(buyer_currency);
+  if (!PAYPAL_SUPPORTED.has(currency)) {
+    return new Response(
+      JSON.stringify({ error: `PayPal does not support ${currency}`, unsupported_currency: currency }),
+      { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+    );
+  }
+  const paypalValue = paypalAmount(amount, currency);
 
-=======
-  // Convert INR to USD (approximate)
-  const usdAmount = (amount / 83).toFixed(2);
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 
-  const orderRes = await fetch("https://api-m.paypal.com/v2/checkout/orders", {
+  const orderRes = await fetch(`${PAYPAL_API_BASE}/v2/checkout/orders`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -374,11 +308,7 @@ async function handlePaypal(
       intent: "CAPTURE",
       purchase_units: [
         {
-<<<<<<< HEAD
           amount: { currency_code: currency, value: paypalValue },
-=======
-          amount: { currency_code: "USD", value: usdAmount },
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           description: type === "purchase" ? "Book Purchase" : "Donation",
         },
       ],
@@ -394,7 +324,6 @@ async function handlePaypal(
   }
 
   const ppOrder = await orderRes.json();
-<<<<<<< HEAD
   const isGuest = !user && !!guest_email;
   const claim_token = type === "purchase" && isGuest ? newClaimToken() : undefined;
 
@@ -409,25 +338,12 @@ async function handlePaypal(
       status: "pending",
       amount: Number(paypalValue),
       currency,
+      payment_gateway: "paypal",
     };
     if (referrer_id && referrer_id !== user?.id) {
       purchaseData.referrer_id = referrer_id;
     }
     if (coupon_id) purchaseData.coupon_id = coupon_id;
-=======
-
-  // Store pending record
-  if (type === "purchase") {
-    const purchaseData: any = {
-      user_id: user.id,
-      book_id,
-      razorpay_order_id: ppOrder.id,
-      status: "pending",
-    };
-    if (referrer_id && referrer_id !== user.id) {
-      purchaseData.referrer_id = referrer_id;
-    }
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     await supabase.from("purchases").insert(purchaseData);
   } else {
     await supabase.from("donations").insert({
@@ -437,17 +353,15 @@ async function handlePaypal(
       donor_email: email || user?.email || null,
       razorpay_order_id: ppOrder.id,
       status: "pending",
+      currency,
+      payment_gateway: "paypal",
     });
   }
 
   const approveLink = ppOrder.links?.find((l: any) => l.rel === "approve")?.href;
 
   return new Response(
-<<<<<<< HEAD
     JSON.stringify({ gateway: "paypal", order_id: ppOrder.id, approve_url: approveLink, currency, amount: paypalValue, claim_token }),
-=======
-    JSON.stringify({ gateway: "paypal", order_id: ppOrder.id, approve_url: approveLink }),
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
   );
 }

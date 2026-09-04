@@ -29,7 +29,7 @@ const portfolioItems = [
   {
     icon: Heart,
     title: "Community Impact",
-    description: "Through reader donations and community support, we've distributed free spiritual literature to thousands of seekers across 25+ countries.",
+    description: "Reader donations and community support let us keep every article free to read and fund new original translations.",
     link: "/support-us",
     cta: "Support Us",
   },

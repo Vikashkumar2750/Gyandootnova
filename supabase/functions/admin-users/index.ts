@@ -55,11 +55,7 @@ async function sendAccountStatusEmail(email: string, displayName: string | null,
                   </div>
                   `}
                   <p style="margin:24px 0 0;font-size:13px;color:#9ca3af;">
-<<<<<<< HEAD
-                    If you have questions, reply to this email or contact us at amrendra8765@gmail.com
-=======
-                    If you have questions, reply to this email or contact us at support@gyandootnova.com
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
+                    If you have questions, reply to this email or contact us at gyandootnova57@gmail.com
                   </p>
                 </td>
               </tr>
@@ -79,11 +75,7 @@ async function sendAccountStatusEmail(email: string, displayName: string | null,
 
   try {
     await resend.emails.send({
-<<<<<<< HEAD
       from: "GyandootNova <info@gyandootnova.in>",
-=======
-      from: "GyandootNova <onboarding@resend.dev>",
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       to: [email],
       subject,
       html,
@@ -118,7 +110,6 @@ Deno.serve(async (req) => {
   const { data: isAdmin } = await supabaseAdmin.rpc("has_role", { _user_id: user.id, _role: "admin" });
   if (!isAdmin) return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: corsHeaders });
 
-<<<<<<< HEAD
   // Require a server-recorded admin OTP session (2FA), not just the UI flag.
   const { data: otpOk } = await supabaseAdmin.rpc("is_admin_otp_verified", { _user_id: user.id });
   if (!otpOk) {
@@ -128,8 +119,6 @@ Deno.serve(async (req) => {
     });
   }
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   const url = new URL(req.url);
 
   if (req.method === "GET") {

@@ -11,7 +11,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
-<<<<<<< HEAD
 import { Plus, Pencil, Trash2, ArrowLeft, Eye, Globe, CheckCircle, AlertTriangle, Upload, X, Loader2, Download, ScrollText } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { downloadTableAsCsv } from "@/lib/exportCsv";
@@ -20,10 +19,6 @@ import UploadCsvButton from "@/components/admin/UploadCsvButton";
 import SourcesPermissionsCard from "@/components/admin/SourcesPermissionsCard";
 import OriginalityPanel from "@/components/admin/OriginalityPanel";
 import { Send } from "lucide-react";
-=======
-import { Plus, Pencil, Trash2, ArrowLeft, Eye, Globe, CheckCircle, AlertTriangle } from "lucide-react";
-import RichTextEditor from "@/components/RichTextEditor";
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 
 const slugify = (t: string) => {
   const slug = t
@@ -37,7 +32,6 @@ const slugify = (t: string) => {
 
 const emptyForm = {
   title: "", slug: "", content: "", excerpt: "", post_type: "article" as string,
-<<<<<<< HEAD
   is_published: false, meta_title: "", meta_description: "", cover_url: "",
   publish_status: "draft" as "draft" | "scheduled" | "published",
   scheduled_at: "" as string, // datetime-local value
@@ -57,11 +51,6 @@ const emptyForm = {
 };
 
 
-=======
-  is_published: false, meta_title: "", meta_description: "",
-};
-
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 /* ── SEO Score helpers ──────────────────────────────────────── */
 const getSeoScore = (form: typeof emptyForm) => {
   let score = 0;
@@ -98,15 +87,9 @@ const getSeoScore = (form: typeof emptyForm) => {
   checks.push({ label: "Content (300+ chars)", pass: contentOk, tip: `${contentText.length} characters` });
   if (contentOk) score += 15;
 
-<<<<<<< HEAD
   // Has cover image
   const hasImage = !!form.cover_url || form.content.includes("<img");
   checks.push({ label: "Has cover image", pass: hasImage, tip: hasImage ? "Image set" : "Add a cover image" });
-=======
-  // Has cover image in content or excerpt
-  const hasImage = form.content.includes("<img");
-  checks.push({ label: "Contains image", pass: hasImage, tip: hasImage ? "Image found" : "Add an image for better engagement" });
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   if (hasImage) score += 15;
 
   return { score, checks };
@@ -130,11 +113,8 @@ const AdminPosts = () => {
   const [view, setView] = useState<"list" | "form">("list");
   const [editing, setEditing] = useState<any>(null);
   const [form, setForm] = useState({ ...emptyForm });
-<<<<<<< HEAD
   const [uploading, setUploading] = useState(false);
   const [aiRunning, setAiRunning] = useState(false);
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 
   const { data: posts } = useQuery({
     queryKey: ["admin-posts"],
@@ -144,7 +124,6 @@ const AdminPosts = () => {
     },
   });
 
-<<<<<<< HEAD
   const parseList = (s: string): string[] =>
     s.split(",").map((t) => t.trim()).filter(Boolean);
 
@@ -155,18 +134,11 @@ const AdminPosts = () => {
         ? new Date(form.scheduled_at).toISOString()
         : null;
       const payload: any = {
-=======
-  const saveMutation = useMutation({
-    mutationFn: async () => {
-      const finalSlug = form.slug.trim() || slugify(form.title);
-      const payload = {
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
         title: form.title,
         slug: finalSlug,
         content: form.content,
         excerpt: form.excerpt,
         post_type: form.post_type,
-<<<<<<< HEAD
         meta_title: form.meta_title,
         meta_description: form.meta_description,
         cover_url: form.cover_url || null,
@@ -189,11 +161,6 @@ const AdminPosts = () => {
         source_type: form.source_type,
         source_citation: form.source_citation || null,
         permission_notes: form.permission_notes || null,
-=======
-        is_published: form.is_published,
-        meta_title: form.meta_title,
-        meta_description: form.meta_description,
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
       };
       if (editing) {
         const { error } = await supabase.from("posts").update(payload).eq("id", editing.id);
@@ -221,7 +188,6 @@ const AdminPosts = () => {
 
   const resetForm = () => { setForm({ ...emptyForm }); setEditing(null); setView("list"); };
 
-<<<<<<< HEAD
   const toDatetimeLocal = (iso: string | null): string => {
     if (!iso) return "";
     const d = new Date(iso);
@@ -230,13 +196,10 @@ const AdminPosts = () => {
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
   };
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   const openEdit = (p: any) => {
     setEditing(p);
     setForm({
       title: p.title, slug: p.slug ?? "", content: p.content ?? "", excerpt: p.excerpt ?? "",
-<<<<<<< HEAD
       post_type: p.post_type, is_published: !!p.is_published,
       meta_title: p.meta_title ?? "", meta_description: p.meta_description ?? "",
       cover_url: p.cover_url ?? "",
@@ -258,18 +221,11 @@ const AdminPosts = () => {
       source_type: (p.source_type ?? "original") as any,
       source_citation: p.source_citation ?? "",
       permission_notes: p.permission_notes ?? "",
-=======
-      post_type: p.post_type, is_published: p.is_published,
-      meta_title: p.meta_title ?? "", meta_description: p.meta_description ?? "",
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     });
     setView("form");
   };
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
   const seo = getSeoScore(form);
   const previewTitle = form.meta_title || form.title || "Post Title";
   const previewDesc = form.meta_description || form.excerpt || "Post description will appear here...";
@@ -333,7 +289,6 @@ const AdminPosts = () => {
             <Textarea value={form.excerpt} onChange={(e) => setForm({ ...form, excerpt: e.target.value })} className="mt-1" rows={2} placeholder="Brief description…" />
           </div>
 
-<<<<<<< HEAD
           {/* Cover Image */}
           <div>
             <Label>Cover Image</Label>
@@ -393,8 +348,6 @@ const AdminPosts = () => {
           </div>
 
 
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
           {/* Rich Content Editor */}
           <div>
             <Label className="mb-1 block">Content</Label>
@@ -466,7 +419,6 @@ const AdminPosts = () => {
             </div>
           </div>
 
-<<<<<<< HEAD
           {/* Publishing & Scheduling */}
           <div className="border-t border-border pt-4 space-y-4">
             <p className="text-sm font-medium">Publishing & Scheduling</p>
@@ -634,21 +586,6 @@ const AdminPosts = () => {
             </div>
           </div>
 
-=======
-          {/* Actions */}
-          <div className="flex items-center justify-between pt-2">
-            <div className="flex items-center gap-2">
-              <Switch checked={form.is_published} onCheckedChange={(v) => setForm({ ...form, is_published: v })} />
-              <Label>{form.is_published ? "Published" : "Draft"}</Label>
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" onClick={resetForm}>Cancel</Button>
-              <Button onClick={() => saveMutation.mutate()} disabled={!form.title || saveMutation.isPending}>
-                {saveMutation.isPending ? "Saving…" : editing ? "Update Post" : "Publish Post"}
-              </Button>
-            </div>
-          </div>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
         </div>
       </div>
     );
@@ -659,7 +596,6 @@ const AdminPosts = () => {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="font-serif text-3xl font-bold">Posts</h1>
-<<<<<<< HEAD
         <div className="flex gap-2 flex-wrap">
           <Button variant="outline" onClick={() => downloadTableAsCsv({ table: "posts", filenamePrefix: "posts", orderBy: { column: "created_at", ascending: false } })}>
             <Download className="mr-1 h-4 w-4" /> Download All
@@ -689,9 +625,27 @@ const AdminPosts = () => {
           <AgentLogsDialog />
           <Button onClick={() => setView("form")}><Plus className="mr-1 h-4 w-4" /> Add Post</Button>
         </div>
-=======
-        <Button onClick={() => setView("form")}><Plus className="mr-1 h-4 w-4" /> Add Post</Button>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        {(() => {
+          const all = posts ?? [];
+          const statusOf = (p: any) => p.publish_status ?? (p.is_published ? "published" : "draft");
+          const stats = [
+            { label: "Total", value: all.length, cls: "text-foreground" },
+            { label: "Published", value: all.filter((p: any) => statusOf(p) === "published").length, cls: "text-emerald-600" },
+            { label: "Draft", value: all.filter((p: any) => statusOf(p) === "draft").length, cls: "text-muted-foreground" },
+            { label: "Scheduled", value: all.filter((p: any) => statusOf(p) === "scheduled").length, cls: "text-amber-600" },
+          ];
+          return stats.map((s) => (
+            <Card key={s.label}>
+              <CardContent className="p-4">
+                <p className="text-xs uppercase tracking-wide text-muted-foreground">{s.label}</p>
+                <p className={`text-2xl font-bold ${s.cls}`}>{s.value}</p>
+              </CardContent>
+            </Card>
+          ));
+        })()}
       </div>
 
       <Card>
@@ -713,7 +667,6 @@ const AdminPosts = () => {
                   <TableCell className="text-xs text-muted-foreground max-w-[150px] truncate">{p.slug}</TableCell>
                   <TableCell className="capitalize">{p.post_type}</TableCell>
                   <TableCell>
-<<<<<<< HEAD
                     {(() => {
                       const status = p.publish_status ?? (p.is_published ? "published" : "draft");
                       if (status === "published") return <span className="text-green-600 font-medium">Published</span>;
@@ -726,12 +679,6 @@ const AdminPosts = () => {
                     })()}
                   </TableCell>
 
-=======
-                    {p.is_published
-                      ? <span className="text-green-600 font-medium">Published</span>
-                      : <span className="text-muted-foreground">Draft</span>}
-                  </TableCell>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                   <TableCell className="text-right">
                     <Button variant="ghost" size="icon" onClick={() => openEdit(p)}><Pencil className="h-4 w-4" /></Button>
                     <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate(p.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
@@ -749,7 +696,6 @@ const AdminPosts = () => {
   );
 };
 
-<<<<<<< HEAD
 function AgentLogsDialog() {
   const [open, setOpen] = useState(false);
   const { data: logs, isLoading } = useQuery({
@@ -842,6 +788,3 @@ function AgentLogsDialog() {
 
 export default AdminPosts;
 
-=======
-export default AdminPosts;
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4

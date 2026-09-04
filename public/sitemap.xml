@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<<<<<<< HEAD
   <url>
     <loc>https://gyandootnova.in/</loc>
     <changefreq>daily</changefreq>
@@ -208,19 +207,13 @@
   </url>
   <url>
     <loc>https://gyandootnova.in/books/bhagavad-gita-simplified</loc>
-    <lastmod>2026-07-11</lastmod>
+    <lastmod>2026-08-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://gyandootnova.in/books/krishna-sahastraname</loc>
-    <lastmod>2026-06-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://gyandootnova.in/books/%E0%A4%95%E0%A4%A6%E0%A4%B0%E0%A4%A8%E0%A4%A5</loc>
-    <lastmod>2026-06-03</lastmod>
+    <lastmod>2026-08-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -243,170 +236,615 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://gyandootnova.in/books/%E0%A4%95%E0%A4%A6%E0%A4%B0%E0%A4%A8%E0%A4%A5</loc>
+    <lastmod>2026-08-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://gyandootnova.in/books/kakradi-sahastraname</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-08-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://gyandootnova.in/books/rigved</loc>
-    <lastmod>2026-07-08</lastmod>
+    <lastmod>2026-08-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://gyandootnova.in/books/%E0%A4%8B%E0%A4%97%E0%A5%8D%E0%A4%B5%E0%A5%87%E0%A4%A6%E0%A4%83-%E0%A4%AE%E0%A4%A3%E0%A5%8D%E0%A4%A1%E0%A4%B2%E0%A4%82-4</loc>
-    <lastmod>2026-07-10</lastmod>
+    <lastmod>2026-08-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://gyandootnova.in/articles/%E0%A4%B8%E0%A4%B0%E0%A4%B2-%E0%A4%A6%E0%A5%88%E0%A4%A8%E0%A4%BF%E0%A4%95-%E0%A4%85%E0%A4%AD%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%B8-%E0%A4%95%E0%A5%87-%E0%A4%AE%E0%A4%BE%E0%A4%A7%E0%A5%8D%E0%A4%AF%E0%A4%AE-%E0%A4%B8%E0%A5%87-%E0%A4%9C%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%A6%E0%A4%BE-%E0%A4%B8%E0%A5%8B%E0%A4%9A%E0%A4%A8%E0%A5%87-%E0%A4%B8%E0%A5%87-%E0%A4%95%E0%A5%88%E0%A4%B8%E0%A5%87-%E0%A4%B0%E0%A5%8B%E0%A4%95%E0%A5%87%E0%A4%82</loc>
-    <lastmod>2026-07-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://gyandootnova.in/articles/gyandootnova-%E0%A4%95%E0%A5%8D%E0%A4%AF%E0%A4%BE-%E0%A4%B9%E0%A5%88-gyandoot-%E0%A4%95%E0%A4%BE-%E0%A4%AA%E0%A5%82%E0%A4%B0%E0%A4%BE-%E0%A4%AE%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%97%E0%A4%A6%E0%A4%B0%E0%A5%8D%E0%A4%B6%E0%A4%95</loc>
-    <lastmod>2026-07-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://gyandootnova.in/articles/%E0%A4%B8%E0%A4%B0%E0%A4%B2-%E0%A4%9C%E0%A4%AA-%E0%A4%A4%E0%A4%95%E0%A4%A8%E0%A5%80%E0%A4%95-%E0%A4%95%E0%A4%BE-%E0%A4%89%E0%A4%AA%E0%A4%AF%E0%A5%8B%E0%A4%97-%E0%A4%95%E0%A4%B0%E0%A4%95%E0%A5%87-5-%E0%A4%AE%E0%A4%BF%E0%A4%A8%E0%A4%9F-%E0%A4%AE%E0%A5%87%E0%A4%82-%E0%A4%85%E0%A4%A7%E0%A4%BF%E0%A4%95-%E0%A4%B8%E0%A5%8B%E0%A4%9A%E0%A4%A8%E0%A5%87-%E0%A4%B8%E0%A5%87-%E0%A4%95%E0%A5%88%E0%A4%B8%E0%A5%87-%E0%A4%B0%E0%A5%8B%E0%A4%95%E0%A5%87%E0%A4%82</loc>
-    <lastmod>2026-07-16</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://gyandootnova.in/articles/Vashikaranmantra</loc>
-    <lastmod>2026-07-11</lastmod>
+    <loc>https://gyandootnova.in/articles/charon-vedon-ka-jeevan-par-prabhav-aadhunik-chunautiyon-ke-liye-prachin-vaidik-g</loc>
+    <lastmod>2026-09-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://gyandootnova.in/articles/%E0%A4%98%E0%A4%B0-%E0%A4%AE%E0%A5%87%E0%A4%82-%E0%A4%A8%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A4%BE%E0%A4%A4%E0%A5%8D%E0%A4%AE%E0%A4%95-%E0%A4%8A%E0%A4%B0%E0%A5%8D%E0%A4%9C%E0%A4%BE-%E0%A4%95%E0%A5%87-%E0%A4%B8%E0%A4%82%E0%A4%95%E0%A5%87%E0%A4%A4%E0%A5%8B%E0%A4%82-%E0%A4%95%E0%A5%8B-%E0%A4%95%E0%A5%88%E0%A4%B8%E0%A5%87-%E0%A4%AA%E0%A4%B9%E0%A4%9A%E0%A4%BE%E0%A4%A8%E0%A5%87%E0%A4%82</loc>
-    <lastmod>2026-07-16</lastmod>
+    <loc>https://gyandootnova.in/articles/navdha-bhakti-bhagavat-purana-aatmiya-utthan</loc>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://gyandootnova.in/articles/rigved-kya-hai</loc>
-    <lastmod>2026-07-11</lastmod>
+    <loc>https://gyandootnova.in/articles/puranon-ka-rahasyamay-sansar-kalchakra-brahmand-vigyan-srishti-siddhant</loc>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://gyandootnova.in/articles/%E0%A4%AD%E0%A4%97%E0%A4%B5%E0%A4%A6-%E0%A4%97%E0%A5%80%E0%A4%A4%E0%A4%BE-%E0%A4%95%E0%A5%8D%E0%A4%AF%E0%A4%BE-%E0%A4%B9%E0%A5%88</loc>
-    <lastmod>2026-07-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://gyandootnova.in/articles/finding-lifes-purpose-spiritual-journey</loc>
-    <lastmod>2026-07-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://gyandootnova.in/articles/practical-mindfulness-techniques-anxiety-relief</loc>
-    <lastmod>2026-07-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://gyandootnova.in/articles/beginners-guide-daily-meditation-inner-peace</loc>
-    <lastmod>2026-07-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://gyandootnova.in/articles/spiritual-power-of-gratitude</loc>
-    <lastmod>2026-07-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://gyandootnova.in/articles/consciousness-quantum-physics-ancient-modern</loc>
-    <lastmod>2026-07-20</lastmod>
+    <loc>https://gyandootnova.in/articles/bhagavad-gita-bhakti-yoga-ishwar-prem-adhyatmik-purnata</loc>
+    <lastmod>2026-09-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://gyandootnova.in/articles/what-is-mindfulness-in-hindi</loc>
-    <lastmod>2026-07-11</lastmod>
+    <lastmod>2026-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://gyandootnova.in/articles/rigved-online-kaise-padhein</loc>
-    <lastmod>2026-07-11</lastmod>
+    <loc>https://gyandootnova.in/articles/shat-chakra-dhyan-kundalini-jagran-atm-sakshatkar</loc>
+    <lastmod>2026-08-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://gyandootnova.in/articles/rigved-10-mandal</loc>
-    <lastmod>2026-07-16</lastmod>
+    <loc>https://gyandootnova.in/articles/sanatan-dharma-aur-anya-dharma-mein-antar</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://gyandootnova.in/articles/mind-pain-relief-while-negative-energy</loc>
-    <lastmod>2026-07-11</lastmod>
+    <loc>https://gyandootnova.in/articles/bhagavad-gita-shaktishali-samvad-aatmagyan-jeevan-prabandhan</loc>
+    <lastmod>2026-08-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://gyandootnova.in/articles/ramayan-se-sabak</loc>
-    <lastmod>2026-07-16</lastmod>
+    <loc>https://gyandootnova.in/articles/bhagavad-gita-kaise-samjhe-gahan-adhyayan</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/mahabharat-karmayog-sutra-aadhunik-jeevan-chunautiyan</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/bhagavad-gita-dhyan-ekagrata-sutra-man-shanti-vartaman-jeevan</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/rigved-kya-hai</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/rigved-rochak-tathya</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/sanatan-dharma-10-mulbhoot-siddhant-aadhunik-jeevan-anupryog</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/hanuman-chalisa-path-fayde</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/mantra-yantra-tantra-spiritual-significance-differences</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/bhagavad-gita-online-padhe</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/ishwar-prapti-ke-marg-bhakti-gyan-karma-dhyan-yog-tulnatmak-adhyayan</loc>
+    <lastmod>2026-08-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/rigved-shaktishali-sukhadayak-mantra-shanti-samriddhi-sakararatmakta</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/nasadiya-sukta-hindi-arth</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/bhagavad-gita-pramukh-patra-jeevan-yatra</loc>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://gyandootnova.in/articles/stoicism-mindfulness-modern-stress</loc>
-    <lastmod>2026-07-18</lastmod>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://gyandootnova.in/articles/sound-healing-modern-meditation-guide</loc>
-    <lastmod>2026-07-24</lastmod>
+    <loc>https://gyandootnova.in/articles/vedas-ancient-indian-wisdom-spirituality</loc>
+    <lastmod>2026-08-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/shiv-chalisa</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/grihastha-jeevan-mein-sadhana-parivar-adhyatmik-vikas</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/ramayan-kahani-hindi</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/rigved-rishi-list</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/pancha-kosha-sharir-man-atma-ko-samjhe</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/char-veda-tulna-hindi</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/yoga-aur-dhyan-mein-antar</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/%E0%A4%98%E0%A4%B0-%E0%A4%AE%E0%A5%87%E0%A4%82-%E0%A4%A8%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A4%BE%E0%A4%A4%E0%A5%8D%E0%A4%AE%E0%A4%95-%E0%A4%8A%E0%A4%B0%E0%A5%8D%E0%A4%9C%E0%A4%BE-%E0%A4%95%E0%A5%87-%E0%A4%B8%E0%A4%82%E0%A4%95%E0%A5%87%E0%A4%A4%E0%A5%8B%E0%A4%82-%E0%A4%95%E0%A5%8B-%E0%A4%95%E0%A5%88%E0%A4%B8%E0%A5%87-%E0%A4%AA%E0%A4%B9%E0%A4%9A%E0%A4%BE%E0%A4%A8%E0%A5%87%E0%A4%82</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/gyandootnova-%E0%A4%95%E0%A5%8D%E0%A4%AF%E0%A4%BE-%E0%A4%B9%E0%A5%88-gyandoot-%E0%A4%95%E0%A4%BE-%E0%A4%AA%E0%A5%82%E0%A4%B0%E0%A4%BE-%E0%A4%AE%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%97%E0%A4%A6%E0%A4%B0%E0%A5%8D%E0%A4%B6%E0%A4%95</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/rigved-10-mandal</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/rigved-devta-list</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/geeta-updesh-hindi</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/upanishads-gyan-adhyatmik-margdarshan</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/vedic-shiksha-paddhati</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/ramayan-patra-hindi</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/mantra-siddhi-vaidik-mantro-ko-sidh-karne-ki-vidhi</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/grihastho-ke-liye-dhyan-parivar-kartavya-aantrik-shanti</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/rigved-online-kaise-padhein</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/durga-chalisa</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/mantra-jap-ke-labh-vaigyanik-aur-adhyatmik-drishtikon</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/krishna-quotes-hindi-adhyatmik-gyan</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/geeta-karm-yog</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/ramayana-management-principles-modern-life</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/shatkarma-yogic-cleansing-scientific-spiritual-significance</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/rigved-yoga-sambandh</loc>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://gyandootnova.in/articles/science-of-manifestation-thoughts-reality</loc>
-    <lastmod>2026-07-22</lastmod>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/%E0%A4%B8%E0%A4%B0%E0%A4%B2-%E0%A4%A6%E0%A5%88%E0%A4%A8%E0%A4%BF%E0%A4%95-%E0%A4%85%E0%A4%AD%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%B8-%E0%A4%95%E0%A5%87-%E0%A4%AE%E0%A4%BE%E0%A4%A7%E0%A5%8D%E0%A4%AF%E0%A4%AE-%E0%A4%B8%E0%A5%87-%E0%A4%9C%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%A6%E0%A4%BE-%E0%A4%B8%E0%A5%8B%E0%A4%9A%E0%A4%A8%E0%A5%87-%E0%A4%B8%E0%A5%87-%E0%A4%95%E0%A5%88%E0%A4%B8%E0%A5%87-%E0%A4%B0%E0%A5%8B%E0%A4%95%E0%A5%87%E0%A4%82</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/aarti-sangrah-sabhi-devi-devtao-ki-lokpriya-aartiyan-arth-labh</loc>
+    <lastmod>2026-08-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/ramayan-se-sabak</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/vishnu-sahasranamam</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/brahmacharya-ke-labh-sharirik-mansik-adhyatmik-vikas</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/sanatan-dharma-hinduism-antar</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/bhagavad-gita-yogo-ka-sangam-samagra-adhyatmik-vikas</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/garud-puran-mrityu-ke-baad-atma-ka-safar-punarjanm-rahasya-2</loc>
+    <lastmod>2026-08-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/mrityu-ke-bhaya-par-vijay-pratcin-darshan-adhunik-manovigyan</loc>
+    <lastmod>2026-08-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/kundalini-jagran-adhyatmik-khatre-aur-kaise-bachen</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/kundalini-jagran-lakshan-fayde</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/shri-suktam-dhan-samriddhi-aishwarya-vedic-mantra</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/hanuman-chalisa-path-vidhi</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/%E0%A4%AD%E0%A4%97%E0%A4%B5%E0%A4%A6-%E0%A4%97%E0%A5%80%E0%A4%A4%E0%A4%BE-%E0%A4%95%E0%A5%8D%E0%A4%AF%E0%A4%BE-%E0%A4%B9%E0%A5%88</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/finding-lifes-purpose-spiritual-journey</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/atma-aur-prana-mein-antar-aadhyatmik-drishtikon</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/beginners-guide-daily-meditation-inner-peace</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/sound-healing-modern-meditation-guide</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/practical-mindfulness-techniques-anxiety-relief</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/lalitha-sahasranamam</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/consciousness-quantum-physics-ancient-modern</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/kundalini-yog-hath-yog-antar-urja-jagran</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/navagraha-shanti-puja-mahatva-vidhi-labh</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/grihastha-jeevan-mein-adhyatmikta</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/bhagavad-gita-gyan-yoga-aatmagyan-chetna-vistar</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/purush-sukta-hindi</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/bhagavad-gita-anasakti-yog-ichchhaon-se-mukti-shanti-marg</loc>
+    <lastmod>2026-09-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/dharmik-granth-free-online-padhe</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/gayatri-mantra-rigved</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/atharvaved-kya-hai</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/rigved-yajurved-bhed</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/dharma-karma-antar-comprehensive-guide</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/yajurved-kya-hai</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/rigved-padhne-ke-fayde</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/samved-kya-hai</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/geeta-18-adhyay-saransh</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/karma-yoga-bhakti-yoga-jnana-yoga-antar</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/brahm-muhurat-ke-labh-vaigyanik-adhyatmik-drishtikon</loc>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/advaita-vedanta-swayam-brahmand-ekatmata</loc>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/rigved-prasiddh-mantra</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/spiritual-power-of-gratitude</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/rigved-aur-vigyan</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/ganesh-chalisa</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/vishnu-sahasranama-arth</loc>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/yog-swasthya-labh-sharirik-mansik-adhyatmik-vikas</loc>
+    <lastmod>2026-09-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/mantro-ki-shakti-jeevan-badalne-ke-liye-sahi-mantro-ka-chayan-prayog</loc>
+    <lastmod>2026-09-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/bhagavad-gita-kathin-nirnay-lene-ki-kala</loc>
+    <lastmod>2026-09-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gyandootnova.in/articles/sanskrit-mantron-ki-adrisya-shakti-vaigyanik-adhyatmik-prabhav</loc>
+    <lastmod>2026-09-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 </urlset>
-=======
-  <url><loc>https://gyandootnova.in/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
-  <url><loc>https://gyandootnova.in/books</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
-  <url><loc>https://gyandootnova.in/articles</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
-  <url><loc>https://gyandootnova.in/about</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://gyandootnova.in/services</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://gyandootnova.in/contact</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://gyandootnova.in/faq</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://gyandootnova.in/donate</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://gyandootnova.in/testimonials</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://gyandootnova.in/portfolio</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://gyandootnova.in/careers</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
-  <url><loc>https://gyandootnova.in/support</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
-  <url><loc>https://gyandootnova.in/privacy-policy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://gyandootnova.in/terms-conditions</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://gyandootnova.in/refund-policy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://gyandootnova.in/shipping-policy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://gyandootnova.in/sitemap</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://gyandootnova.in/books/advanced-meditation-techniques</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://gyandootnova.in/books/bhagavad-gita-simplified</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://gyandootnova.in/books/yajur-ved</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://gyandootnova.in/articles/what-is-gyandootnova-complete-guide-to-gyandoot</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://gyandootnova.in/articles/what-is-bhagwat-geeta</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://gyandootnova.in/articles/how-to-stop-overthinking-in-5-minutes-using-a-simple-chanting-technique</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://gyandootnova.in/articles/how-to-stop-overthinking-through-simple-daily-practices</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://gyandootnova.in/articles/how-to-recognize-signs-of-negative-energy-in-the-home-office</loc><changefreq>weekly</changefreq><priority>0.2</priority></url>
-  <url><loc>https://gyandootnova.in/books/2</loc><changefreq>weekly</changefreq><priority>0.2</priority></url>
-</urlset>
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4

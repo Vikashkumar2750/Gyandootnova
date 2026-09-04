@@ -9,13 +9,9 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-<<<<<<< HEAD
 import { Users, BookOpen, Heart, Bookmark, BarChart2, ShieldOff, ShieldCheck, Eye, Shield } from "lucide-react";
 import ManageUserRolesDialog from "@/components/admin/ManageUserRolesDialog";
 import { useAuth } from "@/hooks/useAuth";
-=======
-import { Users, BookOpen, Heart, Bookmark, BarChart2, ShieldOff, ShieldCheck, Eye } from "lucide-react";
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 
 type UserRow = {
   id: string;
@@ -37,17 +33,12 @@ type UserHistory = {
 const AdminUsers = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
-<<<<<<< HEAD
   const { perms, isAdmin } = useAuth();
   const [selectedUser, setSelectedUser] = useState<UserRow | null>(null);
   const [confirmDisableUser, setConfirmDisableUser] = useState<UserRow | null>(null);
   const [rolesUser, setRolesUser] = useState<UserRow | null>(null);
 
   const canManageRoles = isAdmin || perms.users;
-=======
-  const [selectedUser, setSelectedUser] = useState<UserRow | null>(null);
-  const [confirmDisableUser, setConfirmDisableUser] = useState<UserRow | null>(null);
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin-users"],
@@ -166,7 +157,6 @@ const AdminUsers = () => {
                       >
                         <Eye className="h-4 w-4 mr-1" /> History
                       </Button>
-<<<<<<< HEAD
                       {canManageRoles && (
                         <Button
                           size="sm"
@@ -176,8 +166,6 @@ const AdminUsers = () => {
                           <Shield className="h-4 w-4 mr-1" /> Roles
                         </Button>
                       )}
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
                       {isDisabled(user) ? (
                         <Button
                           size="sm"
@@ -402,7 +390,6 @@ const AdminUsers = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-<<<<<<< HEAD
 
       <ManageUserRolesDialog
         userId={rolesUser?.id ?? null}
@@ -410,8 +397,6 @@ const AdminUsers = () => {
         open={!!rolesUser}
         onOpenChange={(o) => !o && setRolesUser(null)}
       />
-=======
->>>>>>> 2840b3afbb193528fe8027118692ccff30ac79c4
     </div>
   );
 };

@@ -1,0 +1,72 @@
+name: Post-deploy SSR/SEO verification
+
+# Lovable's hosting deploys the site outside GitHub Actions, so we cannot
+# hook this directly to a Lovable "deploy finished" event. Instead we run
+# the curl-only SSR verifier on three signals so a stale prerender for
+# /books or /articles surfaces within minutes:
+#
+#   1. workflow_dispatch  — trigger manually right after a Lovable Publish.
+#   2. schedule           — every 30 min, so any silent regression fails CI.
+#   3. push to main       — smoke-check current prod against the fresh code
+#                           that just landed (helpful when a merge is what
+#                           kicked off a Lovable auto-deploy).
+#
+# The job fails (non-zero exit) if any check in scripts/verify-ssr-seo.sh
+# doesn't match. That's the "fail the pipeline if any checks don't match"
+# gate.
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Origin to verify (defaults to production custom domain)"
+        required: false
+        default: "https://gyandootnova.in"
+      book_slug:
+        description: "Optional book slug for detail-page checks"
+        required: false
+        default: "bhagavad-gita-simplified"
+      article_slug:
+        description: "Optional article slug for detail-page checks"
+        required: false
+        default: ""
+  schedule:
+    # Every 30 minutes. Cron uses UTC.
+    - cron: "*/30 * * * *"
+  push:
+    branches: [main]
+
+concurrency:
+  group: post-deploy-seo-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify-ssr:
+    name: curl-based SSR/SEO verifier (production)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait 60s for Lovable CDN to propagate (push only)
+        if: github.event_name == 'push'
+        run: sleep 60
+
+      - name: Run verify-ssr-seo.sh against production
+        env:
+          BASE: ${{ github.event.inputs.base_url || 'https://gyandootnova.in' }}
+          BOOK_SLUG: ${{ github.event.inputs.book_slug || 'bhagavad-gita-simplified' }}
+          ARTICLE_SLUG: ${{ github.event.inputs.article_slug || '' }}
+        run: |
+          chmod +x scripts/verify-ssr-seo.sh
+          # tee so both the human log and the exit code are preserved
+          set -o pipefail
+          scripts/verify-ssr-seo.sh "$BASE" 2>&1 | tee ssr-seo-report.txt
+
+      - name: Upload verifier report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ssr-seo-report
+          path: ssr-seo-report.txt
+          retention-days: 14
