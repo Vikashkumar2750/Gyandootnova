@@ -49,7 +49,7 @@ app.use(express.static(DIST, { index: false }));
 
 // ── SPA fallback: serve index.html for non-file routes ───────────────
 let indexHtmlCache = null;
-app.get("/*path", async (req, res) => {
+app.get(/.*/, async (req, res) => {
   // If the path has a file extension, it wasn't found in static → 404
   if (extname(req.path)) {
     return res.status(404).send("Not Found");
